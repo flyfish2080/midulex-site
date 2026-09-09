@@ -171,145 +171,15 @@ const DB = {
 // ============ 模块配置 ============
 const modules = [
   { id:'dashboard', name:'数据看板', icon:'📊', group:'概览' },
-  { id:'surveys', name:'意见建议', icon:'📋', group:'家校沟通' },
-  { id:'activities', name:'活动组织', icon:'🎉', group:'活动管理' },
-  { id:'volunteers', name:'志愿者库', icon:'🙋', group:'活动管理' },
-  { id:'safety', name:'安全巡查', icon:'🛡️', group:'安全监督' },
-  { id:'patrol', name:'护学岗', icon:'🚸', group:'安全监督' },
-  { id:'emergency', name:'应急联络', icon:'🚨', group:'安全监督' },
-  { id:'students', name:'帮扶对象', icon:'🤝', group:'助学帮扶' },
-  { id:'parentclass', name:'家长课堂', icon:'🎓', group:'助学帮扶' },
-  { id:'courses', name:'课后服务', icon:'📚', group:'课程辅助' },
-  { id:'resources', name:'资源整合', icon:'📦', group:'课程辅助' },
-  { id:'schedule', name:'课表展示', icon:'📅', group:'课程辅助' },
+  { id:'schedule', name:'课表展示', icon:'📅', group:'课程管理' },
   { id:'students_list', name:'学生名单', icon:'👨‍🎓', group:'人员管理' },
   { id:'duty', name:'学生值日', icon:'🧹', group:'人员管理' },
   { id:'parent_patrol', name:'家长护岗', icon:'🚸', group:'人员管理' },
-  { id:'documents', name:'档案管理', icon:'📁', group:'档案管理' },
-  { id:'members', name:'委员管理', icon:'👥', group:'档案管理' },
   { id:'settings', name:'系统设置', icon:'⚙️', group:'系统' }
 ];
 
 // 字段配置：每个模块的列表列和表单字段
 const fieldConfig = {
-  surveys: {
-    title:'意见建议', desc:'在线问卷投票，自动汇总结果',
-    columns:[{k:'title',l:'标题'},{k:'status',l:'状态',tag:true},{k:'date',l:'创建时间'},{k:'totalVotes',l:'票数'}],
-    fields:[
-      {k:'title',l:'标题',type:'text',req:true},
-      {k:'description',l:'说明',type:'textarea'},
-      {k:'options',l:'选项（每行一个）',type:'textarea',ph:'选项A\n选项B\n选项C'},
-      {k:'status',l:'状态',type:'select',opts:['进行中','已结束']},
-      {k:'date',l:'创建时间',type:'datetime'}
-    ],
-    custom:'survey'
-  },
-  activities: {
-    title:'活动组织', desc:'亲子活动、节日庆典、社会实践',
-    columns:[{k:'title',l:'活动名称'},{k:'date',l:'时间'},{k:'location',l:'地点'},{k:'status',l:'状态',tag:true},{k:'signCount',l:'报名人数'}],
-    fields:[
-      {k:'title',l:'活动名称',type:'text',req:true},
-      {k:'description',l:'活动描述',type:'textarea'},
-      {k:'date',l:'活动时间',type:'datetime'},
-      {k:'location',l:'活动地点',type:'text'},
-      {k:'status',l:'状态',type:'select',opts:['筹备中','报名中','已结束','已取消']},
-      {k:'participants',l:'报名名单（每行一个）',type:'textarea'},
-      {k:'tasks',l:'分工安排（每行一项）',type:'textarea',ph:'张三-摄影\n李四-物资'},
-      {k:'summary',l:'活动总结',type:'textarea'}
-    ]
-  },
-  volunteers: {
-    title:'志愿者库', desc:'家长志愿者登记与特长匹配',
-    columns:[{k:'name',l:'姓名'},{k:'phone',l:'电话'},{k:'skills',l:'特长'},{k:'available',l:'可用时间'}],
-    fields:[
-      {k:'name',l:'姓名',type:'text',req:true},
-      {k:'phone',l:'联系电话',type:'text'},
-      {k:'skills',l:'特长/技能',type:'text',ph:'如：摄影、驾驶、医护、烹饪'},
-      {k:'available',l:'可用时间',type:'text',ph:'如：周末、工作日下午'},
-      {k:'note',l:'备注',type:'textarea'}
-    ]
-  },
-  safety: {
-    title:'安全巡查', desc:'校园安全隐患排查与整改',
-    columns:[{k:'date',l:'日期'},{k:'type',l:'类型',tag:true},{k:'location',l:'地点'},{k:'status',l:'状态',tag:true},{k:'description',l:'问题描述'}],
-    fields:[
-      {k:'type',l:'巡查类型',type:'select',opts:['设施安全','消防安全','食品安全','校园环境','其他']},
-      {k:'location',l:'地点',type:'text'},
-      {k:'description',l:'问题描述',type:'textarea',req:true},
-      {k:'status',l:'状态',type:'select',opts:['待整改','整改中','已完成']},
-      {k:'rectify',l:'整改措施',type:'textarea'},
-      {k:'date',l:'日期',type:'date'}
-    ]
-  },
-  patrol: {
-    title:'护学岗', desc:'上下学执勤排班与签到',
-    columns:[{k:'date',l:'日期'},{k:'time',l:'时段'},{k:'location',l:'岗位'},{k:'volunteers',l:'执勤人员'},{k:'status',l:'状态',tag:true}],
-    fields:[
-      {k:'date',l:'日期',type:'date'},
-      {k:'time',l:'时段',type:'select',opts:['早上上学','中午放学','下午上学','傍晚放学']},
-      {k:'location',l:'岗位',type:'text',ph:'如：校门口、斑马线、停车场'},
-      {k:'volunteers',l:'执勤人员（每行一个）',type:'textarea'},
-      {k:'status',l:'状态',type:'select',opts:['待执勤','已完成','已取消']}
-    ]
-  },
-  emergency: {
-    title:'应急联络', desc:'紧急联系人与应急预案',
-    columns:[{k:'name',l:'联系人'},{k:'role',l:'角色'},{k:'phone',l:'电话'},{k:'note',l:'备注'}],
-    fields:[
-      {k:'name',l:'联系人姓名',type:'text',req:true},
-      {k:'role',l:'角色/单位',type:'text',ph:'如：校长、班主任、社区民警、医院'},
-      {k:'phone',l:'联系电话',type:'text',req:true},
-      {k:'note',l:'备注',type:'text'}
-    ]
-  },
-  students: {
-    title:'帮扶对象', desc:'困难学生关爱与学习帮扶',
-    columns:[{k:'name',l:'姓名'},{k:'grade',l:'年级'},{k:'type',l:'帮扶类型',tag:true},{k:'status',l:'状态',tag:true},{k:'description',l:'情况说明'}],
-    fields:[
-      {k:'name',l:'学生姓名',type:'text',req:true},
-      {k:'grade',l:'年级班级',type:'text'},
-      {k:'type',l:'帮扶类型',type:'select',opts:['学习帮扶','经济困难','心理关怀','特殊需要']},
-      {k:'description',l:'情况说明',type:'textarea'},
-      {k:'status',l:'状态',type:'select',opts:['帮扶中','已结案','持续关注']},
-      {k:'records',l:'帮扶记录（每行一条）',type:'textarea',ph:'2024-03-01 家访\n2024-03-15 辅导'}
-    ]
-  },
-  parentclass: {
-    title:'家长课堂', desc:'家长教育经验分享与讲座',
-    columns:[{k:'title',l:'主题'},{k:'speaker',l:'主讲人'},{k:'date',l:'时间'},{k:'location',l:'地点'},{k:'attendCount',l:'参与人数'}],
-    fields:[
-      {k:'title',l:'课堂主题',type:'text',req:true},
-      {k:'speaker',l:'主讲人',type:'text'},
-      {k:'date',l:'时间',type:'datetime'},
-      {k:'location',l:'地点',type:'text'},
-      {k:'content',l:'内容摘要',type:'textarea'},
-      {k:'attendees',l:'参与人员（每行一个）',type:'textarea'}
-    ]
-  },
-  courses: {
-    title:'课后服务', desc:'兴趣班报名、考勤与评价',
-    columns:[{k:'name',l:'课程名称'},{k:'teacher',l:'老师'},{k:'time',l:'时间'},{k:'location',l:'地点'},{k:'stuCount',l:'报名人数'}],
-    fields:[
-      {k:'name',l:'课程名称',type:'text',req:true},
-      {k:'teacher',l:'授课老师',type:'text'},
-      {k:'time',l:'上课时间',type:'text',ph:'如：每周三 16:00-17:30'},
-      {k:'location',l:'上课地点',type:'text'},
-      {k:'description',l:'课程介绍',type:'textarea'},
-      {k:'students',l:'报名学生（每行一个）',type:'textarea'}
-    ]
-  },
-  resources: {
-    title:'资源整合', desc:'家长资源进课堂、校企合作',
-    columns:[{k:'title',l:'资源名称'},{k:'type',l:'类型',tag:true},{k:'provider',l:'提供方'},{k:'status',l:'状态',tag:true}],
-    fields:[
-      {k:'title',l:'资源名称',type:'text',req:true},
-      {k:'type',l:'类型',type:'select',opts:['家长职业分享','企业参观','实践基地','物资捐赠','其他']},
-      {k:'provider',l:'提供方',type:'text'},
-      {k:'description',l:'资源描述',type:'textarea'},
-      {k:'status',l:'状态',type:'select',opts:['待对接','已对接','已完成']},
-      {k:'contact',l:'联系方式',type:'text'}
-    ]
-  },
   students_list: {
     title:'学生名单', desc:'学生信息管理，支持批量导入，用于值日和护岗排班',
     columns:[{k:'name',l:'姓名'},{k:'studentNo',l:'学号'},{k:'className',l:'班级'},{k:'parentName',l:'家长姓名'},{k:'parentPhone',l:'家长电话'}],
@@ -322,28 +192,6 @@ const fieldConfig = {
       {k:'note',l:'备注',type:'text'}
     ],
     custom:'students'
-  },
-  documents: {
-    title:'档案管理', desc:'会议纪要、制度文件、工作记录',
-    columns:[{k:'title',l:'标题'},{k:'type',l:'类型',tag:true},{k:'date',l:'日期'},{k:'tags',l:'标签'}],
-    fields:[
-      {k:'title',l:'标题',type:'text',req:true},
-      {k:'type',l:'类型',type:'select',opts:['会议纪要','制度文件','工作计划','工作总结','活动记录','其他']},
-      {k:'content',l:'内容',type:'textarea'},
-      {k:'tags',l:'标签（逗号分隔）',type:'text'},
-      {k:'date',l:'日期',type:'date'}
-    ]
-  },
-  members: {
-    title:'委员管理', desc:'家委会成员信息与职责分工',
-    columns:[{k:'name',l:'姓名'},{k:'role',l:'职务',tag:true},{k:'phone',l:'电话'},{k:'duties',l:'职责'}],
-    fields:[
-      {k:'name',l:'姓名',type:'text',req:true},
-      {k:'role',l:'职务',type:'select',opts:['主任','副主任','秘书长','财务委员','宣传委员','活动委员','安全委员','普通委员']},
-      {k:'phone',l:'联系电话',type:'text'},
-      {k:'duties',l:'职责分工',type:'textarea'},
-      {k:'term',l:'任期',type:'text',ph:'如：2024-2025学年'}
-    ]
   }
 };
 
@@ -404,18 +252,6 @@ function renderMain(){
   let data = DB.get(currentModule, []);
   // 计算派生字段
   data = data.map(d => {
-    if(currentModule==='surveys'){
-      d.totalVotes = (d.votes||[]).reduce((a,b)=>a+b,0);
-    }
-    if(currentModule==='activities'){
-      d.signCount = (d.participants||'').split('\n').filter(x=>x.trim()).length;
-    }
-    if(currentModule==='parentclass'){
-      d.attendCount = (d.attendees||'').split('\n').filter(x=>x.trim()).length;
-    }
-    if(currentModule==='courses'){
-      d.stuCount = (d.students||'').split('\n').filter(x=>x.trim()).length;
-    }
     return d;
   });
 
@@ -539,11 +375,6 @@ function saveForm(moduleId, editId){
   } else {
     item.id = DB.uid();
     item.createdAt = DB.now();
-    // 投票初始化
-    if(moduleId==='surveys'){
-      const opts = (item.options||'').split('\n').filter(x=>x.trim());
-      item.votes = opts.map(()=>0);
-    }
     data.unshift(item);
   }
   DB.set(moduleId, data);
@@ -573,39 +404,10 @@ function viewItem(moduleId, id){
     body += `<div class="row"><div class="k">${f.l}</div><div class="v">${val}</div></div>`;
   });
   body += `<div class="row"><div class="k">创建时间</div><div class="v">${d.createdAt||'-'}</div></div>`;
-  // 投票详情
-  if(moduleId==='surveys' && d.options){
-    const opts = d.options.split('\n').filter(x=>x.trim());
-    const total = (d.votes||[]).reduce((a,b)=>a+b,0);
-    body += '<div style="margin-top:14px"><strong>投票结果</strong>';
-    opts.forEach((o,i) => {
-      const v = d.votes?.[i]||0;
-      const pct = total>0 ? Math.round(v/total*100) : 0;
-      body += `<div style="margin-top:8px;font-size:13px">${o}（${v}票）
-        <div class="vote-bar"><div class="fill" style="width:${pct}%"></div><span class="pct">${pct}%</span></div></div>`;
-    });
-    body += `<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="voteSurvey('${d.id}')">我要投票</button></div>`;
-  }
   body += '</div>';
   document.getElementById('modalBody').innerHTML = body;
   document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">关闭</button>`;
   document.getElementById('modalOverlay').classList.add('show');
-}
-
-function voteSurvey(id){
-  const surveys = DB.get('surveys', []);
-  const s = surveys.find(x=>x.id===id);
-  if(!s || s.status==='已结束'){ alert('投票已结束'); return; }
-  const opts = (s.options||'').split('\n').filter(x=>x.trim());
-  const choice = prompt('请输入选项序号（1-'+opts.length+'）：\n'+opts.map((o,i)=>`${i+1}. ${o}`).join('\n'));
-  const idx = parseInt(choice)-1;
-  if(idx>=0 && idx<opts.length){
-    s.votes = s.votes || opts.map(()=>0);
-    s.votes[idx]++;
-    DB.set('surveys', surveys);
-    alert('投票成功！');
-    viewItem('surveys', id);
-  }
 }
 
 function closeModal(){
@@ -614,44 +416,30 @@ function closeModal(){
 
 // ============ 数据看板 ============
 function renderDashboard(main){
-  const counts = {};
-  modules.forEach(m => { if(m.id!=='dashboard'&&m.id!=='settings') counts[m.id] = DB.get(m.id,[]).length; });
+  const students = DB.get('students_list', []);
+  const sched = DB.get('schedule', null);
 
-  const pendingSafety = DB.get('safety',[]).filter(d=>d.status!=='已完成').length;
-  const activeActivities = DB.get('activities',[]).filter(d=>d.status==='筹备中'||d.status==='报名中').length;
-
-  let html = `<div class="page-head"><div><h2>📊 数据看板</h2><div class="desc">家委会工作数据总览</div></div>
+  let html = `<div class="page-head"><div><h2>📊 数据看板</h2><div class="desc">家委会工作台数据总览</div></div>
     <button class="btn btn-ghost btn-sm" onclick="exportAll()">导出全部数据</button>
     <button class="btn btn-ghost btn-sm" onclick="importAll()">导入数据</button></div>`;
 
   html += `<div class="stats-grid">
-    <div class="stat-card"><div class="stat-icon">🎉</div><div class="stat-value">${counts.activities}</div><div class="stat-label">活动总数</div></div>
-    <div class="stat-card"><div class="stat-icon">🙋</div><div class="stat-value">${counts.volunteers}</div><div class="stat-label">志愿者</div></div>
-    <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">${pendingSafety}</div><div class="stat-label">待整改安全</div></div>
-    <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value">${counts.students}</div><div class="stat-label">帮扶对象</div></div>
-    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-value">${counts.courses}</div><div class="stat-label">课后课程</div></div>
-    <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-value">${DB.get('students_list',[]).length}</div><div class="stat-label">学生名单</div></div>
-    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value">${DB.get('schedule',null)?'已设':'未设'}</div><div class="stat-label">班级课表</div></div>
+    <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-value">${students.length}</div><div class="stat-label">学生人数</div></div>
+    <div class="stat-card"><div class="stat-icon">👨‍👩‍👧</div><div class="stat-value">${students.filter(s=>s.parentName||s.parentPhone).length}</div><div class="stat-label">有家长信息</div></div>
+    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value">${sched?'已设':'未设'}</div><div class="stat-label">班级课表</div></div>
+    <div class="stat-card"><div class="stat-icon">🧹</div><div class="stat-value">${DB.get('duty_config',{dailyCount:3}).dailyCount||3}</div><div class="stat-label">每日值日人数</div></div>
+    <div class="stat-card"><div class="stat-icon">🚸</div><div class="stat-value">${DB.get('patrol_config',{dailyCount:2}).dailyCount||2}</div><div class="stat-label">每日护岗人数</div></div>
   </div>`;
 
-  // 最近活动
-  const recentAct = DB.get('activities',[]).slice(0,5);
-  html += `<div class="card"><div class="card-title">🎉 最近活动</div><div class="table-wrap"><table><thead><tr>
-    <th>活动名称</th><th>时间</th><th>状态</th><th>报名人数</th></tr></thead><tbody>`;
-  if(recentAct.length===0){ html += '<tr><td colspan="4"><div class="empty">暂无活动</div></td></tr>'; }
-  recentAct.forEach(a => {
-    const cls = tagColors[a.status]||'tag-gray';
-    html += `<tr><td>${a.title}</td><td>${a.date||'-'}</td><td><span class="tag ${cls}">${a.status||'-'}</span></td>
-      <td>${(a.participants||'').split('\n').filter(x=>x.trim()).length}</td></tr>`;
+  // 学生名单概览
+  html += `<div class="card"><div class="card-title">👨‍🎓 学生名单概览</div><div class="table-wrap"><table><thead><tr>
+    <th>姓名</th><th>学号</th><th>班级</th><th>家长姓名</th><th>家长电话</th></tr></thead><tbody>`;
+  if(students.length===0){ html += '<tr><td colspan="5"><div class="empty">暂无学生，请先在「学生名单」中导入</div></td></tr>'; }
+  students.slice(0,10).forEach(s => {
+    html += `<tr><td>${s.name||'-'}</td><td>${s.studentNo||'-'}</td><td>${s.className||'-'}</td><td>${s.parentName||'-'}</td><td>${s.parentPhone||'-'}</td></tr>`;
   });
+  if(students.length>10){ html += `<tr><td colspan="5" style="text-align:center;color:#94a3b8">... 共 ${students.length} 名学生，完整名单请查看「学生名单」</td></tr>`; }
   html += '</tbody></table></div></div>';
-
-  // 待办提醒
-  html += `<div class="card"><div class="card-title">⚠️ 待办提醒</div><ul style="font-size:13px;line-height:2">`;
-  if(pendingSafety>0) html += `<li>🛡️ 有 ${pendingSafety} 项安全隐患待整改</li>`;
-  if(activeActivities>0) html += `<li>🎉 有 ${activeActivities} 个活动进行中</li>`;
-  if(pendingSafety===0&&activeActivities===0) html += '<li style="color:#10b981">✅ 暂无待办事项</li>';
-  html += '</ul></div>';
 
   main.innerHTML = html;
 }
