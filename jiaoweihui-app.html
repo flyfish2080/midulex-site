@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>家委会工作台 · 米多乐享科技</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f0f4fa;color:#1e2a5a;min-height:100vh;display:flex}
@@ -271,10 +272,13 @@ function renderMain(){
       <div class="import-box">
         <p style="font-size:12px;color:#64748b">每行一个学生，格式：<b>姓名,学号,班级,家长姓名,家长电话</b>（逗号/空格/Tab分隔均可，仅姓名必填）</p>
         <textarea id="importText" placeholder="张三,001,三年级1班,张父,13800138000&#10;李四,002,三年级1班,李母,13900139000"></textarea>
-        <div style="margin-top:10px;display:flex;gap:10px">
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="importStudents()">导入名单</button>
+          <button class="btn btn-success btn-sm" onclick="document.getElementById('excelFile').click()">📊 导入Excel</button>
+          <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcel(event)">
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importText').value=''">清空</button>
         </div>
+        <p style="font-size:11px;color:#94a3b8;margin-top:8px">Excel支持列名：姓名、学号、班级、家长姓名、家长电话（列名可模糊匹配）</p>
       </div></div>`;
   }
 
@@ -382,6 +386,62 @@ function saveForm(moduleId, editId){
   renderMain();
 }
 
+
+function importExcel(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {type:'array'});
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, {header:1});
+      if(rows.length < 2){ alert('Excel至少需要表头和一行数据'); return; }
+      // 识别列名
+      const headers = rows[0].map(h => String(h||'').trim());
+      const colMap = {};
+      const nameKeywords = ['姓名','学生姓名','名字'];
+      const noKeywords = ['学号','编号','序号'];
+      const classKeywords = ['班级','班','年级'];
+      const pNameKeywords = ['家长姓名','家长','监护人','父亲','母亲'];
+      const pPhoneKeywords = ['家长电话','电话','手机','联系方式','联系电话'];
+      headers.forEach((h, i) => {
+        if(nameKeywords.some(k=>h.includes(k))) colMap.name = i;
+        else if(noKeywords.some(k=>h.includes(k)) && !colMap.studentNo) colMap.studentNo = i;
+        else if(classKeywords.some(k=>h.includes(k))) colMap.className = i;
+        else if(pNameKeywords.some(k=>h.includes(k))) colMap.parentName = i;
+        else if(pPhoneKeywords.some(k=>h.includes(k))) colMap.parentPhone = i;
+      });
+      if(colMap.name === undefined){ alert('未找到"姓名"列，请检查Excel表头'); return; }
+      let data_list = DB.get('students_list', []);
+      let count = 0;
+      for(let i=1;i<rows.length;i++){
+        const row = rows[i];
+        if(!row[colMap.name]) continue;
+        const item = {
+          id: DB.uid(),
+          name: String(row[colMap.name]||'').trim(),
+          studentNo: colMap.studentNo!==undefined ? String(row[colMap.studentNo]||'').trim() : '',
+          className: colMap.className!==undefined ? String(row[colMap.className]||'').trim() : '',
+          parentName: colMap.parentName!==undefined ? String(row[colMap.parentName]||'').trim() : '',
+          parentPhone: colMap.parentPhone!==undefined ? String(row[colMap.parentPhone]||'').trim() : '',
+          note: '',
+          createdAt: DB.now()
+        };
+        if(item.name){ data_list.push(item); count++; }
+      }
+      DB.set('students_list', data_list);
+      alert(`成功从Excel导入 ${count} 名学生！`);
+      event.target.value = '';
+      renderMain();
+    }catch(err){
+      alert('Excel解析失败：' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
 function deleteItem(moduleId, id){
   if(!confirm('确定删除这条记录吗？')) return;
   let data = DB.get(moduleId, []);
@@ -459,7 +519,8 @@ function renderSchedule(main){
 
   let html = `<div class="page-head">
     <div><h2>📅 课表展示</h2><div class="desc">点击单元格编辑课程，自动保存</div></div>
-    <div style="display:flex;gap:8px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" onclick="importSchedule()">📥 导入课表</button>
       <button class="btn btn-ghost btn-sm" onclick="editPeriods()">编辑节次</button>
       <button class="btn btn-danger btn-sm" onclick="clearSchedule()">清空课表</button>
     </div>
@@ -478,6 +539,24 @@ function renderSchedule(main){
   });
   html += '</tbody></table></div>';
   main.innerHTML = html;
+}
+
+function importSchedule(){
+  const sched = DB.get('schedule', null);
+  const text = prompt('粘贴课表数据（每行一节课，用逗号/空格/Tab分隔，依次对应周一~周五）：\n\n示例：\n语文,数学,英语,物理,化学\n数学,语文,物理,化学,英语', '');
+  if(text === null || !text.trim()) return;
+  const lines = text.trim().split('\n').filter(l=>l.trim());
+  let count = 0;
+  lines.forEach((line, pi) => {
+    if(pi >= sched.periods.length) return;
+    const cells = line.split(/[,，\t\s]+/).filter(x=>x.trim());
+    sched.days.forEach((d, di) => {
+      if(cells[di]){ sched.data[d][pi] = cells[di].trim(); count++; }
+    });
+  });
+  DB.set('schedule', sched);
+  alert(`成功导入 ${count} 节课！`);
+  renderSchedule(document.getElementById('main'));
 }
 
 function editScheduleCell(di, pi){
@@ -671,7 +750,7 @@ function renderParentPatrol(main){
   </div>`;
 
   if(parents.length === 0){
-    html += '<div class="card"><div class="empty"><div class="icon">👨‍👩‍👧</div>请先在「学生名单」中导入家长姓名和电话</div></div>';
+    html += '<div class="card"><div class="empty"><div class="icon">👨‍👩‍👧</div>请先在「学生名单」中导入学生信息</div></div>';
   } else {
     html += '<div class="card"><table class="duty-table"><thead><tr><th>日期</th>';
     days.forEach((d,i) => { html += `<th>${d}<br><span style="font-size:11px;color:#94a3b8">${dates[i]}</span></th>`; });
@@ -679,7 +758,7 @@ function renderParentPatrol(main){
     days.forEach(d => {
       html += '<td>';
       (assignments[d]||[]).forEach(s => {
-        html += `<span class="person" title="学生：${s.name} 电话：${s.parentPhone||'-'}">${s.parentName||s.name+'家长'}</span>`;
+        html += `<span class="person" title="家长：${s.parentName||'-'} 电话：${s.parentPhone||'-'}">${s.name}</span>`;
       });
       html += '</td>';
     });
