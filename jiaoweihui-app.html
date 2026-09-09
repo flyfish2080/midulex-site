@@ -169,6 +169,13 @@ const DB = {
   today(){ return new Date().toISOString().slice(0,10) }
 };
 
+// 预设班级数据：浔阳区湖滨小学一年级10班
+const PRESET_DATA = {
+  schedule: {"periods": ["第1节 8:20-9:00", "第2节 9:20-10:00", "第3节 10:20-11:00", "第4节 11:15-11:55", "第5节 14:00-14:40", "第6节 14:55-15:35"], "days": ["周一", "周二", "周三", "周四", "周五"], "data": {"周一": ["班队会（桑庆芳）", "数学（刘水星）", "体育与健康（刘师能）", "美术（石炜）", "语文（桑庆芳）", ""], "周二": ["综合实践（健康心育）（何思盈）", "数学（刘水星）", "科学（陈朵）", "道德与法治（红文）（徐思源）", "语文（桑庆芳）", "体育与健康（刘师能）"], "周三": ["语文（桑庆芳）", "语文（桑庆芳）", "数学（刘水星）", "音乐（钟帆）", "体育与健康（刘师能）", ""], "周四": ["语文（桑庆芳）", "语文（桑庆芳）", "体育与健康（足球）（刘师能）", "劳动教育（程静）", "数学（刘水星）", ""], "周五": ["美术（石炜）", "语文（桑庆芳）", "语文（桑庆芳）", "道德与法治（红文）（徐思源）", "音乐（钟帆）", ""]}},
+  students: [{"id": "student_1", "name": "曹一晨", "studentNo": "1", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_2", "name": "陈熙予", "studentNo": "2", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_3", "name": "陈勇任", "studentNo": "3", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_4", "name": "成子程", "studentNo": "4", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_5", "name": "代大卫", "studentNo": "5", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_6", "name": "董一佳", "studentNo": "6", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_7", "name": "段砚科", "studentNo": "7", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_8", "name": "高沁宏", "studentNo": "8", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_9", "name": "高芷青", "studentNo": "9", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_10", "name": "龚一硕", "studentNo": "10", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_11", "name": "郭宸希", "studentNo": "11", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_12", "name": "何梓桐", "studentNo": "12", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_13", "name": "胡迪砚", "studentNo": "13", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_14", "name": "黄思程", "studentNo": "14", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_15", "name": "冷昊阳", "studentNo": "15", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_16", "name": "李景珏", "studentNo": "16", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_17", "name": "李俊鹏", "studentNo": "17", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_18", "name": "李雨霁", "studentNo": "18", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_19", "name": "李云霄", "studentNo": "19", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_20", "name": "廖琳茜", "studentNo": "20", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_21", "name": "刘星澄", "studentNo": "21", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_22", "name": "梅嘉亦", "studentNo": "22", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_23", "name": "聂峻宇", "studentNo": "23", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_24", "name": "沈卓琳", "studentNo": "24", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_25", "name": "施沐芸", "studentNo": "25", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_26", "name": "石一璇", "studentNo": "26", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_27", "name": "童婳", "studentNo": "27", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_28", "name": "王浩宇", "studentNo": "28", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_29", "name": "王依诺", "studentNo": "29", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_30", "name": "王梓承", "studentNo": "30", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_31", "name": "吴宇瑶", "studentNo": "31", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_32", "name": "吴周闻", "studentNo": "32", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_33", "name": "谢心恒", "studentNo": "33", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_34", "name": "熊倬云", "studentNo": "34", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_35", "name": "徐佳灵", "studentNo": "35", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_36", "name": "杨景泽", "studentNo": "36", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_37", "name": "叶思淳", "studentNo": "37", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_38", "name": "尹文彦", "studentNo": "38", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_39", "name": "余恩沁", "studentNo": "39", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_40", "name": "袁炘妤", "studentNo": "40", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_41", "name": "袁泽华", "studentNo": "41", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_42", "name": "张文昊", "studentNo": "42", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_43", "name": "周澄兮", "studentNo": "43", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_44", "name": "周应博", "studentNo": "44", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "男", "note": "", "createdAt": "2026-09-09 00:00"}, {"id": "student_45", "name": "朱晚柠", "studentNo": "45", "className": "一年级10班", "parentName": "", "parentPhone": "", "gender": "女", "note": "", "createdAt": "2026-09-09 00:00"}]
+};
+
+
 // ============ 模块配置 ============
 const modules = [
   { id:'dashboard', name:'数据看板', icon:'📊', group:'概览' },
@@ -273,8 +280,10 @@ function renderMain(){
         <p style="font-size:12px;color:#64748b">每行一个学生，格式：<b>姓名,学号,班级,家长姓名,家长电话</b>（逗号/空格/Tab分隔均可，仅姓名必填）</p>
         <textarea id="importText" placeholder="张三,001,三年级1班,张父,13800138000&#10;李四,002,三年级1班,李母,13900139000"></textarea>
         <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary btn-sm" onclick="importStudents()">导入名单</button>
-          <button class="btn btn-success btn-sm" onclick="document.getElementById('excelFile').click()">📊 导入Excel</button>
+          <button class="btn btn-primary btn-sm" onclick="loadPresetStudents()">📥 加载班级名单</button>
+          <button class="btn btn-success btn-sm" onclick="exportStudents()">📤 导出名单</button>
+          <button class="btn btn-ghost btn-sm" onclick="importStudents()">粘贴导入</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('excelFile').click()">📊 Excel导入</button>
           <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcel(event)">
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importText').value=''">清空</button>
         </div>
@@ -520,7 +529,9 @@ function renderSchedule(main){
   let html = `<div class="page-head">
     <div><h2>📅 课表展示</h2><div class="desc">点击单元格编辑课程，自动保存</div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-primary btn-sm" onclick="importSchedule()">📥 导入课表</button>
+      <button class="btn btn-primary btn-sm" onclick="loadPresetSchedule()">📥 加载班级课表</button>
+      <button class="btn btn-success btn-sm" onclick="exportSchedule()">📤 导出课表</button>
+      <button class="btn btn-ghost btn-sm" onclick="importSchedule()">粘贴导入</button>
       <button class="btn btn-ghost btn-sm" onclick="editPeriods()">编辑节次</button>
       <button class="btn btn-danger btn-sm" onclick="clearSchedule()">清空课表</button>
     </div>
@@ -539,6 +550,62 @@ function renderSchedule(main){
   });
   html += '</tbody></table></div>';
   main.innerHTML = html;
+}
+
+function loadPresetSchedule(){
+  if(!confirm('确定加载浔阳区湖滨小学一年级10班课表吗？将覆盖当前课表。')) return;
+  DB.set('schedule', JSON.parse(JSON.stringify(PRESET_DATA.schedule)));
+  alert('课表加载成功！');
+  renderSchedule(document.getElementById('main'));
+}
+
+function loadPresetStudents(){
+  if(!confirm('确定加载一年级10班学生名单吗？将追加到当前名单（不覆盖）。')) return;
+  let data = DB.get('students_list', []);
+  const existingNames = data.map(s=>s.name);
+  let count = 0;
+  PRESET_DATA.students.forEach(s => {
+    if(!existingNames.includes(s.name)){
+      data.push({...s, id: DB.uid(), createdAt: DB.now()});
+      count++;
+    }
+  });
+  DB.set('students_list', data);
+  alert(`成功加载 ${count} 名学生！`);
+  renderMain();
+}
+
+function exportSchedule(){
+  const sched = DB.get('schedule', null);
+  if(!sched){ alert('暂无课表数据'); return; }
+  // 构建导出数据
+  const aoa = [];
+  aoa.push(['浔阳区湖滨小学一年级10班课程表']);
+  aoa.push(['节次', ...sched.days]);
+  sched.periods.forEach((p, pi) => {
+    const row = [p];
+    sched.days.forEach(d => { row.push(sched.data[d]?.[pi] || ''); });
+    aoa.push(row);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:18},{wch:20},{wch:20},{wch:20},{wch:20},{wch:20}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, '课程表');
+  XLSX.writeFile(wb, '一年级10班课程表.xlsx');
+}
+
+function exportStudents(){
+  const data = DB.get('students_list', []);
+  if(data.length === 0){ alert('暂无学生数据'); return; }
+  const aoa = [['学号','姓名','性别','班级','家长姓名','家长电话','备注']];
+  data.forEach(s => {
+    aoa.push([s.studentNo||'', s.name||'', s.gender||'', s.className||'', s.parentName||'', s.parentPhone||'', s.note||'']);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:8},{wch:12},{wch:6},{wch:12},{wch:12},{wch:15},{wch:20}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, '学生名单');
+  XLSX.writeFile(wb, '一年级10班学生名单.xlsx');
 }
 
 function importSchedule(){
