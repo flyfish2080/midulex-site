@@ -775,7 +775,6 @@ function editDutyConfig(){
 // ============ 家长护岗 ============
 function renderParentPatrol(main){
   const students = DB.get('students_list', []);
-  const parents = students.filter(s => s.parentName || s.parentPhone);
   const config = DB.get('patrol_config', {dailyCount: 2, locations: '校门口,斑马线,停车场'});
 
   if(typeof patrolWeekOffset === 'undefined') patrolWeekOffset = 0;
@@ -793,13 +792,13 @@ function renderParentPatrol(main){
 
   const days = ['周一','周二','周三','周四','周五'];
   const assignments = {};
-  if(parents.length > 0){
-    const weekStartIdx = (patrolWeekOffset * 5 * config.dailyCount) % parents.length;
+  if(students.length > 0){
+    const weekStartIdx = (patrolWeekOffset * 5 * config.dailyCount) % students.length;
     days.forEach((day, di) => {
       assignments[day] = [];
       for(let i=0;i<config.dailyCount;i++){
-        const idx = (weekStartIdx + di * config.dailyCount + i) % parents.length;
-        assignments[day].push(parents[idx]);
+        const idx = (weekStartIdx + di * config.dailyCount + i) % students.length;
+        assignments[day].push(students[idx]);
       }
     });
   }
@@ -816,7 +815,7 @@ function renderParentPatrol(main){
     <button class="btn btn-ghost btn-sm" onclick="patrolWeekOffset=0;renderMain()">回到本周</button>
   </div>`;
 
-  if(parents.length === 0){
+  if(students.length === 0){
     html += '<div class="card"><div class="empty"><div class="icon">👨‍👩‍👧</div>请先在「学生名单」中导入学生信息</div></div>';
   } else {
     html += '<div class="card"><table class="duty-table"><thead><tr><th>日期</th>';
