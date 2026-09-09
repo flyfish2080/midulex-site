@@ -192,12 +192,6 @@ const modules = [
 
 // 字段配置：每个模块的列表列和表单字段
 const fieldConfig = {
-      {k:'category',l:'分类',type:'select',opts:['紧急通知','日常通知','活动通知','收费通知','其他']},
-      {k:'target',l:'发送对象',type:'text',ph:'如：全体家长 / 三年级 / 家委会'},
-      {k:'content',l:'内容',type:'textarea',req:true},
-      {k:'date',l:'发布时间',type:'datetime'}
-    ]
-  },
   surveys: {
     title:'意见建议', desc:'在线问卷投票，自动汇总结果',
     columns:[{k:'title',l:'标题'},{k:'status',l:'状态',tag:true},{k:'date',l:'创建时间'},{k:'totalVotes',l:'票数'}],
@@ -209,21 +203,6 @@ const fieldConfig = {
       {k:'date',l:'创建时间',type:'datetime'}
     ],
     custom:'survey'
-  },
-      {k:'category',l:'分类',type:'select',opts:['教学','伙食','安全','设施','活动','其他']},
-      {k:'content',l:'详细描述',type:'textarea',req:true},
-      {k:'status',l:'处理状态',type:'select',opts:['待处理','处理中','已解决','已关闭']},
-      {k:'reply',l:'处理回复',type:'textarea'},
-      {k:'date',l:'提交时间',type:'datetime'}
-    ]
-  },
-      {k:'date',l:'时间',type:'datetime'},
-      {k:'location',l:'地点',type:'text'},
-      {k:'agenda',l:'议程',type:'textarea',ph:'1. xxx\n2. xxx'},
-      {k:'attendees',l:'出席人员（每行一个）',type:'textarea'},
-      {k:'minutes',l:'会议纪要',type:'textarea'},
-      {k:'status',l:'状态',type:'select',opts:['待召开','已召开','已取消']}
-    ]
   },
   activities: {
     title:'活动组织', desc:'亲子活动、节日庆典、社会实践',
@@ -248,11 +227,6 @@ const fieldConfig = {
       {k:'skills',l:'特长/技能',type:'text',ph:'如：摄影、驾驶、医护、烹饪'},
       {k:'available',l:'可用时间',type:'text',ph:'如：周末、工作日下午'},
       {k:'note',l:'备注',type:'textarea'}
-    ]
-  },
-      {k:'amount',l:'预算金额（元）',type:'number',req:true},
-      {k:'spent',l:'已使用（元）',type:'number'},
-      {k:'note',l:'说明',type:'text'}
     ]
   },
   safety: {
