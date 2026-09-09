@@ -171,10 +171,7 @@ const DB = {
 // ============ 模块配置 ============
 const modules = [
   { id:'dashboard', name:'数据看板', icon:'📊', group:'概览' },
-  { id:'notices', name:'通知公告', icon:'📢', group:'家校沟通' },
-  { id:'surveys', name:'意见征集', icon:'📋', group:'家校沟通' },
-  { id:'feedback', name:'问题反馈', icon:'💬', group:'家校沟通' },
-  { id:'meetings', name:'家长会', icon:'👨‍👩‍👧', group:'家校沟通' },
+  { id:'surveys', name:'意见建议', icon:'📋', group:'家校沟通' },
   { id:'activities', name:'活动组织', icon:'🎉', group:'活动管理' },
   { id:'volunteers', name:'志愿者库', icon:'🙋', group:'活动管理' },
   { id:'safety', name:'安全巡查', icon:'🛡️', group:'安全监督' },
@@ -195,11 +192,6 @@ const modules = [
 
 // 字段配置：每个模块的列表列和表单字段
 const fieldConfig = {
-  notices: {
-    title:'通知公告', desc:'发布家校通知，记录已读情况',
-    columns:[{k:'title',l:'标题'},{k:'category',l:'分类',tag:true},{k:'target',l:'对象'},{k:'date',l:'发布时间'},{k:'readCount',l:'已读'}],
-    fields:[
-      {k:'title',l:'标题',type:'text',req:true},
       {k:'category',l:'分类',type:'select',opts:['紧急通知','日常通知','活动通知','收费通知','其他']},
       {k:'target',l:'发送对象',type:'text',ph:'如：全体家长 / 三年级 / 家委会'},
       {k:'content',l:'内容',type:'textarea',req:true},
@@ -207,7 +199,7 @@ const fieldConfig = {
     ]
   },
   surveys: {
-    title:'意见征集', desc:'在线问卷投票，自动汇总结果',
+    title:'意见建议', desc:'在线问卷投票，自动汇总结果',
     columns:[{k:'title',l:'标题'},{k:'status',l:'状态',tag:true},{k:'date',l:'创建时间'},{k:'totalVotes',l:'票数'}],
     fields:[
       {k:'title',l:'标题',type:'text',req:true},
@@ -218,11 +210,6 @@ const fieldConfig = {
     ],
     custom:'survey'
   },
-  feedback: {
-    title:'问题反馈', desc:'家长意见收集与处理跟踪',
-    columns:[{k:'title',l:'问题'},{k:'category',l:'分类',tag:true},{k:'status',l:'状态',tag:true},{k:'date',l:'提交时间'}],
-    fields:[
-      {k:'title',l:'问题标题',type:'text',req:true},
       {k:'category',l:'分类',type:'select',opts:['教学','伙食','安全','设施','活动','其他']},
       {k:'content',l:'详细描述',type:'textarea',req:true},
       {k:'status',l:'处理状态',type:'select',opts:['待处理','处理中','已解决','已关闭']},
@@ -230,11 +217,6 @@ const fieldConfig = {
       {k:'date',l:'提交时间',type:'datetime'}
     ]
   },
-  meetings: {
-    title:'家长会', desc:'会议安排、签到与纪要',
-    columns:[{k:'title',l:'会议主题'},{k:'date',l:'时间'},{k:'location',l:'地点'},{k:'attendCount',l:'出席人数'},{k:'status',l:'状态',tag:true}],
-    fields:[
-      {k:'title',l:'会议主题',type:'text',req:true},
       {k:'date',l:'时间',type:'datetime'},
       {k:'location',l:'地点',type:'text'},
       {k:'agenda',l:'议程',type:'textarea',ph:'1. xxx\n2. xxx'},
@@ -451,9 +433,6 @@ function renderMain(){
     if(currentModule==='surveys'){
       d.totalVotes = (d.votes||[]).reduce((a,b)=>a+b,0);
     }
-    if(currentModule==='meetings'){
-      d.attendCount = (d.attendees||'').split('\n').filter(x=>x.trim()).length;
-    }
     if(currentModule==='activities'){
       d.signCount = (d.participants||'').split('\n').filter(x=>x.trim()).length;
     }
@@ -664,7 +643,6 @@ function renderDashboard(main){
   const counts = {};
   modules.forEach(m => { if(m.id!=='dashboard'&&m.id!=='settings') counts[m.id] = DB.get(m.id,[]).length; });
 
-  const pendingFeedback = DB.get('feedback',[]).filter(d=>d.status==='待处理'||d.status==='处理中').length;
   const pendingSafety = DB.get('safety',[]).filter(d=>d.status!=='已完成').length;
   const activeActivities = DB.get('activities',[]).filter(d=>d.status==='筹备中'||d.status==='报名中').length;
 
@@ -673,10 +651,8 @@ function renderDashboard(main){
     <button class="btn btn-ghost btn-sm" onclick="importAll()">导入数据</button></div>`;
 
   html += `<div class="stats-grid">
-    <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-value">${counts.notices}</div><div class="stat-label">通知公告</div></div>
     <div class="stat-card"><div class="stat-icon">🎉</div><div class="stat-value">${counts.activities}</div><div class="stat-label">活动总数</div></div>
     <div class="stat-card"><div class="stat-icon">🙋</div><div class="stat-value">${counts.volunteers}</div><div class="stat-label">志愿者</div></div>
-    <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">${pendingFeedback}</div><div class="stat-label">待处理反馈</div></div>
     <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">${pendingSafety}</div><div class="stat-label">待整改安全</div></div>
     <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value">${counts.students}</div><div class="stat-label">帮扶对象</div></div>
     <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-value">${counts.courses}</div><div class="stat-label">课后课程</div></div>
@@ -698,12 +674,9 @@ function renderDashboard(main){
 
   // 待办提醒
   html += `<div class="card"><div class="card-title">⚠️ 待办提醒</div><ul style="font-size:13px;line-height:2">`;
-  if(pendingFeedback>0) html += `<li>💬 有 ${pendingFeedback} 条问题反馈待处理</li>`;
   if(pendingSafety>0) html += `<li>🛡️ 有 ${pendingSafety} 项安全隐患待整改</li>`;
   if(activeActivities>0) html += `<li>🎉 有 ${activeActivities} 个活动进行中</li>`;
-  const upcomingMeetings = DB.get('meetings',[]).filter(d=>d.status==='待召开').length;
-  if(upcomingMeetings>0) html += `<li>👨‍👩‍👧 有 ${upcomingMeetings} 场家长会待召开</li>`;
-  if(pendingFeedback===0&&pendingSafety===0&&activeActivities===0&&upcomingMeetings===0) html += '<li style="color:#10b981">✅ 暂无待办事项</li>';
+  if(pendingSafety===0&&activeActivities===0) html += '<li style="color:#10b981">✅ 暂无待办事项</li>';
   html += '</ul></div>';
 
   main.innerHTML = html;
