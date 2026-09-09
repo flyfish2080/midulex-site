@@ -285,6 +285,60 @@
     .section-head h2 { font-size: 26px; }
     .footer-inner { flex-direction: column; align-items: flex-start; }
   }
+
+  /* ===== 浮动咨询按钮 ===== */
+  .consult-fab {
+    position: fixed; right: 24px; bottom: 24px; z-index: 9999;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: #0B1220; border: none; cursor: pointer;
+    box-shadow: 0 8px 28px rgba(77, 214, 195, .35);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; transition: transform .25s, box-shadow .25s;
+  }
+  .consult-fab:hover { transform: scale(1.08); box-shadow: 0 12px 36px rgba(77, 214, 195, .5); }
+  .consult-fab .fab-label {
+    position: absolute; right: 68px; top: 50%; transform: translateY(-50%);
+    background: var(--card); color: var(--text); padding: 6px 14px;
+    border-radius: 8px; font-size: 13px; white-space: nowrap;
+    border: 1px solid var(--line); opacity: 0; pointer-events: none;
+    transition: opacity .25s;
+  }
+  .consult-fab:hover .fab-label { opacity: 1; }
+
+  .consult-overlay {
+    position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,.5);
+    opacity: 0; pointer-events: none; transition: opacity .3s;
+  }
+  .consult-overlay.active { opacity: 1; pointer-events: auto; }
+
+  .consult-panel {
+    position: fixed; right: 24px; bottom: 92px; z-index: 9999;
+    width: 320px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    transform: translateY(16px) scale(.96); opacity: 0; pointer-events: none;
+    transition: transform .3s cubic-bezier(.2,.9,.3,1.2), opacity .3s;
+  }
+  .consult-panel.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+  .consult-panel h3 { font-size: 17px; color: var(--text); margin-bottom: 4px; }
+  .consult-panel .sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .consult-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .consult-item:last-of-type { border-bottom: none; }
+  .consult-item .icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; }
+  .consult-item .info { flex: 1; }
+  .consult-item .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .consult-item .value { font-size: 14px; color: var(--text); margin-top: 2px; word-break: break-all; }
+  .consult-item .value a { color: var(--accent); text-decoration: none; }
+  .consult-item .value a:hover { text-decoration: underline; }
+  .consult-close {
+    position: absolute; top: 12px; right: 12px; background: none; border: none;
+    color: var(--muted); font-size: 20px; cursor: pointer; width: 28px; height: 28px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  }
+  .consult-close:hover { background: var(--bg-soft); color: var(--text); }
+  .consult-hours { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); text-align: center; }
+  @media(max-width:560px){ .consult-panel { right: 12px; left: 12px; width: auto; } }
+
 </style>
 </head>
 <body>
@@ -588,6 +642,58 @@
     items.forEach(function (el) { el.classList.add('in'); });
   }
 })();
+
+  // 浮动咨询按钮
+  (function(){
+    var fab = document.getElementById('consultFab');
+    var panel = document.getElementById('consultPanel');
+    var overlay = document.getElementById('consultOverlay');
+    var closeBtn = document.getElementById('consultClose');
+    function toggle(show){
+      panel.classList.toggle('active', show);
+      overlay.classList.toggle('active', show);
+    }
+    fab.addEventListener('click', function(){ toggle(!panel.classList.contains('active')); });
+    closeBtn.addEventListener('click', function(){ toggle(false); });
+    overlay.addEventListener('click', function(){ toggle(false); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') toggle(false); });
+  })();
+
 </script>
+
+<!-- 浮动咨询按钮 -->
+<button class="consult-fab" id="consultFab" aria-label="在线咨询">
+  <span class="fab-label">在线咨询</span>
+  💬
+</button>
+<div class="consult-overlay" id="consultOverlay"></div>
+<div class="consult-panel" id="consultPanel">
+  <button class="consult-close" id="consultClose" aria-label="关闭">×</button>
+  <h3>在线咨询</h3>
+  <p class="sub">武汉米多乐享科技有限公司 · 系统开发服务</p>
+  <div class="consult-item">
+    <div class="icon">📧</div>
+    <div class="info">
+      <div class="label">邮箱</div>
+      <div class="value"><a href="mailto:178941631@qq.com">178941631@qq.com</a></div>
+    </div>
+  </div>
+  <div class="consult-item">
+    <div class="icon">📱</div>
+    <div class="info">
+      <div class="label">电话 / 微信</div>
+      <div class="value">添加微信咨询（同手机号）</div>
+    </div>
+  </div>
+  <div class="consult-item">
+    <div class="icon">📍</div>
+    <div class="info">
+      <div class="label">地址</div>
+      <div class="value">武汉东湖新技术开发区光谷软件园F区3层305室A-168</div>
+    </div>
+  </div>
+  <div class="consult-hours">工作时间：周一至周五 9:00 - 18:00</div>
+</div>
+
 </body>
 </html>
