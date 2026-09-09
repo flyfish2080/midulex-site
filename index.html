@@ -644,11 +644,12 @@
 })();
 
   // 浮动咨询按钮
-  (function(){
+  document.addEventListener('DOMContentLoaded', function(){
     var fab = document.getElementById('consultFab');
     var panel = document.getElementById('consultPanel');
     var overlay = document.getElementById('consultOverlay');
     var closeBtn = document.getElementById('consultClose');
+    if(!fab) return;
     function toggle(show){
       panel.classList.toggle('active', show);
       overlay.classList.toggle('active', show);
@@ -657,7 +658,7 @@
     closeBtn.addEventListener('click', function(){ toggle(false); });
     overlay.addEventListener('click', function(){ toggle(false); });
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape') toggle(false); });
-  })();
+  });
 
 </script>
 
