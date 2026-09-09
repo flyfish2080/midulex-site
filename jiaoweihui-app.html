@@ -177,8 +177,6 @@ const modules = [
   { id:'meetings', name:'家长会', icon:'👨‍👩‍👧', group:'家校沟通' },
   { id:'activities', name:'活动组织', icon:'🎉', group:'活动管理' },
   { id:'volunteers', name:'志愿者库', icon:'🙋', group:'活动管理' },
-  { id:'finances', name:'经费收支', icon:'💰', group:'经费管理' },
-  { id:'budget', name:'预算管理', icon:'📊', group:'经费管理' },
   { id:'safety', name:'安全巡查', icon:'🛡️', group:'安全监督' },
   { id:'patrol', name:'护学岗', icon:'🚸', group:'安全监督' },
   { id:'emergency', name:'应急联络', icon:'🚨', group:'安全监督' },
@@ -270,23 +268,6 @@ const fieldConfig = {
       {k:'note',l:'备注',type:'textarea'}
     ]
   },
-  finances: {
-    title:'经费收支', desc:'班费/家委会经费透明管理',
-    columns:[{k:'date',l:'日期'},{k:'type',l:'类型',tag:true},{k:'category',l:'分类'},{k:'amount',l:'金额',money:true},{k:'description',l:'说明'}],
-    fields:[
-      {k:'type',l:'类型',type:'select',opts:['收入','支出'],req:true},
-      {k:'amount',l:'金额（元）',type:'number',req:true},
-      {k:'category',l:'分类',type:'select',opts:['班费收入','活动收入','捐赠收入','活动支出','物资支出','餐饮支出','其他收入','其他支出']},
-      {k:'description',l:'说明',type:'text',req:true},
-      {k:'date',l:'日期',type:'date'}
-    ],
-    custom:'finance'
-  },
-  budget: {
-    title:'预算管理', desc:'学期预算编制与执行跟踪',
-    columns:[{k:'category',l:'预算项目'},{k:'amount',l:'预算金额',money:true},{k:'spent',l:'已使用',money:true},{k:'remain',l:'剩余',money:true},{k:'rate',l:'执行率'}],
-    fields:[
-      {k:'category',l:'预算项目',type:'text',req:true},
       {k:'amount',l:'预算金额（元）',type:'number',req:true},
       {k:'spent',l:'已使用（元）',type:'number'},
       {k:'note',l:'说明',type:'text'}
@@ -482,11 +463,6 @@ function renderMain(){
     if(currentModule==='courses'){
       d.stuCount = (d.students||'').split('\n').filter(x=>x.trim()).length;
     }
-    if(currentModule==='budget'){
-      d.spent = d.spent||0;
-      d.remain = (d.amount||0) - d.spent;
-      d.rate = d.amount>0 ? Math.round(d.spent/d.amount*100)+'%' : '0%';
-    }
     return d;
   });
 
@@ -494,17 +470,6 @@ function renderMain(){
     <div><h2>${cfg.title}</h2><div class="desc">${cfg.desc||''}</div></div>
     <button class="btn btn-primary" onclick="openForm('${currentModule}')">+ 新增</button>
   </div>`;
-
-  // 财务模块特殊：显示汇总
-  if(cfg.custom === 'finance'){
-    const income = data.filter(d=>d.type==='收入').reduce((a,d)=>a+(+d.amount||0),0);
-    const expense = data.filter(d=>d.type==='支出').reduce((a,d)=>a+(+d.amount||0),0);
-    html += `<div class="finance-summary">
-      <div class="finance-box income"><div class="num">¥${income.toFixed(2)}</div><div class="lbl">总收入</div></div>
-      <div class="finance-box expense"><div class="num">¥${expense.toFixed(2)}</div><div class="lbl">总支出</div></div>
-      <div class="finance-box balance"><div class="num">¥${(income-expense).toFixed(2)}</div><div class="lbl">结余</div></div>
-    </div>`;
-  }
 
   // 搜索
   html += `<div class="toolbar"><input type="text" id="searchInput" placeholder="搜索..." oninput="renderTable()" style="flex:1;min-width:200px">
@@ -699,10 +664,6 @@ function renderDashboard(main){
   const counts = {};
   modules.forEach(m => { if(m.id!=='dashboard'&&m.id!=='settings') counts[m.id] = DB.get(m.id,[]).length; });
 
-  const finances = DB.get('finances', []);
-  const income = finances.filter(d=>d.type==='收入').reduce((a,d)=>a+(+d.amount||0),0);
-  const expense = finances.filter(d=>d.type==='支出').reduce((a,d)=>a+(+d.amount||0),0);
-
   const pendingFeedback = DB.get('feedback',[]).filter(d=>d.status==='待处理'||d.status==='处理中').length;
   const pendingSafety = DB.get('safety',[]).filter(d=>d.status!=='已完成').length;
   const activeActivities = DB.get('activities',[]).filter(d=>d.status==='筹备中'||d.status==='报名中').length;
@@ -715,7 +676,6 @@ function renderDashboard(main){
     <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-value">${counts.notices}</div><div class="stat-label">通知公告</div></div>
     <div class="stat-card"><div class="stat-icon">🎉</div><div class="stat-value">${counts.activities}</div><div class="stat-label">活动总数</div></div>
     <div class="stat-card"><div class="stat-icon">🙋</div><div class="stat-value">${counts.volunteers}</div><div class="stat-label">志愿者</div></div>
-    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value">¥${(income-expense).toFixed(0)}</div><div class="stat-label">经费结余</div></div>
     <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">${pendingFeedback}</div><div class="stat-label">待处理反馈</div></div>
     <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">${pendingSafety}</div><div class="stat-label">待整改安全</div></div>
     <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value">${counts.students}</div><div class="stat-label">帮扶对象</div></div>
@@ -723,14 +683,6 @@ function renderDashboard(main){
     <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-value">${DB.get('students_list',[]).length}</div><div class="stat-label">学生名单</div></div>
     <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value">${DB.get('schedule',null)?'已设':'未设'}</div><div class="stat-label">班级课表</div></div>
   </div>`;
-
-  // 经费收支概览
-  html += `<div class="card"><div class="card-title">💰 经费概览</div>
-    <div class="finance-summary">
-      <div class="finance-box income"><div class="num">¥${income.toFixed(2)}</div><div class="lbl">总收入</div></div>
-      <div class="finance-box expense"><div class="num">¥${expense.toFixed(2)}</div><div class="lbl">总支出</div></div>
-      <div class="finance-box balance"><div class="num">¥${(income-expense).toFixed(2)}</div><div class="lbl">结余</div></div>
-    </div></div>`;
 
   // 最近活动
   const recentAct = DB.get('activities',[]).slice(0,5);
