@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家委会工作台 · 米多乐享科技</title>
+<meta name="description" content="家委会工作台：家校沟通、活动组织、经费管理、安全监督、助学帮扶、课程辅助，一站式家委会数字化管理工具。">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    background:linear-gradient(160deg,#f0f4fa 0%,#e6edf7 100%);
+    color:#1e2a5a; min-height:100vh;
+  }
+  .page { max-width:960px; margin:0 auto; padding:32px 20px 48px; }
+
+  /* 顶部 */
+  .header { text-align:center; padding:18px 0 12px; }
+  .logo {
+    display:inline-block; width:72px; height:72px; line-height:72px; font-size:34px;
+    background:linear-gradient(135deg,#2563eb,#1e40af); color:#fff; border-radius:18px;
+    box-shadow:0 8px 24px rgba(37,99,235,.25);
+  }
+  .header h1 { margin-top:16px; font-size:26px; letter-spacing:1px; }
+  .header .sub { margin-top:6px; color:#5b6b8c; font-size:14px; }
+  .back-link { display:inline-block; margin-top:14px; font-size:13px; color:#2563eb; text-decoration:none; }
+  .back-link:hover { text-decoration:underline; }
+
+  /* 简介条 */
+  .intro-bar {
+    background:#fff; border-radius:14px; padding:20px 24px; margin-top:22px;
+    box-shadow:0 4px 18px rgba(30,42,90,.08);
+    font-size:14px; color:#475569; line-height:1.8; text-align:center;
+  }
+  .intro-bar b { color:#1e40af; }
+
+  /* 功能卡片 */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; margin-top:22px; }
+  .card {
+    background:#fff; border-radius:14px; padding:22px;
+    box-shadow:0 4px 18px rgba(30,42,90,.08);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(30,42,90,.12); }
+  .card .icon { font-size:28px; }
+  .card h2 { font-size:17px; color:#1e2a5a; margin-top:10px; }
+  .card .desc { margin-top:8px; font-size:13px; color:#5b6b8c; line-height:1.7; }
+  .card ul { margin-top:10px; list-style:none; }
+  .card li {
+    position:relative; padding:4px 0 4px 20px; font-size:13px; color:#33415c; line-height:1.6;
+  }
+  .card li::before { content:"✔"; position:absolute; left:0; top:4px; color:#2563eb; font-size:11px; }
+
+  /* 工作流程 */
+  .section-title {
+    margin-top:36px; font-size:19px; color:#1e2a5a; text-align:center;
+    padding-bottom:10px; border-bottom:2px solid #e2e8f0;
+  }
+  .flow { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:22px; }
+  .flow-step {
+    background:#fff; border-radius:12px; padding:16px 20px; text-align:center;
+    box-shadow:0 4px 14px rgba(30,42,90,.08); min-width:140px; position:relative;
+  }
+  .flow-step .num {
+    display:inline-block; width:28px; height:28px; line-height:28px; border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#1e40af); color:#fff; font-size:13px; font-weight:600;
+  }
+  .flow-step .label { margin-top:8px; font-size:13px; color:#1e2a5a; font-weight:500; }
+  .flow-arrow { align-self:center; color:#94a3b8; font-size:18px; }
+
+  /* 特色 */
+  .features { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin-top:22px; }
+  .feature {
+    background:linear-gradient(135deg,#eff6ff,#dbeafe); border-radius:12px; padding:16px;
+    text-align:center;
+  }
+  .feature .f-icon { font-size:24px; }
+  .feature .f-text { margin-top:6px; font-size:13px; color:#1e40af; font-weight:500; }
+
+  /* 底部 */
+  .footer { text-align:center; margin-top:36px; font-size:13px; color:#5b6b8c; }
+  .footer a { color:#2563eb; text-decoration:none; }
+  .footer a:hover { text-decoration:underline; }
+
+  @media(max-width:560px){
+    .page { padding:20px 14px 36px; }
+    .grid { grid-template-columns:1fr; }
+    .flow-step { min-width:100px; padding:12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="logo">🏫</div>
+    <h1>家委会工作台</h1>
+    <div class="sub">家校沟通 · 活动组织 · 经费管理 · 安全监督 · 助学帮扶</div>
+    <a class="back-link" href="https://www.dmmmw.site/">← 返回首页</a>
+  </div>
+
+  <div class="intro-bar">
+    面向中小学<b>家长委员会</b>的数字化管理工具，覆盖家委会日常工作的核心场景，
+    帮助家委会成员高效协作、透明公开、规范管理，构建<b>家校共育</b>的良好生态。
+  </div>
+
+  <!-- 核心功能模块 -->
+  <div class="grid">
+
+    <div class="card">
+      <div class="icon">💬</div>
+      <h2>家校沟通</h2>
+      <div class="desc">搭建家长与学校之间的沟通桥梁，信息上传下达，及时响应。</div>
+      <ul>
+        <li>通知公告：一键群发家长群，已读未读统计</li>
+        <li>意见征集：在线问卷、投票，自动汇总结果</li>
+        <li>问题反馈：家长提交问题，跟踪处理进度</li>
+        <li>家长会管理：线上签到、议程、纪要归档</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎉</div>
+      <h2>活动组织</h2>
+      <div class="desc">策划组织亲子活动、节日庆典、社会实践，流程化管理。</div>
+      <ul>
+        <li>活动策划：方案模板、分工安排、时间节点</li>
+        <li>报名管理：在线报名、人数统计、名单导出</li>
+        <li>任务分工：志愿者招募、岗位分配、签到打卡</li>
+        <li>活动回顾：照片墙、总结报告、经验沉淀</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">💰</div>
+      <h2>经费管理</h2>
+      <div class="desc">班费/家委会经费收支透明化，每一笔都可追溯、可公示。</div>
+      <ul>
+        <li>收支记录：收入支出分类登记，凭证上传</li>
+        <li>预算管理：学期预算编制，执行进度跟踪</li>
+        <li>自动公示：定期生成财务报表，家长可查</li>
+        <li>审计留痕：操作日志完整，数据不可篡改</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">🛡️</div>
+      <h2>安全监督</h2>
+      <div class="desc">关注校园安全、食品安全、上下学安全，守护学生健康成长。</div>
+      <ul>
+        <li>校园巡查：安全隐患上报，整改跟踪</li>
+        <li>食品安全：食堂监督、菜谱公示、意见反馈</li>
+        <li>护学岗：上下学执勤排班，签到记录</li>
+        <li>应急联络：紧急联系人、应急预案一键调用</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">🤝</div>
+      <h2>助学帮扶</h2>
+      <div class="desc">组织家长志愿者，开展学习帮扶和困难学生关爱。</div>
+      <ul>
+        <li>志愿者库：家长特长登记，按需匹配</li>
+        <li>学习帮扶：课后辅导、兴趣小组组织</li>
+        <li>困难关爱：帮扶档案、物资捐赠、心理关怀</li>
+        <li>家长课堂：邀请专家/家长分享教育经验</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h2>课程辅助</h2>
+      <div class="desc">协助学校开展课后服务、兴趣课程和实践教学。</div>
+      <ul>
+        <li>课后服务：兴趣班报名、考勤、评价</li>
+        <li>实践活动：研学旅行、职业体验组织</li>
+        <li>资源整合：家长资源进课堂，校企合作</li>
+        <li>作业反馈：收集作业问题，协调任课教师</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">📋</div>
+      <h2>档案管理</h2>
+      <div class="desc">家委会工作资料系统化归档，换届交接不丢失。</div>
+      <ul>
+        <li>会议纪要：每次家委会会议自动归档</li>
+        <li>制度文件：章程、职责、工作规范集中管理</li>
+        <li>换届交接：工作清单、待办事项一键移交</li>
+        <li>年度总结：自动生成年度工作报告</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon">📊</div>
+      <h2>数据看板</h2>
+      <div class="desc">家委会工作数据可视化，成果一目了然。</div>
+      <ul>
+        <li>活动统计：年度活动次数、参与人次</li>
+        <li>财务概览：收支趋势、预算执行率</li>
+        <li>满意度调查：家长满意度评分与建议</li>
+        <li>工作排名：各委员工作贡献量化展示</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- 工作流程 -->
+  <div class="section-title">家委会工作流程</div>
+  <div class="flow">
+    <div class="flow-step"><div class="num">1</div><div class="label">征集议题</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="num">2</div><div class="label">制定方案</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="num">3</div><div class="label">分工执行</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="num">4</div><div class="label">过程记录</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="num">5</div><div class="label">总结公示</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="num">6</div><div class="label">归档沉淀</div></div>
+  </div>
+
+  <!-- 平台特色 -->
+  <div class="section-title">平台特色</div>
+  <div class="features">
+    <div class="feature"><div class="f-icon">🔒</div><div class="f-text">数据本地存储</div></div>
+    <div class="feature"><div class="f-icon">👥</div><div class="f-text">多角色权限</div></div>
+    <div class="feature"><div class="f-icon">📱</div><div class="f-text">手机端可用</div></div>
+    <div class="feature"><div class="f-icon">📢</div><div class="f-text">财务全公示</div></div>
+    <div class="feature"><div class="f-icon">🔄</div><div class="f-text">换届零丢失</div></div>
+    <div class="feature"><div class="f-icon">⚡</div><div class="f-text">一键群发</div></div>
+  </div>
+
+  <div class="footer">
+    <div>家委会工作台 · 让家校共育更高效、更透明</div>
+    <div style="margin-top:8px;"><a href="https://www.dmmmw.site/">返回首页</a> · 如有合作意向，请联系发布单位。邮箱:178941631@qq.com</div>
+  </div>
+
+</div>
+</body>
+</html>
