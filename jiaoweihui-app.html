@@ -105,6 +105,30 @@ tr:hover td{background:#f8fafc}
 }
 /* 打印 */
 @media print{.sidebar,.btn,.toolbar{display:none}.main{margin-left:0}}
+
+/* 课表 */
+.schedule-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.schedule-table th{background:#1e3a5f;color:#fff;padding:10px 8px;text-align:center;border:1px solid #1e3a5f}
+.schedule-table td{border:1px solid #e2e8f0;padding:10px 8px;text-align:center;vertical-align:middle;min-width:100px}
+.schedule-table td:first-child{background:#f1f5f9;font-weight:600;color:#475569;width:80px}
+.schedule-table td.cell{cursor:pointer;transition:background .2s}
+.schedule-table td.cell:hover{background:#dbeafe}
+.schedule-table td.cell.has-content{background:#f0f9ff;font-weight:500;color:#1e40af}
+.week-nav{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.week-nav button{padding:6px 14px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer;font-size:13px}
+.week-nav button:hover{background:#f1f5f9}
+.week-nav .week-label{font-size:15px;font-weight:600;color:#1e2a5a}
+/* 值日/护岗表 */
+.duty-table{width:100%;border-collapse:collapse;font-size:13px}
+.duty-table th{background:#f1f5f9;padding:10px;text-align:center;border:1px solid #e2e8f0;font-weight:600}
+.duty-table td{border:1px solid #e2e8f0;padding:10px;text-align:center;vertical-align:top;min-width:120px}
+.duty-table td:first-child{background:#f8fafc;font-weight:600;width:80px}
+.duty-table .person{display:inline-block;background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:6px;margin:2px;font-size:12px;cursor:pointer}
+.duty-table .person:hover{background:#bfdbfe}
+.duty-table .empty-slot{color:#cbd5e1;font-size:12px}
+.import-box{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:14px}
+.import-box textarea{width:100%;min-height:80px;border:1px solid #e2e8f0;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;margin-top:8px}
+
 </style>
 </head>
 <body>
@@ -162,6 +186,10 @@ const modules = [
   { id:'parentclass', name:'家长课堂', icon:'🎓', group:'助学帮扶' },
   { id:'courses', name:'课后服务', icon:'📚', group:'课程辅助' },
   { id:'resources', name:'资源整合', icon:'📦', group:'课程辅助' },
+  { id:'schedule', name:'课表展示', icon:'📅', group:'课程辅助' },
+  { id:'students_list', name:'学生名单', icon:'👨‍🎓', group:'人员管理' },
+  { id:'duty', name:'学生值日', icon:'🧹', group:'人员管理' },
+  { id:'parent_patrol', name:'家长护岗', icon:'🚸', group:'人员管理' },
   { id:'documents', name:'档案管理', icon:'📁', group:'档案管理' },
   { id:'members', name:'委员管理', icon:'👥', group:'档案管理' },
   { id:'settings', name:'系统设置', icon:'⚙️', group:'系统' }
@@ -345,6 +373,19 @@ const fieldConfig = {
       {k:'contact',l:'联系方式',type:'text'}
     ]
   },
+  students_list: {
+    title:'学生名单', desc:'学生信息管理，支持批量导入，用于值日和护岗排班',
+    columns:[{k:'name',l:'姓名'},{k:'studentNo',l:'学号'},{k:'className',l:'班级'},{k:'parentName',l:'家长姓名'},{k:'parentPhone',l:'家长电话'}],
+    fields:[
+      {k:'name',l:'学生姓名',type:'text',req:true},
+      {k:'studentNo',l:'学号',type:'text'},
+      {k:'className',l:'班级',type:'text'},
+      {k:'parentName',l:'家长姓名',type:'text'},
+      {k:'parentPhone',l:'家长电话',type:'text'},
+      {k:'note',l:'备注',type:'text'}
+    ],
+    custom:'students'
+  },
   documents: {
     title:'档案管理', desc:'会议纪要、制度文件、工作记录',
     columns:[{k:'title',l:'标题'},{k:'type',l:'类型',tag:true},{k:'date',l:'日期'},{k:'tags',l:'标签'}],
@@ -417,6 +458,9 @@ function renderMain(){
   const main = document.getElementById('main');
   if(currentModule === 'dashboard'){ renderDashboard(main); return; }
   if(currentModule === 'settings'){ renderSettings(main); return; }
+  if(currentModule === 'schedule'){ renderSchedule(main); return; }
+  if(currentModule === 'duty'){ renderDuty(main); return; }
+  if(currentModule === 'parent_patrol'){ renderParentPatrol(main); return; }
   const cfg = fieldConfig[currentModule];
   if(!cfg){ main.innerHTML = '<div class="empty"><div class="icon">🚧</div>模块开发中</div>'; return; }
 
@@ -466,6 +510,19 @@ function renderMain(){
   html += `<div class="toolbar"><input type="text" id="searchInput" placeholder="搜索..." oninput="renderTable()" style="flex:1;min-width:200px">
     <button class="btn btn-ghost btn-sm" onclick="exportData('${currentModule}')">导出</button>
     <button class="btn btn-ghost btn-sm" onclick="printPage()">打印</button></div>`;
+
+  // 学生名单导入区
+  if(currentModule === 'students_list'){
+    html += `<div class="card"><div class="card-title">📥 批量导入学生名单</div>
+      <div class="import-box">
+        <p style="font-size:12px;color:#64748b">每行一个学生，格式：<b>姓名,学号,班级,家长姓名,家长电话</b>（逗号/空格/Tab分隔均可，仅姓名必填）</p>
+        <textarea id="importText" placeholder="张三,001,三年级1班,张父,13800138000&#10;李四,002,三年级1班,李母,13900139000"></textarea>
+        <div style="margin-top:10px;display:flex;gap:10px">
+          <button class="btn btn-primary btn-sm" onclick="importStudents()">导入名单</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importText').value=''">清空</button>
+        </div>
+      </div></div>`;
+  }
 
   html += `<div class="card"><div class="table-wrap"><table id="dataTable"><thead><tr>`;
   cfg.columns.forEach(c => { html += `<th>${c.l}</th>`; });
@@ -663,6 +720,8 @@ function renderDashboard(main){
     <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">${pendingSafety}</div><div class="stat-label">待整改安全</div></div>
     <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value">${counts.students}</div><div class="stat-label">帮扶对象</div></div>
     <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-value">${counts.courses}</div><div class="stat-label">课后课程</div></div>
+    <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-value">${DB.get('students_list',[]).length}</div><div class="stat-label">学生名单</div></div>
+    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value">${DB.get('schedule',null)?'已设':'未设'}</div><div class="stat-label">班级课表</div></div>
   </div>`;
 
   // 经费收支概览
@@ -696,6 +755,267 @@ function renderDashboard(main){
   html += '</ul></div>';
 
   main.innerHTML = html;
+}
+
+// ============ 课表展示 ============
+function renderSchedule(main){
+  let sched = DB.get('schedule', null);
+  if(!sched){
+    sched = {
+      periods: ['第1节 8:00-8:40','第2节 8:50-9:30','第3节 10:00-10:40','第4节 10:50-11:30','第5节 14:00-14:40','第6节 14:50-15:30'],
+      days: ['周一','周二','周三','周四','周五'],
+      data: {}
+    };
+    sched.days.forEach(d => { sched.data[d] = sched.periods.map(()=>''); });
+    DB.set('schedule', sched);
+  }
+
+  let html = `<div class="page-head">
+    <div><h2>📅 课表展示</h2><div class="desc">点击单元格编辑课程，自动保存</div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="editPeriods()">编辑节次</button>
+      <button class="btn btn-danger btn-sm" onclick="clearSchedule()">清空课表</button>
+    </div>
+  </div>`;
+
+  html += '<div class="card"><table class="schedule-table"><thead><tr><th>节次</th>';
+  sched.days.forEach(d => { html += `<th>${d}</th>`; });
+  html += '</tr></thead><tbody>';
+  sched.periods.forEach((p, pi) => {
+    html += `<tr><td>${p}</td>`;
+    sched.days.forEach((d, di) => {
+      const val = sched.data[d]?.[pi] || '';
+      html += `<td class="cell ${val?'has-content':''}" onclick="editScheduleCell(${di},${pi})">${val||'<span style="color:#cbd5e1">+</span>'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  main.innerHTML = html;
+}
+
+function editScheduleCell(di, pi){
+  const sched = DB.get('schedule', null);
+  const day = sched.days[di];
+  const period = sched.periods[pi];
+  const old = sched.data[day][pi];
+  const val = prompt(`编辑 ${day} ${period} 的课程：`, old);
+  if(val !== null){
+    sched.data[day][pi] = val.trim();
+    DB.set('schedule', sched);
+    renderSchedule(document.getElementById('main'));
+  }
+}
+
+function editPeriods(){
+  const sched = DB.get('schedule', null);
+  const val = prompt('编辑节次（每行一个，格式：节次名 时间）：', sched.periods.join('\n'));
+  if(val){
+    const periods = val.split('\n').filter(x=>x.trim());
+    if(periods.length < 1){ alert('至少需要1个节次'); return; }
+    sched.periods = periods;
+    sched.days.forEach(d => {
+      while(sched.data[d].length < periods.length) sched.data[d].push('');
+      sched.data[d] = sched.data[d].slice(0, periods.length);
+    });
+    DB.set('schedule', sched);
+    renderSchedule(document.getElementById('main'));
+  }
+}
+
+function clearSchedule(){
+  if(!confirm('确定清空整个课表吗？')) return;
+  const sched = DB.get('schedule', null);
+  sched.days.forEach(d => { sched.data[d] = sched.periods.map(()=>''); });
+  DB.set('schedule', sched);
+  renderSchedule(document.getElementById('main'));
+}
+
+// ============ 学生名单导入 ============
+function importStudents(){
+  const text = document.getElementById('importText').value.trim();
+  if(!text){ alert('请先粘贴学生名单'); return; }
+  const lines = text.split('\n').filter(l=>l.trim());
+  let count = 0;
+  let data = DB.get('students_list', []);
+  lines.forEach(line => {
+    const parts = line.split(/[,，\t\s]+/).filter(x=>x.trim());
+    if(parts.length === 0) return;
+    const item = {
+      id: DB.uid(),
+      name: parts[0] || '',
+      studentNo: parts[1] || '',
+      className: parts[2] || '',
+      parentName: parts[3] || '',
+      parentPhone: parts[4] || '',
+      note: parts[5] || '',
+      createdAt: DB.now()
+    };
+    if(item.name){ data.push(item); count++; }
+  });
+  DB.set('students_list', data);
+  alert(`成功导入 ${count} 名学生`);
+  document.getElementById('importText').value = '';
+  renderMain();
+}
+
+// ============ 学生值日 ============
+function renderDuty(main){
+  const students = DB.get('students_list', []);
+  const config = DB.get('duty_config', {dailyCount: 3, areas: '教室清洁,走廊打扫,黑板擦拭'});
+
+  // 周偏移
+  if(typeof dutyWeekOffset === 'undefined') dutyWeekOffset = 0;
+
+  // 计算本周日期范围
+  const now = new Date();
+  const dayOfWeek = now.getDay() || 7;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - dayOfWeek + 1 + dutyWeekOffset * 7);
+  const dates = [];
+  for(let i=0;i<5;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    dates.push(d.toISOString().slice(5,10));
+  }
+
+  // 自动轮值：按学生名单顺序，每天 dailyCount 人
+  const days = ['周一','周二','周三','周四','周五'];
+  const assignments = {};
+  if(students.length > 0){
+    const weekStartIdx = (dutyWeekOffset * 5 * config.dailyCount) % students.length;
+    days.forEach((day, di) => {
+      assignments[day] = [];
+      for(let i=0;i<config.dailyCount;i++){
+        const idx = (weekStartIdx + di * config.dailyCount + i) % students.length;
+        assignments[day].push(students[idx]);
+      }
+    });
+  }
+
+  let html = `<div class="page-head">
+    <div><h2>🧹 学生值日</h2><div class="desc">基于学生名单自动轮值，每周循环</div></div>
+    <button class="btn btn-primary btn-sm" onclick="editDutyConfig()">值日设置</button>
+  </div>`;
+
+  html += `<div class="week-nav">
+    <button onclick="dutyWeekOffset--;renderMain()">← 上一周</button>
+    <span class="week-label">第 ${dutyWeekOffset>=0?dutyWeekOffset+1:''} 周（${dates[0]} ~ ${dates[4]}）</span>
+    <button onclick="dutyWeekOffset++;renderMain()">下一周 →</button>
+    <button class="btn btn-ghost btn-sm" onclick="dutyWeekOffset=0;renderMain()">回到本周</button>
+  </div>`;
+
+  if(students.length === 0){
+    html += '<div class="card"><div class="empty"><div class="icon">👨‍🎓</div>请先在「学生名单」中导入学生信息</div></div>';
+  } else {
+    html += '<div class="card"><table class="duty-table"><thead><tr><th>日期</th>';
+    days.forEach((d,i) => { html += `<th>${d}<br><span style="font-size:11px;color:#94a3b8">${dates[i]}</span></th>`; });
+    html += '</tr></thead><tbody><tr><td>值日学生</td>';
+    days.forEach(d => {
+      html += '<td>';
+      (assignments[d]||[]).forEach(s => {
+        html += `<span class="person" title="家长：${s.parentName||'-'} ${s.parentPhone||''}">${s.name}</span>`;
+      });
+      html += '</td>';
+    });
+    html += '</tr><tr><td>值日区域</td>';
+    const areas = (config.areas||'').split(/[,，]/).filter(x=>x.trim());
+    days.forEach(() => {
+      html += '<td style="font-size:12px;color:#64748b">' + areas.join('、') + '</td>';
+    });
+    html += '</tr></tbody></table></div>';
+  }
+  main.innerHTML = html;
+}
+
+function editDutyConfig(){
+  const config = DB.get('duty_config', {dailyCount: 3, areas: '教室清洁,走廊打扫,黑板擦拭'});
+  const count = prompt('每天值日人数：', config.dailyCount);
+  if(count === null) return;
+  const areas = prompt('值日区域（逗号分隔）：', config.areas);
+  if(areas === null) return;
+  config.dailyCount = parseInt(count) || 3;
+  config.areas = areas;
+  DB.set('duty_config', config);
+  renderMain();
+}
+
+// ============ 家长护岗 ============
+function renderParentPatrol(main){
+  const students = DB.get('students_list', []);
+  const parents = students.filter(s => s.parentName || s.parentPhone);
+  const config = DB.get('patrol_config', {dailyCount: 2, locations: '校门口,斑马线,停车场'});
+
+  if(typeof patrolWeekOffset === 'undefined') patrolWeekOffset = 0;
+
+  const now = new Date();
+  const dayOfWeek = now.getDay() || 7;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - dayOfWeek + 1 + patrolWeekOffset * 7);
+  const dates = [];
+  for(let i=0;i<5;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    dates.push(d.toISOString().slice(5,10));
+  }
+
+  const days = ['周一','周二','周三','周四','周五'];
+  const assignments = {};
+  if(parents.length > 0){
+    const weekStartIdx = (patrolWeekOffset * 5 * config.dailyCount) % parents.length;
+    days.forEach((day, di) => {
+      assignments[day] = [];
+      for(let i=0;i<config.dailyCount;i++){
+        const idx = (weekStartIdx + di * config.dailyCount + i) % parents.length;
+        assignments[day].push(parents[idx]);
+      }
+    });
+  }
+
+  let html = `<div class="page-head">
+    <div><h2>🚸 家长护岗</h2><div class="desc">基于学生名单中的家长信息自动排班，每周循环</div></div>
+    <button class="btn btn-primary btn-sm" onclick="editPatrolConfig()">护岗设置</button>
+  </div>`;
+
+  html += `<div class="week-nav">
+    <button onclick="patrolWeekOffset--;renderMain()">← 上一周</button>
+    <span class="week-label">第 ${patrolWeekOffset>=0?patrolWeekOffset+1:''} 周（${dates[0]} ~ ${dates[4]}）</span>
+    <button onclick="patrolWeekOffset++;renderMain()">下一周 →</button>
+    <button class="btn btn-ghost btn-sm" onclick="patrolWeekOffset=0;renderMain()">回到本周</button>
+  </div>`;
+
+  if(parents.length === 0){
+    html += '<div class="card"><div class="empty"><div class="icon">👨‍👩‍👧</div>请先在「学生名单」中导入家长姓名和电话</div></div>';
+  } else {
+    html += '<div class="card"><table class="duty-table"><thead><tr><th>日期</th>';
+    days.forEach((d,i) => { html += `<th>${d}<br><span style="font-size:11px;color:#94a3b8">${dates[i]}</span></th>`; });
+    html += '</tr></thead><tbody><tr><td>执勤家长</td>';
+    days.forEach(d => {
+      html += '<td>';
+      (assignments[d]||[]).forEach(s => {
+        html += `<span class="person" title="学生：${s.name} 电话：${s.parentPhone||'-'}">${s.parentName||s.name+'家长'}</span>`;
+      });
+      html += '</td>';
+    });
+    html += '</tr><tr><td>护岗地点</td>';
+    const locs = (config.locations||'').split(/[,，]/).filter(x=>x.trim());
+    days.forEach(() => {
+      html += '<td style="font-size:12px;color:#64748b">' + locs.join('、') + '</td>';
+    });
+    html += '</tr></tbody></table></div>';
+  }
+  main.innerHTML = html;
+}
+
+function editPatrolConfig(){
+  const config = DB.get('patrol_config', {dailyCount: 2, locations: '校门口,斑马线,停车场'});
+  const count = prompt('每天护岗家长人数：', config.dailyCount);
+  if(count === null) return;
+  const locs = prompt('护岗地点（逗号分隔）：', config.locations);
+  if(locs === null) return;
+  config.dailyCount = parseInt(count) || 2;
+  config.locations = locs;
+  DB.set('patrol_config', config);
+  renderMain();
 }
 
 // ============ 系统设置 ============
