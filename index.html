@@ -609,7 +609,10 @@
 <!-- ===== 页脚 ===== -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="visit-counter">👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次 · 👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</div>
+    <div class="visit-counter" id="visitCounter" onclick="statsClick()" title="点击输入密码查看访问统计">
+      <span id="statsLocked" style="cursor:pointer">🔒 访问统计已隐藏 · 点击输入密码查看</span>
+      <span id="statsNumbers" style="display:none">👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次 · 👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</span>
+    </div>
   </div>
   <div class="container footer-inner">
     <div>© <span id="year">2026</span> 武汉米多乐享科技有限公司 版权所有</div>
@@ -707,5 +710,93 @@
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- 访问统计密码弹窗 -->
+<div class="stats-modal-overlay" id="statsModalOverlay" onclick="if(event.target===this){statsCloseModal()}">
+  <div class="stats-modal">
+    <div class="stats-modal-head">🔒 访问统计</div>
+    <div class="stats-modal-body">
+      <div>请输入查看密码：</div>
+      <input id="statsPwdInput" type="password" maxlength="6" placeholder="••••" autocomplete="off">
+      <div id="statsPwdErr" class="stats-pwd-err" style="display:none">密码错误，请重试</div>
+    </div>
+    <div class="stats-modal-foot">
+      <button class="stats-btn stats-btn-ghost" onclick="statsCloseModal()">取消</button>
+      <button class="stats-btn stats-btn-primary" onclick="submitStatsPwd()">查看</button>
+    </div>
+  </div>
+</div>
+<style>
+.stats-modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(2px)}
+.stats-modal-overlay.show{display:flex}
+.stats-modal{background:#fff;border-radius:16px;padding:26px 30px;width:330px;max-width:90vw;box-shadow:0 20px 60px rgba(2,6,23,.25);text-align:center;animation:statsPop .2s ease}
+@keyframes statsPop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.stats-modal-head{font-size:18px;font-weight:700;color:#1e293b;margin-bottom:14px}
+.stats-modal-body{font-size:14px;color:#475569}
+.stats-modal-body input{width:150px;padding:10px;margin-top:14px;border:1px solid #cbd5e1;border-radius:10px;font-size:20px;text-align:center;letter-spacing:6px;outline:none;font-family:inherit}
+.stats-modal-body input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.stats-pwd-err{color:#dc2626;font-size:12px;margin-top:10px}
+.stats-modal-foot{margin-top:20px;display:flex;gap:12px;justify-content:center}
+.stats-btn{padding:9px 24px;border-radius:10px;font-size:14px;cursor:pointer;border:1px solid transparent;font-family:inherit}
+.stats-btn-ghost{background:#fff;border-color:#cbd5e1;color:#475569}
+.stats-btn-ghost:hover{background:#f1f5f9}
+.stats-btn-primary{background:#2563eb;color:#fff}
+.stats-btn-primary:hover{background:#1d4ed8}
+#visitCounter{cursor:pointer}
+#visitCounter:hover{color:#2563eb}
+#statsLocked{color:#94a3b8}
+</style>
+<script>
+(function(){
+  var STATS_PWD = '9168';
+  function statsInit(){
+    if(localStorage.getItem('stats_unlocked') === '1'){ showStatsNumbers(); }
+  }
+  function statsClick(){
+    if(localStorage.getItem('stats_unlocked') === '1'){ return; }
+    document.getElementById('statsModalOverlay').classList.add('show');
+    setTimeout(function(){
+      var el = document.getElementById('statsPwdInput');
+      if(el){
+        el.value = '';
+        el.focus();
+        el.removeEventListener('keydown', pwdKeydown);
+        el.addEventListener('keydown', pwdKeydown);
+      }
+      var err = document.getElementById('statsPwdErr');
+      if(err){ err.style.display = 'none'; }
+    }, 60);
+  }
+  function pwdKeydown(e){
+    if(e.key === 'Enter'){ submitStatsPwd(); }
+  }
+  function statsCloseModal(){
+    document.getElementById('statsModalOverlay').classList.remove('show');
+  }
+  function submitStatsPwd(){
+    var v = document.getElementById('statsPwdInput').value.trim();
+    if(v === STATS_PWD){
+      localStorage.setItem('stats_unlocked', '1');
+      statsCloseModal();
+      showStatsNumbers();
+    } else {
+      var err = document.getElementById('statsPwdErr');
+      if(err){ err.style.display = 'block'; }
+      var inp = document.getElementById('statsPwdInput');
+      if(inp){ inp.value = ''; inp.focus(); }
+    }
+  }
+  function showStatsNumbers(){
+    var locked = document.getElementById('statsLocked');
+    var nums = document.getElementById('statsNumbers');
+    if(locked){ locked.style.display = 'none'; }
+    if(nums){ nums.style.display = 'inline'; }
+  }
+  window.statsClick = statsClick;
+  window.submitStatsPwd = submitStatsPwd;
+  window.statsCloseModal = statsCloseModal;
+  statsInit();
+})();
+</script>
 </body>
 </html>
