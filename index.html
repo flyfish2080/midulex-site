@@ -249,6 +249,13 @@
   .footer-inner {
     display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
   }
+  .footer .visit-counter {
+    flex: 1 1 100%; text-align: center; width: 100%;
+  }
+  .footer .visit-counter #busuanzi_value_site_pv,
+  .footer .visit-counter #busuanzi_value_site_uv {
+    color: var(--accent); font-weight: 600;
+  }
   .footer .mono { font-family: var(--mono); font-size: 12px; }
 
   /* ===== 滚动揭示 ===== */
@@ -602,7 +609,7 @@
 <!-- ===== 页脚 ===== -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div>👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次 · 👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</div>
+    <div class="visit-counter">👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次 · 👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</div>
   </div>
   <div class="container footer-inner">
     <div>© <span id="year">2026</span> 武汉米多乐享科技有限公司 版权所有</div>
