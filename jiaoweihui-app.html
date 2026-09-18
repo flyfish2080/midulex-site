@@ -178,6 +178,9 @@ tr:hover td{background:#f8fafc}
 
 
 .site-footer{position:fixed;left:50%;transform:translateX(-50%);bottom:0;text-align:center;padding:6px 20px;font-size:12px;color:#64748b;background:rgba(255,255,255,.95);border:1px solid #e2e8f0;border-bottom:none;border-radius:12px 12px 0 0;box-shadow:0 -2px 12px rgba(30,42,90,.08);z-index:60;white-space:nowrap}
+.site-footer{cursor:pointer;user-select:none}
+.site-footer:hover{color:#2563eb}
+#statsLocked{color:#94a3b8}
 .site-footer span{margin:0 8px}
 .site-footer #busuanzi_value_site_pv,.site-footer #busuanzi_value_site_uv{color:#2563eb;font-weight:600}
 @media(max-width:768px){.site-footer{font-size:11px;padding:5px 12px;left:0;right:0;transform:none;border-radius:0;width:100%}}
@@ -200,9 +203,12 @@ tr:hover td{background:#f8fafc}
 <div class="main" id="main"></div>
 
 <!-- 底部访问统计 -->
-<footer class="site-footer">
-  <span>👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次</span>
-  <span>👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</span>
+<footer class="site-footer" id="siteFooter" onclick="statsClick()" title="点击输入密码查看访问统计">
+  <span id="statsLocked" style="cursor:pointer">🔒 访问统计已隐藏 · 点击输入密码查看</span>
+  <span id="statsNumbers" style="display:none">
+    <span>👀 本站访问量：<span id="busuanzi_value_site_pv">0</span> 次</span>
+    <span>👥 访客数：<span id="busuanzi_value_site_uv">0</span> 人</span>
+  </span>
 </footer>
 
 <!-- 弹窗 -->
@@ -540,6 +546,55 @@ function viewItem(moduleId, id){
 function closeModal(){
   document.getElementById('modalOverlay').classList.remove('show');
 }
+
+// ============ 访问统计（密码保护） ============
+var STATS_PWD = '9168';
+function statsInit(){
+  if(localStorage.getItem('stats_unlocked') === '1'){
+    showStatsNumbers();
+  }
+}
+function statsClick(){
+  if(localStorage.getItem('stats_unlocked') === '1'){ return; }
+  document.getElementById('modalTitle').textContent = '🔒 访问统计';
+  document.getElementById('modalBody').innerHTML =
+    '<div style="text-align:center;padding:4px 0 2px;font-size:14px">请输入查看密码：</div>' +
+    '<div style="text-align:center;margin-top:12px"><input id="statsPwdInput" type="password" style="width:150px;padding:9px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:18px;text-align:center;letter-spacing:4px" maxlength="6" placeholder="••••"></div>' +
+    '<div id="statsPwdErr" style="color:#dc2626;font-size:12px;text-align:center;margin-top:8px;display:none">密码错误，请重试</div>';
+  document.getElementById('modalFoot').innerHTML =
+    '<button class="btn btn-ghost" onclick="closeModal()">取消</button> ' +
+    '<button class="btn" onclick="submitStatsPwd()">查看</button>';
+  document.getElementById('modalOverlay').classList.add('show');
+  setTimeout(function(){
+    var el = document.getElementById('statsPwdInput');
+    if(el){
+      el.focus();
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ submitStatsPwd(); }
+      });
+    }
+  }, 60);
+}
+function submitStatsPwd(){
+  var v = document.getElementById('statsPwdInput').value.trim();
+  if(v === STATS_PWD){
+    localStorage.setItem('stats_unlocked', '1');
+    closeModal();
+    showStatsNumbers();
+  } else {
+    var err = document.getElementById('statsPwdErr');
+    if(err){ err.style.display = 'block'; }
+    var inp = document.getElementById('statsPwdInput');
+    if(inp){ inp.value = ''; inp.focus(); }
+  }
+}
+function showStatsNumbers(){
+  var locked = document.getElementById('statsLocked');
+  var nums = document.getElementById('statsNumbers');
+  if(locked){ locked.style.display = 'none'; }
+  if(nums){ nums.style.display = 'inline'; }
+}
+statsInit();
 
 // ============ 数据看板 ============
 function renderDashboard(main){
