@@ -20,7 +20,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f0f4fa;c
 .nav-item.active{background:rgba(77,214,195,.12);color:#4dd6c3;border-left-color:#4dd6c3}
 .nav-group{padding:8px 18px 4px;font-size:10px;color:#5b7399;text-transform:uppercase;letter-spacing:1px;margin-top:6px}
 /* 主内容 */
-.main{margin-left:220px;flex:1;padding:24px 28px;min-height:100vh}
+.main{margin-left:220px;flex:1;padding:24px 28px 60px;min-height:100vh}
 .page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
 .page-head h2{font-size:20px;color:#1e2a5a}
 .page-head .desc{font-size:12px;color:#5b6b8c;margin-top:4px}
@@ -100,7 +100,7 @@ tr:hover td{background:#f8fafc}
   .sidebar{width:60px}
   .sidebar .brand h1,.sidebar .brand .sub,.nav-item span,.nav-group{display:none}
   .nav-item{justify-content:center;padding:12px 0}
-  .main{margin-left:60px;padding:12px 10px}
+  .main{margin-left:60px;padding:12px 10px 48px}
   .form-row{grid-template-columns:1fr}
   .finance-summary{grid-template-columns:1fr}
   /* 课表移动端适配 */
@@ -177,10 +177,10 @@ tr:hover td{background:#f8fafc}
 .import-box textarea{width:100%;min-height:80px;border:1px solid #e2e8f0;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;margin-top:8px}
 
 
-.site-footer{margin-left:220px;text-align:center;padding:14px 20px 20px;font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;background:#f8fafc}
+.site-footer{position:fixed;left:50%;transform:translateX(-50%);bottom:0;text-align:center;padding:6px 20px;font-size:12px;color:#64748b;background:rgba(255,255,255,.95);border:1px solid #e2e8f0;border-bottom:none;border-radius:12px 12px 0 0;box-shadow:0 -2px 12px rgba(30,42,90,.08);z-index:60;white-space:nowrap}
 .site-footer span{margin:0 8px}
 .site-footer #busuanzi_value_site_pv,.site-footer #busuanzi_value_site_uv{color:#2563eb;font-weight:600}
-@media(max-width:768px){.site-footer{margin-left:60px;font-size:11px;padding:10px 8px 14px}}
+@media(max-width:768px){.site-footer{font-size:11px;padding:5px 12px;left:0;right:0;transform:none;border-radius:0;width:100%}}
 
 </style>
 </head>
