@@ -516,5 +516,222 @@ footer .b{color:var(--text2)}
   }
 })();
 </script>
+
+<!-- ================= 方法详情（新页） ================= -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-page">
+    <div class="detail-head">
+      <button class="detail-back" onclick="closeMethodDetail()">← 返回</button>
+      <div class="detail-head-title"><span id="detailTitle"></span><span class="detail-tag" id="detailTag"></span></div>
+      <button class="detail-back" onclick="closeMethodDetail()">✕ 关闭</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+</div>
+<style>
+.detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
+.detail-overlay.show{display:block}
+.detail-page{max-width:960px;margin:0 auto;padding:0 0 60px}
+.detail-head{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:rgba(13,20,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.detail-head-title{font-family:var(--serif);font-size:18px;font-weight:900;color:#fff;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.detail-tag{font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;background:rgba(42,157,244,.16);color:#6abcf7;border:1px solid rgba(42,157,244,.35)}
+.detail-back{background:transparent;border:1px solid var(--line2);color:var(--text2);font-size:13px;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:var(--sans)}
+.detail-back:hover{color:#fff;border-color:var(--blue)}
+.detail-body{padding:26px 22px 40px}
+.dsec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px}
+.dsec h3{font-family:var(--serif);font-size:16px;font-weight:900;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dsec h3 .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--blue),var(--violet));font-size:12px;color:#fff}
+.dsec p,.dsec li{font-size:14px;color:var(--text2);line-height:1.9}
+.dsec .rule{background:var(--card2);border:1px dashed var(--line2);border-radius:10px;padding:14px 16px;font-size:14.5px;color:var(--text);margin-top:6px}
+.dsec ol{padding-left:22px;margin-top:8px}
+.dsec ol li{margin-bottom:8px}
+.dsec ol li b{color:var(--text)}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}
+.metric{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-align:center}
+.metric .k{font-size:12px;color:var(--text3);margin-bottom:6px}
+.metric .v{font-size:19px;font-weight:800;color:#fff;font-family:var(--serif)}
+.metric .v.good{color:var(--green)}.metric .v.bad{color:var(--red)}.metric .v.warn{color:var(--gold)}
+.metric .sub{font-size:11px;color:var(--text3);margin-top:4px}
+.vs-baseline{margin-top:16px;background:rgba(244,162,97,.07);border:1px solid rgba(244,162,97,.25);border-radius:10px;padding:12px 16px;font-size:13.5px;color:var(--text2)}
+.vs-baseline b{color:var(--gold)}
+.analysis-box{background:linear-gradient(135deg,rgba(230,57,70,.10),rgba(42,157,244,.10));border:1px solid var(--line2);border-radius:12px;padding:16px 18px;margin-top:14px;font-size:14px;color:var(--text);line-height:1.9}
+.analysis-box .concl{color:var(--gold);font-weight:700}
+.killnote{font-size:12px;color:var(--text3);margin-top:10px}
+@media(max-width:640px){
+  .detail-head-title{font-size:15px}
+  .detail-back{font-size:12px;padding:5px 10px}
+  .detail-body{padding:18px 14px 50px}
+  .dsec{padding:16px}
+  .metric{font-size:12px}
+}
+</style>
+<script>
+var METHOD_DETAILS = [];
+(function(){
+  var base = {
+    head: { n:'01', t:'具体投注方法' },
+    steps: [],
+    analysis: ''
+  };
+  METHOD_DETAILS = [
+    { name:'龙头凤尾定位', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
+      trainR:'25.47%', testR:'34.63%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
+      steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成红球组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配蓝球(01-16)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
+      analysis:'测试段回报率 34.63% 为 23 种方法最高，但经核查是 2025086 期命中 1 注三等奖(5+1=3000 元)的样本噪声，扣除后约 23.8%。净收益 -18,225 元仍大幅亏损。龙头凤尾区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
+    { name:'012路冷路杀号', cat:'杀号', rule:'把红球按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
+      trainR:'24.78%', testR:'27.51%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'0.942',
+      steps:['取近 10 期开奖，将 01-33 按除 3 余数分为 0 路(03,06…33)、1 路(01,04…31)、2 路(02,05…32)','统计三路号码近 10 期各自的总出号次数，找出出号最少的一路','在该路内按遗漏/出号频次取最冷的 5 个号码作为杀号','从 33 个红球中剔除这 5 个杀号，剩余 28 个为候选池','每期从候选池随机组 20 注(6 红+1 蓝)，每注 2 元，单期 40 元'],
+      analysis:'杀中比值 0.942（<1 表示被杀的号码确实较少开出，表面"有效"），但候选池只缩小 5 个号，测试段回报率 27.51% 与随机基线 20.89% 无统计学差异，净亏损 20,210 元。杀号并未改变投注的整体期望收益。' },
+    { name:'遗漏回归加权选号', cat:'选号', rule:'以各号码当前遗漏值(距上次开出的期数)作为权重，遗漏越大的号码权重越高，加权随机选出 6 红。', source:'今日头条 / fahai.xin',
+      trainR:'21.74%', testR:'24.87%', trainNet:'-86,715', testNet:'-20,945', win:'75.0%', kr:'—',
+      steps:['统计 33 个红球当前遗漏值（距上次开出的期数）','构造权重：遗漏越大权重越高（如 w = 遗漏值 + 1）','按权重比例做加权随机抽样，优先选中遗漏大的号码','连续抽样 6 个不重复红球组成一注，搭配随机蓝球','每期生成 20 注，每注 2 元，单期投入 40 元'],
+      analysis:'"久未开出就该开出"是典型的赌徒谬误。双色球每次开奖独立，遗漏值不携带可预测信息。测试段回报率 24.87% 与基线无差异，训练/测试段净亏损合计超 10 万元，权重加权只改变了选号分布，改变不了期望。' },
+    { name:'冷号最多2个', cat:'过滤', rule:'遗漏≥10 期的号码定义为冷号，生成组合时每注最多包含 2 个冷号。', source:'乐彩网',
+      trainR:'21.47%', testR:'24.61%', trainNet:'-87,010', testNet:'-21,020', win:'75.2%', kr:'—',
+      steps:['取近期开奖，统计各号码遗漏值，遗漏≥10 期标记为冷号','随机生成大量候选组合(每注 6 红)','过滤：凡冷号数量超过 2 个的组合直接剔除','从通过过滤的组合中随机抽取 20 注，搭配随机蓝球','每注 2 元，单期投入 40 元连续执行'],
+      analysis:'过滤掉冷号占比过高的组合，只是改变了组合分布，每个组合的中奖概率仍是固定值。测试段回报率 24.61%，测试段净亏损 21,020 元，与随机基线相当——过滤条件不产生信息增益。' },
+    { name:'上期同尾全清', cat:'杀号', rule:'上期开出的红球尾数，对应同尾的所有红球(约 12-16 个)全部杀掉。', source:'抖音 / 乐彩论坛',
+      trainR:'29.30%', testR:'24.35%', trainNet:'-78,340', testNet:'-21,090', win:'75.8%', kr:'1.005',
+      steps:['取上期 6 个红球的个位尾数（如 03、15、22 → 尾数 3、5、2）','对每个出现过的尾数，杀该尾数对应的全部红球（尾数 3 → 03、13、23、33）','杀号规模通常 12-16 个，剩余红球约 17-21 个','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 1.005，与随机期望(1.0)完全一致——上期尾数在下期是否开出毫无规律。杀掉的号码越多，候选池越小，但单注概率不变。测试段回报率 24.35%，净亏 21,090 元。' },
+    { name:'和值95-115过滤', cat:'过滤', rule:'只选取 6 个红球和值落在 95-115 区间的组合。', source:'乐彩网 / 网易',
+      trainR:'25.79%', testR:'23.94%', trainNet:'-82,225', testNet:'-21,205', win:'76.6%', kr:'—',
+      steps:['随机生成大量 6 红组合','计算每组 6 个号码的和值','过滤：只保留和值在 95-115 之间的组合（该区间覆盖大部分历史开奖）','从通过过滤的组合中随机取 20 注，搭配随机蓝球','每注 2 元，单期 40 元'],
+      analysis:'和值过滤保留了"最像历史开奖"的组合，但历史开奖和值分布是结果而非原因。测试段中奖率 76.6% 略高，但回报率 23.94% 仍低于或持平基线——中奖多来自小奖(5 元/10 元)，覆盖不了 40 元/期的成本。' },
+    { name:'龙头×4-2杀号', cat:'杀号', rule:'上期大小序第 1 位(龙头)×4-2，结果大于 33 则减 33，杀 1 个号。', source:'乐彩论坛',
+      trainR:'26.11%', testR:'23.55%', trainNet:'-81,870', testNet:'-21,315', win:'75.9%', kr:'1.005',
+      steps:['取上期开奖红球按大小排序，取第 1 位(龙头)数值','计算 龙头×4-2，若结果 >33 则连续减 33 直到落在 01-33','将该号码作为本期杀号，从 33 个红球中剔除','剩余 32 个红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'代数公式类杀号的代表。杀中比值 1.005 ≈ 随机，说明"×4-2"与开奖毫无关联。这类公式在论坛传播极广、常号称"准确率 98%"，实为对已开结果的事后倒推。测试段回报率 23.55%，净亏 21,315 元。' },
+    { name:'龙头+2杀号', cat:'杀号', rule:'上期龙头 + 2，杀 1 个号（>33 减 33）。', source:'抖音 / 彩宝贝',
+      trainR:'27.07%', testR:'23.48%', trainNet:'-80,810', testNet:'-21,335', win:'75.5%', kr:'1.121',
+      steps:['取上期红球最小值(龙头)','计算 龙头+2，>33 则减 33，得到杀号','从 33 个红球剔除该号','剩余 32 个红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 1.121 是全部红球杀号方法中最高的——意味着被杀的号反而更容易开出。即便如此，只杀 1 个号对整体期望几乎无影响。测试段回报率 23.48%，与基线持平，净亏 21,335 元。' },
+    { name:'大奇+小奇÷2杀号', cat:'杀号', rule:'上期最大奇数 + 最小奇数 除以 2 四舍五入，杀 1 个号。', source:'彩宝贝 / 抖音',
+      trainR:'22.07%', testR:'23.19%', trainNet:'-86,350', testNet:'-21,415', win:'74.5%', kr:'1.026',
+      steps:['取上期红球中的最大奇数与最小奇数','计算 (最大奇数 + 最小奇数) ÷ 2，四舍五入取整得到杀号','从 33 个红球剔除该号','剩余 32 个红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'又一个代数公式类杀号。杀中比值 1.026 与随机无异，测试段回报率 23.19% 低于训练段(22.07%→23.19%)，没有可重复的规律。此类公式数量越多，越说明它们是"数字游戏"，与开奖机制无关。' },
+    { name:'冷热温配比3:2:1', cat:'选号', rule:'近 15 期频次≥3 为热号、1-2 为温号、0 为冷号；每注固定 3 热 2 温 1 冷。', source:'乐彩网 / 抖音 / fahai.xin',
+      trainR:'113.29%', testR:'23.03%', trainNet:'+14,725', testNet:'-21,460', win:'73.9%', kr:'—',
+      steps:['统计近 15 期各红球出现频次，按≥3/1-2/0 分为热/温/冷','从热号中选 3 个、温号中选 2 个、冷号中选 1 个组成一注','组合时避免重复号码，生成 20 注','搭配随机蓝球','每注 2 元，单期 40 元'],
+      analysis:'这是过拟合的典型样本：训练段回报率 113.29%、净收益 +14,725 元（命中大奖所致），测试段立刻回归 23.03%、净亏 21,460 元。训练段表现越好测试段越差——所谓"高回报"只是运气落在训练窗口。' },
+    { name:'空行空列杀号', cat:'杀号', rule:'把 33 个红球排成 6×6 矩阵(去 34-36)，统计近 5 期各行列出号数，杀出号最少的行与列对应号码。', source:'彩宝贝',
+      trainR:'24.42%', testR:'22.96%', trainNet:'-83,740', testNet:'-21,480', win:'73.3%', kr:'0.995',
+      steps:['将 01-33 按顺序排成 6×6 矩阵(最后一行仅 3 个号)','统计近 5 期每个行、每个列的开奖出号次数','找出出号最少的行与列，杀其交叉覆盖的对应号码','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'矩阵排布只是人为的视觉结构，开奖号码不感知矩阵。杀中比值 0.995≈1.0，测试段回报率 22.96%。空行空列"看起来有规律"，实为把随机数据画成图后的错觉。' },
+    { name:'蓝球15减法杀尾', cat:'蓝杀', rule:'15 - 上期蓝球取个位数，杀该尾数对应的蓝球；红球全随机。', source:'彩宝贝 / 书籍',
+      trainR:'21.28%', testR:'22.94%', trainNet:'-87,225', testNet:'-21,485', win:'72.5%', kr:'0.778',
+      steps:['取上期蓝球号码','计算 15 - 上期蓝球，取结果的个位数(0 视为 10)','杀该尾数对应的全部蓝球(约 1-2 个)','红球 6 个全随机，蓝球从剩余候选随机，组 20 注','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 0.778 表面"有效"，但只杀 1-2 个蓝球对 1/16 的蓝球概率几乎无影响。测试段回报率 22.94% 与基线无差异。蓝球每次开奖都是 16 选 1 的独立随机事件，任何公式都无法提高命中率。' },
+    { name:'红蓝差值杀号', cat:'杀号', rule:'上期每个红球减蓝球取绝对值，杀这些差值对应的号码(最多 6 个)。', source:'今日头条 / 为彩网',
+      trainR:'24.40%', testR:'22.04%', trainNet:'-83,760', testNet:'-21,735', win:'76.3%', kr:'1.042',
+      steps:['取上期 6 个红球与 1 个蓝球','计算每个 红球-蓝球 的绝对值，得到最多 6 个差值','将这些差值作为杀号(去重，>33 无效)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 1.042，被杀的差值号开出的比例略高于随机——即"红蓝差值"不仅无效甚至微反向。测试段中奖率 76.3% 看似不错，但回报率 22.04% 与基线无异，中奖集中于小额奖项。' },
+    { name:'邻位相减杀号', cat:'杀号', rule:'上期 6 个红球从小到大相邻相减，杀各差值(最多 5 个)。', source:'今日头条',
+      trainR:'21.34%', testR:'22.04%', trainNet:'-87,155', testNet:'-21,735', win:'74.9%', kr:'1.007',
+      steps:['取上期 6 个红球从小到大排序','相邻两两相减：第2-第1、第3-第2 … 第6-第5，得到 5 个差值','将这些差值作为杀号(去重，>33 无效)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 1.007≈1.0，纯随机表现。测试段回报率 22.04% 与基线持平。这类"相邻差值"公式是网络上传播最广的杀号法之一，回测证明它们只是对上一期号码的算术加工，不携带下期信息。' },
+    { name:'龙头+9杀号', cat:'杀号', rule:'上期龙头 + 9，结果大于 33 减 33，杀 1 个号。', source:'乐彩论坛',
+      trainR:'26.08%', testR:'21.86%', trainNet:'-81,900', testNet:'-21,785', win:'75.9%', kr:'1.018',
+      steps:['取上期红球最小值(龙头)','计算 龙头+9，>33 则减 33，得到杀号','从 33 个红球剔除该号','剩余 32 个红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'与龙头+2、龙头×4-2 同族的公式类杀号，杀中比值 1.018≈随机。测试段回报率 21.86% 低于基线 20.89% 附近，无统计意义。单杀 1 号对期望收益的影响可忽略。' },
+    { name:'蓝球奇偶反转杀', cat:'蓝杀', rule:'连续 3 期蓝球同为奇数(或同为偶数)，下期杀该奇偶性对应的全部 8 个蓝球。', source:'今日头条 / 乐彩网',
+      trainR:'25.33%', testR:'21.56%', trainNet:'-82,730', testNet:'-21,870', win:'67.1%', kr:'0.934',
+      steps:['查看最近 3 期蓝球奇偶性','若 3 期同为奇数，则下期杀全部 8 个奇数蓝球；3 期同为偶数则杀 8 个偶数蓝球','其余情况不杀','红球全随机，蓝球从剩余 8 个候选随机，组 20 注','每注 2 元，单期 40 元'],
+      analysis:'"连续 3 期同奇偶后反转"是赌徒谬误的经典版本。杀中比值 0.934 表面略好，但测试段中奖率仅 67.1%（全场最低之一），回报率 21.56% 与基线无差异。奇偶各 8 个蓝球长期均衡出现，不构成可预测信号。' },
+    { name:'近10期冷尾全杀', cat:'杀号', rule:'近 10 期未出现过的尾数，其对应的所有红球全部杀掉。', source:'抖音 / 彩宝贝',
+      trainR:'25.55%', testR:'21.02%', trainNet:'-82,495', testNet:'-22,020', win:'74.5%', kr:'0.642',
+      steps:['统计近 10 期红球出现过的所有个位尾数','找出 10 期内从未出现的尾数','杀这些尾数对应的全部红球(冷尾通常对应 4-8 个号)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 0.642 为全场最低——冷尾确实较少开出，表面"非常有效"。但冷尾候选池大幅缩小后，最终测试段回报率 21.02% 与基线 20.89% 几乎相同。这说明杀中率高不等于能赢钱：杀掉的号本就不易出，省下的只是无效投注。' },
+    { name:'随机基线(20注/期)', cat:'基准', rule:'每期从 33 个红球、16 个蓝球中完全随机选 20 注，不使用任何历史数据。', source:'内置对照',
+      trainR:'25.49%', testR:'20.89%', trainNet:'-82,560', testNet:'-22,055', win:'74.2%', kr:'—',
+      steps:['不依赖任何历史开奖数据','每期从 01-33 中随机抽取 6 个不重复红球','每注搭配 01-16 中随机 1 个蓝球','每期生成 20 注','每注 2 元，单期投入 40 元'],
+      analysis:'这是全部方法对照的基准：测试段回报率 20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑——回测显示 23 种网友方法无一做到。双色球大样本理论期望回报率约 22.5%，长期投注必然亏损。' },
+    { name:'跨度杀号(跨度±1)', cat:'杀号', rule:'上期凤尾-龙头=跨度，杀跨度及 ±1 共 3 个号。', source:'乐彩网 / 抖音',
+      trainR:'23.59%', testR:'20.79%', trainNet:'-84,665', testNet:'-22,085', win:'73.9%', kr:'0.976',
+      steps:['取上期红球最大值(凤尾)与最小值(龙头)','计算跨度 = 凤尾 - 龙头','杀 跨度、跨度-1、跨度+1 共 3 个号(越界跳过)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'"跨度"是描述上期开奖形态的指标，与下期开奖无关。杀中比值 0.976≈1.0，测试段回报率 20.79% 甚至略低于基线。抖音彩票类账号常以此类口诀传播，回测证明无任何预测力。' },
+    { name:'四分区断区杀号', cat:'杀号', rule:'红球分四区 01-08 / 09-16 / 18-25 / 26-33，杀近 3 期出号最少的区约 8 个号。', source:'彩宝贝 / 人民网',
+      trainR:'26.31%', testR:'20.09%', trainNet:'-81,650', testNet:'-22,280', win:'73.5%', kr:'0.986',
+      steps:['将红球分为四个区间：01-08、09-16、18-25、26-33','统计近 3 期每区出号次数','杀出号最少的那个区对应的全部约 8 个号码','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'断区(某区不出号)是开奖后的描述，不是开奖前的预测。杀中比值 0.986≈1.0，测试段回报率 20.09% 略低于基线。即便某区"该断"了，剩余号码中组出的组合中奖概率也不变。' },
+    { name:'蓝球A+B绝杀', cat:'蓝杀', rule:'上上期蓝球 + 上期蓝球取个位数，杀该尾数蓝球(0 视为杀 10)。', source:'彩宝贝',
+      trainR:'23.06%', testR:'20.01%', trainNet:'-85,250', testNet:'-22,300', win:'69.9%', kr:'1.082',
+      steps:['取上上期蓝球与上期蓝球','计算两数和，取个位数(0 按 10 处理)','杀该尾数对应的蓝球','红球全随机，蓝球从剩余候选随机，组 20 注','每注 2 元，单期 40 元'],
+      analysis:'杀中比值 1.082——被杀的"两期和尾数蓝"开出比例反而高于随机。测试段中奖率仅 69.9%，回报率 20.01%。"A+B 绝杀"是最常见的蓝球公式之一，回测证明其与随机无异甚至略反向。' },
+    { name:'两两相减杀号', cat:'杀号', rule:'上期 6 个红球两两相减取绝对值去重，最多杀 10 个号。', source:'为彩网 / 乐彩网',
+      trainR:'30.19%', testR:'19.87%', trainNet:'-77,355', testNet:'-22,340', win:'74.3%', kr:'1.020',
+      steps:['取上期 6 个红球','两两相减得到 15 个差值，取绝对值并去重','将差值作为杀号(最多 10 个，>33 无效)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'训练段回报率 30.19% 是"高回报"假象的又一例：测试段暴跌至 19.87%(全场最低之一)，净亏 22,340 元。杀中比值 1.020≈随机。训练段好、测试段差，正是过拟合与运气噪声的标配。' },
+    { name:'前五期热号杀', cat:'杀号', rule:'前 5 期出现 ≥2 次的号码全部杀掉。', source:'彩宝贝',
+      trainR:'30.85%', testR:'19.48%', trainNet:'-76,615', testNet:'-22,450', win:'72.3%', kr:'1.061',
+      steps:['统计前 5 期各红球出现次数','找出出现 ≥2 次的热号','将这些热号全部杀掉(通常 5-10 个)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
+      analysis:'"热号要杀"与"热号要追"一样都是赌徒谬误。杀中比值 1.061 显示热号下期仍频繁开出，杀号反而帮倒忙。训练段 30.85% 的"高回报"在测试段跌到 19.48%，净亏 22,450 元。' },
+    { name:'AC值7或8过滤', cat:'过滤', rule:'AC值 = 6 红不同正差值个数 - 5，只选 AC 值为 7 或 8 的组合。', source:'重庆福彩 / 书籍',
+      trainR:'25.66%', testR:'19.48%', trainNet:'-82,370', testNet:'-22,450', win:'76.2%', kr:'—',
+      steps:['随机生成大量 6 红组合','对每组计算 AC 值：6 红两两差值去重后的个数 - 5','过滤：只保留 AC=7 或 AC=8 的组合','从通过过滤的组合中随机取 20 注，搭配随机蓝球','每注 2 元，单期 40 元'],
+      analysis:'AC 值衡量号码离散程度，是历史开奖分布的一种描述。测试段中奖率 76.2% 略高，但回报率 19.48% 为全场最低之一——中奖集中在小奖，成本无法覆盖。任何基于历史形态的过滤都不改变每注的固定概率。' }
+  ];
+})();
+
+function openMethodDetail(name){
+  var m = null;
+  for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
+  if(!m){ return; }
+  document.getElementById('detailTitle').textContent = m.name;
+  document.getElementById('detailTag').textContent = m.cat;
+  var catColor = m.cat==='杀号' ? '#E63946' : (m.cat==='选号' ? '#2A9DF4' : (m.cat==='过滤' ? '#f4a261' : (m.cat==='蓝杀' ? '#8b7cf6' : '#6b7ea3')));
+  document.getElementById('detailTag').style.background = 'rgba(42,157,244,.14)';
+  document.getElementById('detailTag').style.borderColor = catColor;
+  document.getElementById('detailTag').style.color = catColor;
+
+  var stepsHtml = '';
+  for(var s=0;s<m.steps.length;s++){
+    stepsHtml += '<li>' + m.steps[s] + '</li>';
+  }
+  var metricGood = function(v){ return (m.kr !== '—' && parseFloat(m.kr) < 0.9); };
+  var krV = m.kr === '—' ? '无' : m.kr;
+  var html =
+    '<div class="dsec"><h3><span class="n">1</span>具体投注方法</h3>' +
+    '<div class="rule">' + m.rule + '</div>' +
+    '<p style="margin-top:10px;font-size:12.5px;color:var(--text3)">来源：' + m.source + '</p></div>' +
+    '<div class="dsec"><h3><span class="n">2</span>投注过程</h3><ol>' + stepsHtml + '</ol></div>' +
+    '<div class="dsec"><h3><span class="n">3</span>历史投注效果</h3>' +
+    '<div class="metric-grid">' +
+      '<div class="metric"><div class="k">训练段回报率</div><div class="v warn">' + m.trainR + '</div><div class="sub">基线 25.49%</div></div>' +
+      '<div class="metric"><div class="k">测试段回报率</div><div class="v ' + (parseFloat(m.testR) > 30 ? 'good' : '') + '">' + m.testR + '</div><div class="sub">基线 20.89%</div></div>' +
+      '<div class="metric"><div class="k">训练段净收益</div><div class="v ' + (m.trainNet.indexOf('+')===0 ? 'good' : 'bad') + '">' + m.trainNet + '</div><div class="sub">元</div></div>' +
+      '<div class="metric"><div class="k">测试段净收益</div><div class="v bad">' + m.testNet + '</div><div class="sub">元</div></div>' +
+      '<div class="metric"><div class="k">测试段中奖率</div><div class="v">' + m.win + '</div><div class="sub">有奖期数占比</div></div>' +
+      '<div class="metric"><div class="k">杀中比值</div><div class="v ' + (metricGood() ? 'good' : '') + '">' + krV + '</div><div class="sub">=1 与随机相同</div></div>' +
+    '</div>' +
+    '<div class="vs-baseline">📊 与随机基线对比：测试段回报率 <b>' + m.testR + '</b> vs 随机基线 <b>20.89%</b>' + (parseFloat(m.testR) > 24 ? '，表面略高但多为样本噪声/大奖运气，经核查不具统计显著性' : '，无显著差异') + '；每期 20 注×2 元=40 元成本，测试段累计净亏损 <b style="color:#E63946">' + m.testNet + ' 元</b>。</div>' +
+    '</div>' +
+    '<div class="dsec"><h3><span class="n">4</span>分析与建议</h3>' +
+    '<div class="analysis-box">' + m.analysis + '</div>' +
+    '<p style="font-size:12px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。</p></div>';
+  document.getElementById('detailBody').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('detailOverlay').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closeMethodDetail(){
+  document.getElementById('detailOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+// 绑定 report 表格中所有方法名
+document.addEventListener('DOMContentLoaded', function(){
+  var names = document.querySelectorAll('#report .mname');
+  for(var i=0;i<names.length;i++){
+    (function(el){
+      el.style.cursor = 'pointer';
+      el.title = '点击查看方法详情';
+      el.addEventListener('click', function(){ openMethodDetail(el.textContent.trim()); });
+    })(names[i]);
+  }
+  // 键盘 Esc 关闭
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
+});
+</script>
+
 </body>
 </html>
