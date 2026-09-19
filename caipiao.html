@@ -602,7 +602,7 @@ footer .b{color:var(--text2)}
 .analysis-box .concl{color:var(--gold);font-weight:700}
 .killnote{font-size:12px;color:var(--text3);margin-top:10px}
 
-.dtable{width:100%;border-collapse:collapse;margin-top:0;font-size:13px;table-layout:auto}
+.dtable{width:100%;border-collapse:collapse;margin-top:0;font-size:12px;table-layout:fixed}
 .hist-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
 .dtable .ball{width:19px;height:19px;font-size:10px;margin:0 1px}
 .dtable .balls{letter-spacing:0;white-space:nowrap}
@@ -611,7 +611,7 @@ footer .b{color:var(--text2)}
 .drow{cursor:pointer}
 .drow:hover td{background:rgba(42,157,244,.08)}
 .detail-body .balls{white-space:nowrap}
-.ball{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;margin:0;font-weight:600;vertical-align:middle}
+.ball{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;font-size:9px;margin:0;font-weight:600;vertical-align:middle}
 .br{background:rgba(230,57,70,.15);color:#ff8b94;border:1px solid rgba(230,57,70,.4)}
 .bb{background:rgba(42,157,244,.15);color:#8ed0ff;border:1px solid rgba(42,157,244,.4)}
 .ball.hit{outline:2px solid var(--gold);outline-offset:-1px;box-shadow:0 0 8px rgba(244,162,97,.55)}
@@ -1040,7 +1040,7 @@ function historyTableHtml(m, loaded){
   var total = rows.length;
   var isAll = loaded === 'all' || loaded >= total;
   var list = isAll ? rows : rows.slice(-loaded);
-  var html = '<div class="hist-scroll"><table class="dtable"><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金</th><th>投入</th><th>净收益</th><th></th></tr></thead><tbody>';
+  var html = '<div class="hist-scroll"><table class="dtable"><colgroup><col style="width:18%"><col style="width:auto"><col style="width:14%"><col style="width:12%"><col style="width:12%"><col style="width:14%"><col style="width:8%"></colgroup><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金</th><th>投入</th><th>净收益</th><th></th></tr></thead><tbody>';
   var tPrize = 0, tWin = 0, tNet = 0, tInv = 0, tBets = 0;
   for(var i=0;i<list.length;i++){
     var r = list[i];
