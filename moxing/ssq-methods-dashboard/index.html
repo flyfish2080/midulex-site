@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>双色球投注方法实验 · 3497期回测报告</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23dc2626'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fbbf24'/%3E%3C/svg%3E">
+<script src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2d333b;
+    --txt:#e6edf3; --sub:#8b949e; --red:#dc2626; --teal:#0d9488; --blue:#3b82f6;
+    --amber:#f59e0b; --green:#22c55e; --gray:#9ca3af;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:'Microsoft YaHei','PingFang SC','Segoe UI',sans-serif;line-height:1.6;padding:24px 16px 48px}
+  .wrap{max-width:1180px;margin:0 auto}
+  header h1{font-size:26px;font-weight:800;letter-spacing:.5px}
+  header .sub{color:var(--sub);font-size:13px;margin-top:6px}
+  .badges{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .badge{font-size:12px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);color:var(--sub);background:var(--panel)}
+  .badge b{color:var(--txt)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:20px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .kpi .v{font-size:26px;font-weight:800}
+  .kpi .l{font-size:12px;color:var(--sub);margin-top:4px}
+  .kpi.red .v{color:var(--red)} .kpi.teal .v{color:var(--teal)} .kpi.blue .v{color:var(--blue)} .kpi.amber .v{color:var(--amber)}
+  .section{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:20px;padding:20px}
+  .section h2{font-size:17px;font-weight:700;margin-bottom:4px}
+  .section .desc{font-size:12.5px;color:var(--sub);margin-bottom:14px}
+  .chart{width:100%;height:480px}
+  .chart.tall{height:560px}
+  .note{font-size:12px;color:var(--sub);margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+  colgroup col:nth-child(1){width:22%} col:nth-child(2){width:13%} col:nth-child(3){width:13%}
+  colgroup col:nth-child(4){width:13%} col:nth-child(5){width:13%} col:nth-child(6){width:13%}
+  colgroup col:nth-child(7){width:13%}
+  th,td{padding:8px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  th{color:var(--sub);font-weight:600;font-size:12px}
+  td:first-child,th:first-child{text-align:left}
+  td.up{color:var(--red)} td.ok{color:var(--green)}
+  tr.head-row td{background:rgba(220,38,38,.08);color:var(--red);font-weight:700}
+  tr.best-row td{background:rgba(13,148,136,.1);color:var(--teal);font-weight:700}
+  tr.base-row td{background:rgba(156,163,175,.08);color:var(--gray)}
+  .concl{background:linear-gradient(135deg,rgba(13,148,136,.12),rgba(59,130,246,.08));border:1px solid rgba(13,148,136,.35)}
+  .concl ul{list-style:none;margin-top:8px}
+  .concl li{font-size:13.5px;padding:7px 0 7px 26px;position:relative;border-bottom:1px dashed rgba(139,148,158,.25)}
+  .concl li:last-child{border-bottom:none}
+  .concl li::before{content:"";position:absolute;left:4px;top:13px;width:9px;height:9px;border-radius:50%}
+  .concl li.c1::before{background:var(--red)} .concl li.c2::before{background:var(--teal)} .concl li.c3::before{background:var(--amber)} .concl li.c4::before{background:var(--blue)}
+  .warn{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.35);border-radius:12px;padding:18px 20px;margin-top:20px;font-size:13.5px}
+  .warn b{color:var(--red)}
+  .foot{color:var(--sub);font-size:11.5px;margin-top:22px;text-align:center}
+  .method-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--sub);margin-top:10px}
+  .method-legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  @media (max-width:760px){
+    header h1{font-size:20px}
+    .chart{height:420px}
+    body{padding:16px 10px 36px}
+    th,td{font-size:11.5px;padding:7px 3px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>双色球投注方法实验报告</h1>
+    <div class="sub">20 种投注方法 × 3497 期历史回测（2003-02 至 2026-08，第 2003001–2026100 期）· 数据源：ssq.db · 统一奖级口径，全程可复算</div>
+    <div class="badges">
+      <span class="badge">回测期数 <b>3,497</b></span>
+      <span class="badge">投注方法 <b>20</b></span>
+      <span class="badge">奖级：三等3000 / 四等200 / 五等10 / 六等5</span>
+      <span class="badge">一二等固定简化：500万 / 10万</span>
+      <span class="badge">随机种子验证：5组</span>
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi red"><div class="v">全部亏损</div><div class="l">19种诚实方法3497期全部负收益，无任何方法能改变彩票数学期望</div></div>
+    <div class="kpi amber"><div class="v">21,984%</div><div class="l">映射法回测回报率——过拟合假象，分段检验已证伪</div></div>
+    <div class="kpi teal"><div class="v">24.9%</div><div class="l">最优覆盖法5组种子平均回报率，中奖频率13.3%/期、单期仅4元</div></div>
+    <div class="kpi blue"><div class="v">20.16%</div><div class="l">随机单式基准回报率——所有方法差异均在样本噪声范围内</div></div>
+  </div>
+
+  <div class="section">
+    <h2>一、20 种方法回报率对比</h2>
+    <div class="desc">横向条形图，按回报率降序。红色=映射法（过拟合假象）；青色=最优覆盖法；灰色虚线=随机单式基线 20.16%。</div>
+    <div id="chartRoi" class="chart tall"></div>
+    <div class="method-legend">
+      <span><i class="dot" style="background:#dc2626"></i>映射法（假象）</span>
+      <span><i class="dot" style="background:#0d9488"></i>最优覆盖法</span>
+      <span><i class="dot" style="background:#3b82f6"></i>其余18种方法</span>
+      <span><i class="dot" style="background:#9ca3af"></i>随机基线</span>
+    </div>
+    <div class="note">数据口径：总奖金÷总投入×100。方法间每期注数不同（2~7注），回报率按投入金额归一，可直接比较。</div>
+  </div>
+
+  <div class="section">
+    <h2>二、映射法过拟合检验：分段回报率断崖</h2>
+    <div class="desc">把 3497 期切成三段。若方法真有预测力，各段应表现接近；实际是前段 58,973% → 中段 6,966% → 后段 51%，最近 1/3 段回归真实返奖率。</div>
+    <div id="chartSeg" class="chart" style="height:380px"></div>
+    <div class="note">映射表由历史数据拟合而来（find_ssq_100_percent 系列），在拟合过的历史上"命中"是必然结果，对未来开奖零预测力。</div>
+  </div>
+
+  <div class="section">
+    <h2>三、多随机种子稳定性验证</h2>
+    <div class="desc">同一方法换 5 组随机种子重跑，观察回报率波动。单次高回报率（如和值法 311%、最优覆盖 41%）换种子即消失，证明是运气而非优势。</div>
+    <div id="chartSeed" class="chart" style="height:400px"></div>
+    <div class="note">映射法 5 组种子结果完全相同（确定性拟合），佐证其与随机无关。其余方法多种子平均收敛到 20–25%。</div>
+  </div>
+
+  <div class="section">
+    <h2>四、20 种方法完整回测指标</h2>
+    <div class="desc">按回报率降序。净收益为负 = 亏损。红行=过拟合假象；青行=结构最优；灰行=随机基准。</div>
+    <div style="overflow-x:auto">
+    <table>
+      <colgroup><col style="width:22%"><col style="width:13%"><col style="width:13%"><col style="width:13%"><col style="width:13%"><col style="width:13%"><col style="width:13%"></colgroup>
+      <thead><tr><th>方法</th><th>总投入(元)</th><th>总奖金(元)</th><th>净收益(元)</th><th>回报率</th><th>中奖期率</th><th>正收益期率</th></tr></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+    </div>
+    <div class="note">中奖期率=当期中出任意奖金的期数占比；正收益期率=单期奖金大于单期投入的期数占比。一二等奖在 3,497 期 × 数注的回测中几乎不会命中（一等概率 1/1772 万），不影响方法间排序。</div>
+  </div>
+
+  <div class="section concl">
+    <h2>五、结论与建议</h2>
+    <ul>
+      <li class="c1">双色球每期开奖均匀独立随机，任何选号方法都无法改变长期期望——19 种诚实方法 3497 期全部亏损即是证明。</li>
+      <li class="c2">效果最好的方法（就"亏得最慢+中奖体验"而言）：最优覆盖法——2 注红球零重叠覆盖 12 个号 + 2 个不同蓝球，中奖频率稳定 13.3%/期，单期仅 4 元。</li>
+      <li class="c3">想提高中奖频率，优先覆盖蓝球（2 个不同蓝球 = 12.5% 中蓝概率），红球花样不改变任何概率。</li>
+      <li class="c4">远离"规律/模型/必中"类方法：映射法、100% 模型等均为历史过拟合，回测数字漂亮但分段检验即现原形，对未来开奖零预测力。</li>
+    </ul>
+  </div>
+
+  <div class="warn"><b>理性购彩提示：</b>双色球返奖率约 50%，长期每投入 100 元约亏损 50 元（本回测中为 20–25%，因一二等奖按固定值简化且固定奖返奖率本就偏低）。本页面所有内容均为历史数据分析，不构成任何投注建议；请以娱乐心态购彩、严格控制预算。</div>
+
+  <div class="foot">生成于 2026-09-16 · 脚本 compare_ssq_methods.py / verify_ssq_methods.py · 数据 ssq_methods_compare.json · 欢迎复算</div>
+</div>
+
+<script>
+/* ===== 数据（来自 ssq_methods_compare.json / verify 输出）===== */
+var RAW = [
+  {n:'映射法(系统)', cost:34670, win:7622030, net:7587360, roi:21984.51, wr:10.0, pr:9.1, tag:'fake'},
+  {n:'最优覆盖法(系统)', cost:13868, win:5705, net:-8163, roi:41.14, wr:13.3, pr:13.3, tag:'best'},
+  {n:'区间均衡法', cost:34670, win:11225, net:-23445, roi:32.38, wr:30.7, pr:1.5, tag:''},
+  {n:'和值法', cost:34670, win:10160, net:-24510, roi:29.30, wr:28.8, pr:1.3, tag:''},
+  {n:'胆拖(2胆5拖)', cost:34670, win:9235, net:-25435, roi:26.64, wr:29.4, pr:1.8, tag:''},
+  {n:'上期重号法', cost:34670, win:8625, net:-26045, roi:24.88, wr:29.4, pr:1.5, tag:''},
+  {n:'五行法(系统)', cost:13868, win:3395, net:-10473, roi:24.48, wr:9.4, pr:9.4, tag:''},
+  {n:'尾数法', cost:34670, win:8485, net:-26185, roi:24.47, wr:31.4, pr:1.6, tag:''},
+  {n:'均衡覆盖法(系统)', cost:13868, win:3310, net:-10558, roi:23.87, wr:12.8, pr:12.8, tag:''},
+  {n:'奇偶均衡法', cost:34670, win:8020, net:-26650, roi:23.13, wr:29.2, pr:1.1, tag:''},
+  {n:'统计拟合法(系统)', cost:6934, win:1600, net:-5334, roi:23.07, wr:6.1, pr:6.1, tag:''},
+  {n:'和洛旋法(系统)', cost:13868, win:3185, net:-10683, roi:22.97, wr:12.1, pr:12.1, tag:''},
+  {n:'冷号介入法', cost:34670, win:7940, net:-26730, roi:22.90, wr:29.5, pr:1.4, tag:''},
+  {n:'旋转矩阵(7码)', cost:48538, win:10875, net:-37663, roi:22.41, wr:7.8, pr:7.8, tag:''},
+  {n:'蓝复式(6+5)', cost:34670, win:7520, net:-27150, roi:21.69, wr:31.9, pr:0.4, tag:''},
+  {n:'红复式(7+1)', cost:48538, win:10235, net:-38303, roi:21.09, wr:7.4, pr:7.4, tag:''},
+  {n:'邻号法', cost:34670, win:7245, net:-27425, roi:20.90, wr:27.3, pr:1.1, tag:''},
+  {n:'热号追踪法', cost:34670, win:7165, net:-27505, roi:20.67, wr:30.1, pr:1.0, tag:''},
+  {n:'随机单式(基准)', cost:34670, win:6990, net:-27680, roi:20.16, wr:29.1, pr:1.1, tag:'base'},
+  {n:'还原法(系统)', cost:13868, win:2665, net:-11203, roi:19.22, wr:12.5, pr:12.5, tag:''}
+];
+var SEED_DATA = {
+  '随机5注':[20.2,null,null,null,null],
+  '最优覆盖':[41.14,20.66,21.88,21.02,19.97],
+  '区间均衡':[24.91,20.65,21.06,21.65,22.86],
+  '胆拖':[26.64,23.42,23.46,24.57,25.27],
+  '上期重号':[24.88,22.56,30.99,23.38,19.41],
+  '和值法':[29.30,311.16,24.99,24.29,30.30],
+  '映射法':[21984.51,null,null,null,null]
+};
+var SEG = [
+  {name:'前1/3段\n2003~2010', v:58973.51},
+  {name:'中1/3段\n2010~2018', v:6966.58},
+  {name:'后1/3段\n2018~2026', v:51.43}
+];
+
+function esc(s){return String(s);}
+function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e4?(n/1e3).toFixed(1)+'k':n.toLocaleString();}
+
+/* ===== 表格 ===== */
+(function(){
+  var rows='';
+  RAW.forEach(function(r){
+    var cls = r.tag==='fake'?'head-row':(r.tag==='best'?'best-row':(r.tag==='base'?'base-row':''));
+    var netCls = r.net>0?'up':'ok';
+    rows += '<tr class="'+cls+'"><td>'+r.n+'</td><td>'+fmt(r.cost)+'</td><td>'+fmt(r.win)+'</td>'
+          + '<td class="'+netCls+'">'+(r.net>0?'+':'')+fmt(r.net)+'</td><td>'+r.roi.toFixed(2)+'%</td>'
+          + '<td>'+r.wr.toFixed(1)+'%</td><td>'+r.pr.toFixed(1)+'%</td></tr>';
+  });
+  document.getElementById('tblBody').innerHTML=rows;
+})();
+
+/* ===== ECharts 渲染（CDN 失败则自动降级为表格，页面不空白）===== */
+function baseTooltip(trigger){return {trigger:trigger||'axis',triggerOn:'mousemove|click',renderMode:'richText',confine:true};}
+function renderCharts(){
+  if(typeof echarts==='undefined'){return;} // 降级：表格已渲染
+  /* 图一：回报率对比 */
+  var names=RAW.map(function(r){return r.n;});
+  var vals=RAW.map(function(r){return r.roi;});
+  var c1=echarts.init(document.getElementById('chartRoi'));
+  c1.setOption({
+    backgroundColor:'transparent',
+    tooltip:Object.assign(baseTooltip('axis'),{formatter:function(ps){
+      if(!ps||!ps[0])return'';var i=ps[0].dataIndex,r=RAW[i];
+      return r.n+'<br>回报率 '+r.roi.toFixed(2)+'%<br>总投入 '+fmt(r.cost)+' 元<br>总奖金 '+fmt(r.win)+' 元<br>净收益 '+(r.net>0?'+':'')+fmt(r.net)+' 元';
+    }}),
+    grid:{left:8,right:96,top:10,bottom:8,containLabel:true},
+    xAxis:{type:'value',axisLabel:{fontSize:11,color:'#8b949e',formatter:function(v){return v>=10000?(v/100).toFixed(0)+'万':v;}}},
+    yAxis:{type:'category',inverse:true,data:names,axisLabel:{fontSize:11,color:'#8b949e'}},
+    series:[{
+      type:'bar',barWidth:'58%',data:vals,
+      itemStyle:{color:function(p){return p.dataIndex===0?'#dc2626':(p.dataIndex===1?'#0d9488':'#3b82f6');}},
+      label:{show:true,position:'right',fontSize:10,color:'#8b949e',formatter:function(p){return p.value>=100?(p.value/100).toFixed(0)+'万%':p.value.toFixed(1)+'%';}},
+      markLine:{silent:true,symbol:'none',lineStyle:{type:'dashed',color:'#9ca3af'},
+        label:{show:true,position:'insideEndTop',formatter:'随机基线 20.16%',fontSize:10,color:'#9ca3af'},
+        data:[{xAxis:20.16}]}
+    }]
+  });
+  window.addEventListener('resize',function(){c1.resize();});
+
+  /* 图二：映射法分段 */
+  var c2=echarts.init(document.getElementById('chartSeg'));
+  c2.setOption({
+    backgroundColor:'transparent',
+    tooltip:Object.assign(baseTooltip('axis'),{formatter:function(ps){if(!ps||!ps[0])return'';var i=ps[0].dataIndex;return SEG[i].name.replace('\n',' ')+'<br>回报率 '+SEG[i].v.toFixed(0)+'%';}}),
+    grid:{left:8,right:40,top:10,bottom:8,containLabel:true},
+    xAxis:{type:'category',data:SEG.map(function(s){return s.name;}),axisLabel:{fontSize:11,color:'#8b949e'}},
+    yAxis:{type:'log',name:'回报率 %（对数轴）',nameTextStyle:{color:'#8b949e',fontSize:10},axisLabel:{fontSize:11,color:'#8b949e',formatter:function(v){return v>=10000?(v/100).toFixed(0)+'万':v;}}},
+    series:[{
+      type:'bar',barWidth:'40%',data:SEG.map(function(s){return s.v;}),
+      itemStyle:{color:function(p){return p.dataIndex===2?'#0d9488':'#dc2626';}},
+      label:{show:true,position:'top',fontSize:11,formatter:function(p){return p.value.toFixed(0)+'%';},color:'#e6edf3'}
+    }]
+  });
+  window.addEventListener('resize',function(){c2.resize();});
+
+  /* 图三：多seed稳定性 */
+  var keys=Object.keys(SEED_DATA);
+  var c3=echarts.init(document.getElementById('chartSeed'));
+  c3.setOption({
+    backgroundColor:'transparent',
+    tooltip:Object.assign(baseTooltip('item'),{formatter:function(p){
+      if(!p)return'';var k=keys[p.seriesIndex],v=p.value;
+      return k+' · seed='+['42','7','123','2024','999'][p.dataIndex]+'<br>回报率 '+(v===null?'—':v.toFixed(2)+'%');
+    }}),
+    legend:{top:0,textStyle:{color:'#8b949e',fontSize:11},type:'scroll'},
+    grid:{left:8,right:40,top:36,bottom:8,containLabel:true},
+    xAxis:{type:'category',data:['seed 42','seed 7','seed 123','seed 2024','seed 999'],axisLabel:{fontSize:11,color:'#8b949e'}},
+    yAxis:{type:'value',name:'回报率 %',nameTextStyle:{color:'#8b949e',fontSize:10},axisLabel:{fontSize:11,color:'#8b949e',formatter:function(v){return v>=1000?(v/100).toFixed(0)+'万':v;}}},
+    series:keys.map(function(k,i){
+      return {name:k,type:'line',connectNulls:false,smooth:true,showSymbol:true,symbolSize:7,
+        lineStyle:{width:2},data:SEED_DATA[k],
+        itemStyle:{color:['#3b82f6','#0d9488','#f59e0b','#22c55e','#a78bfa','#e11d48','#dc2626'][i]}};
+    })
+  });
+  window.addEventListener('resize',function(){c3.resize();});
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderCharts);}else{renderCharts();}
+</script>
+</body>
+</html>
