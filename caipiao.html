@@ -564,7 +564,10 @@ footer .b{color:var(--text2)}
 .analysis-box .concl{color:var(--gold);font-weight:700}
 .killnote{font-size:12px;color:var(--text3);margin-top:10px}
 
-.dtable{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+.dtable{width:100%;border-collapse:collapse;margin-top:0;font-size:13px;table-layout:fixed}
+.hist-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+.dtable .ball{width:19px;height:19px;font-size:10px;margin:0 1px}
+.dtable .balls{letter-spacing:0;white-space:nowrap}
 .dtable th{background:var(--card2);color:var(--text2);font-weight:600;padding:8px 6px;border:1px solid var(--line);text-align:center;font-size:12px}
 .dtable td{padding:7px 6px;border:1px solid var(--line);text-align:center;color:var(--text)}
 .drow{cursor:pointer}
@@ -912,7 +915,7 @@ function historyTableHtml(m, loaded){
   var total = rows.length;
   var isAll = loaded === 'all' || loaded >= total;
   var list = isAll ? rows : rows.slice(-loaded);
-  var html = '<table class="dtable"><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金(元)</th><th>投入(元)</th><th>净收益(元)</th><th></th></tr></thead><tbody>';
+  var html = '<div class="hist-scroll"><table class="dtable"><colgroup><col style="width:50px"><col><col style="width:54px"><col style="width:62px"><col style="width:54px"><col style="width:72px"><col style="width:32px"></colgroup><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金</th><th>投入</th><th>净收益</th><th></th></tr></thead><tbody>';
   var tPrize = 0, tWin = 0, tNet = 0, tInv = 0, tBets = 0;
   for(var i=0;i<list.length;i++){
     var r = list[i];
@@ -945,14 +948,14 @@ function historyTableHtml(m, loaded){
     html += '</tbody></table></div></td></tr>';
   }
   var roi = tInv>0 ? (tPrize/tInv*100).toFixed(2) : '0';
-  html += '<tr class="dsum"><td colspan="6" style="text-align:left">合计（投注 ' + tBets + ' 期）：总投入 ' + tInv + ' 元 · 总奖金 ' + tPrize + ' 元 · 总中奖 ' + tWin + ' 注 · 回报率 ' + roi + '%</td>' +
+  html += '<tr class="dsum"><td colspan="6" style="text-align:left">合计 ' + tBets + ' 期 · 投入 ' + tInv + ' · 奖金 ' + tPrize + ' · 中奖 ' + tWin + ' 注 · ROI ' + roi + '%</td>' +
     '<td style="color:' + (tNet>0 ? 'var(--green)' : 'var(--red)') + ';font-weight:800">' + (tNet>0 ? '+' : '') + tNet + ' 元</td></tr>';
   if(isAll){
     html += '<tr class="dmore"><td colspan="7" style="font-size:12px;color:var(--green);text-align:center">✅ 已加载全部 ' + total + ' 期</td></tr>';
   } else {
     html += '<tr class="dmore"><td colspan="7" style="text-align:center"><button class="hf-btn load-more" onclick="loadMore(\'' + m.name + '\')">加载更多 ▾（已显示最近 ' + loaded + ' 期，点击再 +100 期）</button></td></tr>';
   }
-  html += '</tbody></table>';
+  html += '</tbody></table></div>';
   return html;
 }
 function renderHistoryRange(name, val){
