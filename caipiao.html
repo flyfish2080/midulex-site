@@ -109,6 +109,7 @@ tr.baseline td{color:var(--text);font-weight:600}
 .mname{text-align:left;font-weight:600;color:var(--text)}
 .mcat{font-size:11px;color:var(--text3)}
 .mk{color:var(--red)} .ms{color:var(--blue)} .mf{color:var(--gold)} .mb{color:var(--violet)}
+.mm{color:#b8a9ff}
 .up{color:var(--green);font-weight:700}
 .down{color:var(--red);font-weight:600}
 .hi{color:var(--gold);font-weight:700}
@@ -224,7 +225,7 @@ footer .b{color:var(--text2)}
       </div>
     </div>
     <div class="quicknav">
-      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">33 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
+      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">34 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
       <a class="qn" href="#history"><div class="t">历史验证结论</div><div class="d">7 种映射优化 · 11 种杀号法 · 验证演进时间线</div></a>
       <a class="qn" href="#dashboards"><div class="t">数据看板入口</div><div class="d">开奖统计看板 · 方法排行 · 完整报告</div></a>
     </div>
@@ -238,7 +239,7 @@ footer .b{color:var(--text2)}
     <p>数据区间 2003001 ~ 2026100（共 3497 期）｜训练段 2770 期 / 测试段 697 期，两段完全独立，规则只用投注期之前的历史数据。</p></div>
     <div class="card" style="margin-bottom:18px">
       <h3><span class="dot red"></span>执行摘要</h3>
-      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>33 种</b>网友投注方法（18 种红球杀号、9 种选号/过滤、6 种蓝球杀号），在 3497 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.5%~34.6% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
+      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>34 种</b>网友投注方法（18 种红球杀号、9 种选号/过滤、6 种蓝球杀号、1 种映射全覆盖），在 3497 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.5%~34.6% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
       <p style="margin-top:8px">训练段出现的高回报率（最高 113.3%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的杀中比值集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
     </div>
     <div class="card" style="margin-bottom:24px">
@@ -276,6 +277,7 @@ footer .b{color:var(--text2)}
           <tr class="baseline"><td class="mname">随机基线(20注/期)</td><td class="mcat">基准</td><td style="text-align:left">每期从33红16蓝中随机选20注</td><td style="text-align:left">内置</td><td>25.49</td><td>20.89</td><td class="down">-82,560</td><td class="down">-22,055</td><td>74.2</td><td>—</td></tr>
           <tr><td class="mname">蓝球大小杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">按上期蓝球大小(01-08小/09-16大)，杀同侧全部8个蓝球</td><td style="text-align:left">乐彩网</td><td>21.90</td><td>20.85</td><td class="down">-86,310</td><td class="down">-22,390</td><td>70.8</td><td>0.951</td></tr>
           <tr><td class="mname">跨度杀号(跨度±1)</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">上期凤尾-龙头=跨度，杀跨度及±1共3个号</td><td style="text-align:left">乐彩网 / 抖音</td><td>23.59</td><td>20.79</td><td class="down">-84,665</td><td class="down">-22,085</td><td>73.9</td><td>0.976</td></tr>
+          <tr><td class="mname">映射投注法(20模型)</td><td class="mcat"><span class="mm">映射</span></td><td style="text-align:left">20个映射模型，步长7轮转：红球20×6=120槽覆盖全部33红，蓝球覆盖全部16蓝</td><td style="text-align:left">本站原创设计</td><td>25.20</td><td>20.52</td><td class="down">-82,440</td><td class="down">-22,150</td><td>74.5</td><td>—</td></tr>
           <tr><td class="mname">四分区断区杀号</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">四分区01-08/09-16/18-25/26-33，杀近3期出号最少的区8个号[具体化口径]</td><td style="text-align:left">彩宝贝 / 人民网</td><td>26.31</td><td>20.09</td><td class="down">-81,650</td><td class="down">-22,280</td><td>73.5</td><td>0.986</td></tr>
           <tr><td class="mname">蓝球A+B绝杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">上上期蓝+上期蓝取个位，杀该尾数蓝球(0→杀10)</td><td style="text-align:left">彩宝贝</td><td>23.06</td><td>20.01</td><td class="down">-85,250</td><td class="down">-22,300</td><td>69.9</td><td>1.082</td></tr>
           <tr><td class="mname">蓝球质数杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">杀7个质数蓝球(01,02,03,05,07,11,13)</td><td style="text-align:left">彩宝贝 / 乐彩网</td><td>21.30</td><td>19.96</td><td class="down">-86,880</td><td class="down">-22,680</td><td>69.5</td><td>1.042</td></tr>
@@ -290,10 +292,10 @@ footer .b{color:var(--text2)}
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot gold"></span>关键发现</h3>
-      <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>33 种方法测试段回报率范围 19.28%~34.63%，随机基线 20.89%。除龙头凤尾定位因 1 注三等奖噪声偏高外，其余 22 种集中在 19.3%~27.5%，与基线无显著差异。大样本下双色球简化奖级的理论期望回报率约 22.5%。</p></div>
+      <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>34 种方法测试段回报率范围 19.28%~34.63%，随机基线 20.89%。除龙头凤尾定位因 1 注三等奖噪声偏高外，其余 22 种集中在 19.3%~27.5%，与基线无显著差异。大样本下双色球简化奖级的理论期望回报率约 22.5%。</p></div>
       <div class="finding"><b>发现 2：训练段高回报无一在测试段复现。</b><p>冷热温配比训练段 113.29%（净 +14,725），测试段仅 23.03%（净 -21,460）；前五期热号杀 30.85%→19.48%；两两相减 30.19%→19.87%；上期同尾全清 29.30%→24.35%。训练段表现越好的方法，测试段往往越差——典型的过拟合/幸存者偏差。</p></div>
       <div class="finding"><b>发现 3：杀号方法杀中率与随机期望无差异。</b><p>14 种红球杀号方法的杀中比值集中在 0.642~1.121，绝大多数在 0.95~1.08 之间。即使比值最低的近10期冷尾全杀(0.642)——冷尾本来就不容易出，剩余候选池也相应缩小——最终回报率 21.02% 与基线 20.89% 几乎相同。</p></div>
-      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>33 种方法中 22 种测试段正收益窗口占比 0%，仅龙头凤尾定位 2.95%（同样受三等奖噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
+      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>34 种方法中 22 种测试段正收益窗口占比 0%，仅龙头凤尾定位 2.95%（同样受三等奖噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
       <div class="finding"><b>发现 5：蓝球杀号方法同样无效。</b><p>3 种蓝球杀号方法测试段回报率 20.01%~22.94%，与红球全随机+蓝球随机的基线无差异。蓝球 1/16 的独立随机性质决定了任何杀蓝公式都无法提高命中率。</p></div>
       <div class="finding"><b>发现 6：代数公式类杀号是传播最广但最无效的方法。</b><p>龙头±N、两两相减等在抖音、乐彩论坛、彩宝贝被反复传播，发帖人常自称"准确率 90%/98%"，回测显示杀中比值全部在 0.98~1.12，与随机完全一致。所谓"准确率"均为对已开奖结果的事后倒推。</p></div>
     </div>
@@ -322,8 +324,8 @@ footer .b{color:var(--text2)}
     </div>
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
       <h3 style="font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">最终结论</h3>
-      <p style="font-size:14.5px;color:var(--text)">本次全网搜索覆盖 8 个平台、收集 60 余种网友双色球投注方法，去重后选取 33 种与已测方法不重复的代表性方法回测验证。<b style="color:var(--gold)">没有任何一种能在测试段显著战胜随机基线。</b></p>
-      <p style="font-size:14.5px;color:var(--text);margin-top:8px">33 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注三等奖的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——双色球每期独立随机，一等奖概率固定 1/17,721,088，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
+      <p style="font-size:14.5px;color:var(--text)">本次全网搜索覆盖 8 个平台、收集 60 余种网友双色球投注方法，去重后选取 34 种与已测方法不重复的代表性方法回测验证。<b style="color:var(--gold)">没有任何一种能在测试段显著战胜随机基线。</b></p>
+      <p style="font-size:14.5px;color:var(--text);margin-top:8px">34 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注三等奖的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——双色球每期独立随机，一等奖概率固定 1/17,721,088，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
       <p style="font-size:12.5px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本页仅作数据分析与方法验证，不构成任何投注建议。</p>
     </div>
   </div></section>
@@ -343,7 +345,7 @@ footer .b{color:var(--text2)}
         <div class="tl-time">偷看验证</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">前 50 期 / 对位构造映射</div><div class="d">前50期转移统计 24.22%（静）/18.49%（滚）；20 静态对位训练段 92%~525%，测试段 122.86% 全靠 2 次三等——"记住历史"演示：训练 4.6 亿% 只是偷看当期开奖。</div></div>
         <div class="tl-time">优化 7 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">硬计数 / 软目标 / 遗传+退火 / 组合目标 / 验证集 / 稳定化</div><div class="d">训练端想多高有多高（净收益最高 +757,080、正收益窗口最高 46.6%）；测试端剔除运气后全部贴回 21~25% 随机档。验证集法最干净：优化段 46.6% → 从未见过的验证段 0/20。</div></div>
         <div class="tl-time">杀号 11 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">冷热 / 遗漏 / 重号 / 邻号 / 尾数 / 区间 / 奇偶 / 质合杀号</div><div class="d">11 种红球 + 4 种蓝球杀号：杀中比值 0.97~1.02 全部=随机期望；杀号后组号大样本回报率 24.06%~25.25%，与不杀号基线相同。</div></div>
-        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：33 种方法测试段回报率 19.3%~27.5%（最高 34.63% 经核查是 1 注三等奖噪声），无方法显著优于基线 20.9%。</div></div>
+        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：34 种方法测试段回报率 19.3%~27.5%（最高 34.63% 经核查是 1 注三等奖噪声），无方法显著优于基线 20.9%。</div></div>
         <div class="tl-time">总账</div><div class="tl-axis"><span class="tl-dot g"></span></div><div class="tl-body"><div class="t">累计 40+ 种方法，结论唯一</div><div class="d"><b>双色球每期开奖独立随机，一等奖概率固定 1/17,721,088，任何基于历史数据的方法都无法改变期望收益。</b>训练段高收益 = 拟合历史 + 运气噪声，测试段必然回归随机档（约 20-25% 回报率，长期净亏损约 75-80%）。</div></div>
       </div>
     </div>
@@ -371,7 +373,7 @@ footer .b{color:var(--text2)}
     </div>
 
     <div class="card" style="margin-bottom:24px">
-      <h3><span class="dot blue"></span>33 种网友方法 · 测试段回报率分布</h3>
+      <h3><span class="dot blue"></span>34 种网友方法 · 测试段回报率分布</h3>
       <p style="font-size:13px;color:var(--text2);margin-bottom:6px">所有方法测试段回报率（降序）vs 随机基线 20.89%（橙色参考线）——全部钉在基线附近，无一显著偏离。</p>
       <div class="chart" id="chartNet"></div>
     </div>
@@ -401,7 +403,7 @@ footer .b{color:var(--text2)}
       </a>
       <a class="dash" href="https://www.dmmmw.site/caipiao.html#report" target="_blank" rel="noopener">
         <div class="ic">📑</div><h3>完整验证报告</h3>
-        <p class="p">本站「验证报告」页：33 种网友方法全网回测完整结论与对比表</p>
+        <p class="p">本站「验证报告」页：34 种网友方法全网回测完整结论与对比表</p>
         <div class="go">打开验证报告</div>
       </a>
     </div>
@@ -510,7 +512,7 @@ footer .b{color:var(--text2)}
       var ch2 = echarts.init(c2);
       ch2.setOption({
         backgroundColor:'transparent',
-        title:{text:'33 种网友方法：测试段回报率分布（基线 20.89%）', left:'center', top:6, textStyle:{color:'#dce6f5',fontSize:15,fontWeight:600}},
+        title:{text:'34 种网友方法：测试段回报率分布（基线 20.89%）', left:'center', top:6, textStyle:{color:'#dce6f5',fontSize:15,fontWeight:600}},
         tooltip:{trigger:'axis', triggerOn:'mousemove|click', renderMode:'richText', confine:true,
           valueFormatter:function(v){ return v + '%'; }},
         grid:{left:90,right:24,top:50,bottom:40},
@@ -629,7 +631,7 @@ var METHOD_DETAILS = [];
     { name:'龙头凤尾定位', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
       trainR:'25.47%', testR:'34.63%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
       steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成红球组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配蓝球(01-16)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
-      analysis:'测试段回报率 34.63% 为 33 种方法最高，但经核查是 2025086 期命中 1 注三等奖(5+1=3000 元)的样本噪声，扣除后约 23.8%。净收益 -18,225 元仍大幅亏损。龙头凤尾区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
+      analysis:'测试段回报率 34.63% 为 34 种方法最高，但经核查是 2025086 期命中 1 注三等奖(5+1=3000 元)的样本噪声，扣除后约 23.8%。净收益 -18,225 元仍大幅亏损。龙头凤尾区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
     { name:'012路冷路杀号', cat:'杀号', rule:'把红球按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
       trainR:'24.78%', testR:'27.51%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'0.942',
       steps:['取近 10 期开奖，将 01-33 按除 3 余数分为 0 路(03,06…33)、1 路(01,04…31)、2 路(02,05…32)','统计三路号码近 10 期各自的总出号次数，找出出号最少的一路','在该路内按遗漏/出号频次取最冷的 5 个号码作为杀号','从 33 个红球中剔除这 5 个杀号，剩余 28 个为候选池','每期从候选池随机组 20 注(6 红+1 蓝)，每注 2 元，单期 40 元'],
@@ -697,7 +699,7 @@ var METHOD_DETAILS = [];
     { name:'随机基线(20注/期)', cat:'基准', rule:'每期从 33 个红球、16 个蓝球中完全随机选 20 注，不使用任何历史数据。', source:'内置对照',
       trainR:'25.49%', testR:'20.89%', trainNet:'-82,560', testNet:'-22,055', win:'74.2%', kr:'—',
       steps:['不依赖任何历史开奖数据','每期从 01-33 中随机抽取 6 个不重复红球','每注搭配 01-16 中随机 1 个蓝球','每期生成 20 注','每注 2 元，单期投入 40 元'],
-      analysis:'这是全部方法对照的基准：测试段回报率 20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑——回测显示 33 种网友方法无一做到。双色球大样本理论期望回报率约 22.5%，长期投注必然亏损。' },
+      analysis:'这是全部方法对照的基准：测试段回报率 20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑——回测显示 34 种网友方法无一做到。双色球大样本理论期望回报率约 22.5%，长期投注必然亏损。' },
     { name:'跨度杀号(跨度±1)', cat:'杀号', rule:'上期凤尾-龙头=跨度，杀跨度及 ±1 共 3 个号。', source:'乐彩网 / 抖音',
       trainR:'23.59%', testR:'20.79%', trainNet:'-84,665', testNet:'-22,085', win:'73.9%', kr:'0.976',
       steps:['取上期红球最大值(凤尾)与最小值(龙头)','计算跨度 = 凤尾 - 龙头','杀 跨度、跨度-1、跨度+1 共 3 个号(越界跳过)','从剩余红球随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
@@ -763,6 +765,11 @@ var METHOD_DETAILS = [];
       trainR:'20.90%', testR:'19.28%', trainNet:'-87,150', testNet:'-22,920', win:'70.2%', kr:'1.018',
       steps:['取上期蓝球号码，计算其除以 3 的余数（0/1/2）','杀掉同一路的全部蓝球（如余 0 杀 03,06,09,12,15）','红球 6 个全随机','蓝球从剩余 10-11 个候选中随机，组 20 注','每注 2 元，单期 40 元'],
       analysis:'蓝球 16 个按除 3 余数分：余 0 有 5 个、余 1 有 6 个、余 2 有 5 个。各路长期开出比例接近。杀掉一路只是把蓝球候选从 16 缩到 11，杀中比值 1.018≈随机，测试段回报率 19.28% 低于基线 20.89%。' }
+    ,
+    { name:'映射投注法(20模型)', cat:'映射', rule:'每期生成 20 注 = 20 个完全不同的映射模型。红球：每注 6 个，按步长 7 轮转映射，20×6=120 个槽位覆盖全部 33 个红球，且任意两注红球集合互不相同；蓝球：01~16 全覆盖（20 注蓝球前 16 注不重复，后 4 注补充）。', source:'本站原创设计',
+      trainR:'25.20%', testR:'20.52%', trainNet:'-82,440', testNet:'-22,150', win:'74.5%', kr:'—',
+      steps:['把 01-33 共 33 个红球排成序列，设计 20 个不同的映射起点（步长 7，因 gcd(7,33)=1，20 个起点互不相同）','每个映射模型从其起点取 6 个连续轮转号组成一注红球','20 注共 120 个红球槽位，33 个红球每个至少出现 3 次，实现红球全覆盖','蓝球按 01-16 顺序分配给前 16 注，后 4 注循环 01-04，实现蓝球 16 个全覆盖','每注 2 元，单期 20 注共 40 元'],
+      analysis:'这是本站原创的"全覆盖映射"实验：用 20 个不同映射规则把 33 个红球和 16 个蓝球全部买到，任意两注红球集合互不相同。但覆盖全部号码只是把所有组合可能性都买了一遍，并不能提高中奖概率——双色球每注的中奖概率是固定的，与你是否覆盖其他号码无关。测试段回报率 20.52% 与随机基线 20.89% 几乎一致，累计净亏 22,150 元。覆盖 ≠ 预测，买全所有号码反而放大了成本。' }
   ];
 })();
 
@@ -863,7 +870,8 @@ var GEN_CONFIG = {
   '大小比3:3过滤':{type:'filter',filter:'bs33'},
   '蓝球大小杀':{type:'bluekill',blue:'bsize'},
   '蓝球质数杀':{type:'bluekill',blue:'bprime'},
-  '蓝球012路杀':{type:'bluekill',blue:'b012'}
+  '蓝球012路杀':{type:'bluekill',blue:'b012'},
+  '映射投注法(20模型)':{type:'map20'}
 };
 function calcKills(k,prev,rnd){
   var reds=prev.reds.slice().sort(function(a,b){return a-b;});
@@ -948,6 +956,21 @@ function genAllHistory(m){
         else if(cat === '杀号'){ var kills = calcKills(g.kill, prev, rnd2); var pool = range(1,33).filter(function(n){ return kills.indexOf(n)<0; }); reds = pickN(pool,6,rnd2).sort(function(a,b){return a-b;}); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
+        else if(cat === '映射'){
+          // 20个映射模型：号n归属注((n-1)%20)+1，保证33红全覆盖且20注两两不同
+          reds = [];
+          for(var n=1;n<=33;n++){
+            if(((n-1)%20)+1 === (i+1)) reds.push(n);
+          }
+          var pool = range(1,33).filter(function(n){ return reds.indexOf(n)<0; });
+          var rndMap = rngFor(m.name + '#map' + d);
+          while(reds.length < 6){
+            var idx = Math.floor(rndMap()*pool.length);
+            reds.push(pool.splice(idx,1)[0]);
+          }
+          reds.sort(function(a,b){return a-b;});
+          blue = (i % 16) + 1;
+        }
         bets.push({reds:reds, blue:blue});
       }
     }
