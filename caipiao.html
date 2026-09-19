@@ -405,7 +405,6 @@ footer .b{color:var(--text2)}
   <div style="margin-top:8px">理性购彩，量力而行。本站仅作数据分析与方法验证，不构成任何投注建议。</div>
 </div></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <script>
 (function(){
   "use strict";
@@ -437,7 +436,7 @@ footer .b{color:var(--text2)}
     links.forEach(function(a){
       a.classList.toggle('active', a.getAttribute('data-nav') === name);
     });
-    if(name === 'history'){ setTimeout(renderCharts, 60); }
+    if(name === 'history'){ ensureEcharts(function(){ setTimeout(renderCharts, 60); }); }
   }
   function current(){
     var h = (location.hash || '').replace('#','');
@@ -456,8 +455,15 @@ footer .b{color:var(--text2)}
     td.title = td.textContent;
   });
 
-  /* ECharts */
+  /* ECharts：按需加载（进入历史结论页才下载，加速首屏） */
   var drawn = false;
+  function ensureEcharts(cb){
+    if(typeof echarts !== 'undefined'){ cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js';
+    s.onload = function(){ cb(); };
+    document.head.appendChild(s);
+  }
   function renderCharts(){
     if(drawn || typeof echarts === 'undefined') return;
     drawn = true;
