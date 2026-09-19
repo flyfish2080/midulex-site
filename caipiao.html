@@ -586,6 +586,7 @@ footer .b{color:var(--text2)}
 .hf-btn:hover{color:#fff;border-color:var(--blue)}
 .hf-btn.active{background:rgba(42,157,244,.18);border-color:var(--blue);color:#8ed0ff}
 .dsum td{background:rgba(244,162,97,.08);font-weight:700;color:var(--text);font-size:13px;border-top:2px solid var(--line2)}
+.drow.preheat td{color:var(--text3);background:rgba(107,126,163,.05)}
 @media(max-width:640px){
   .detail-head-title{font-size:15px}
   .detail-back{font-size:12px;padding:5px 10px}
@@ -735,7 +736,7 @@ function openMethodDetail(name){
     '</div>' +
     '<div class="vs-baseline">📊 与随机基线对比：测试段回报率 <b>' + m.testR + '</b> vs 随机基线 <b>20.89%</b>' + (parseFloat(m.testR) > 24 ? '，表面略高但多为样本噪声/大奖运气，经核查不具统计显著性' : '，无显著差异') + '；每期 20 注×2 元=40 元成本，测试段累计净亏损 <b style="color:#E63946">' + m.testNet + ' 元</b>。</div>' +
     '</div>' +
-    '<div class="dsec"><h3><span class="n">4</span>历史投注明细（全部测试段 697 期）</h3>' + '<p style="font-size:12px;color:var(--text3);margin-bottom:2px">展示全部测试段 697 期投注：每期 20 注、每注 2 元、投入 40 元；开奖号码与投注号码由固定种子确定性生成，同一方法每次查看结果一致。可用上方按钮筛选显示范围，点击任意期号行可展开查看该期每一注号码与中奖收益。</p>' + renderHistoryDetail(m) + '</div>' + '<div class="dsec"><h3><span class="n">5</span>分析与建议</h3>' +
+    '<div class="dsec"><h3><span class="n">4</span>历史投注明细（全部 3497 期）</h3>' + '<p style="font-size:12px;color:var(--text3);margin-bottom:2px">展示全部 3497 期数据（对应开奖期号 2003001~2026100，按顺序索引显示）：前 30 期为规则预热期，第 31 期起每期投注 20 注、每注 2 元、投入 40 元；开奖与投注号码由固定种子确定性生成，同一方法每次查看结果一致。可用上方按钮筛选显示范围，点击投注期行可展开查看该期每一注号码与中奖收益。</p>' + renderHistoryDetail(m) + '</div>' + '<div class="dsec"><h3><span class="n">5</span>分析与建议</h3>' +
     '<div class="analysis-box">' + m.analysis + '</div>' +
     '<p style="font-size:12px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。</p></div>';
   document.getElementById('detailBody').innerHTML = html;
@@ -844,33 +845,39 @@ function ballHtml(nums,type,hits){
   return h;
 }
 var HISTORY_CACHE = {};
+var HISTORY_CACHE = {};
 function genAllHistory(m){
   if(HISTORY_CACHE[m.name]){ return HISTORY_CACHE[m.name]; }
   var rnd = rngFor(m.name + '#draw');
   var draws = [];
-  for(var i=0;i<698;i++){ draws.push(genDraw(rnd)); }
-  var rows = [], N = 697;
+  for(var i=0;i<3497;i++){ draws.push(genDraw(rnd)); }
+  var rows = [], N = 3497;
   for(var d=1; d<=N; d++){
-    var prev = draws[d-1];
-    prev.bluePrev = d>=2 ? draws[d-2].blue : 1;
-    var rnd2 = rngFor(m.name + '#bet' + d);
-    var g = GEN_CONFIG[m.name], bets = [], cat = m.cat;
-    for(var i=0;i<20;i++){
-      var reds = [], blue = 0;
-      if(cat === '基准' || cat === '选号'){ reds = pickReds(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '杀号'){ var kills = calcKills(g.kill, prev, rnd2); var pool = range(1,33).filter(function(n){ return kills.indexOf(n)<0; }); reds = pickN(pool,6,rnd2).sort(function(a,b){return a-b;}); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
-      bets.push({reds:reds, blue:blue});
+    var prev = d>=2 ? draws[d-2] : null;
+    if(prev){ prev.bluePrev = d>=3 ? draws[d-3].blue : 1; }
+    var bets = [];
+    if(d >= 31){
+      var rnd2 = rngFor(m.name + '#bet' + d);
+      var g = GEN_CONFIG[m.name], cat = m.cat;
+      for(var i=0;i<20;i++){
+        var reds = [], blue = 0;
+        if(cat === '基准' || cat === '选号'){ reds = pickReds(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '杀号'){ var kills = calcKills(g.kill, prev, rnd2); var pool = range(1,33).filter(function(n){ return kills.indexOf(n)<0; }); reds = pickN(pool,6,rnd2).sort(function(a,b){return a-b;}); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
+        bets.push({reds:reds, blue:blue});
+      }
     }
     var prizeTotal = 0, winCount = 0;
-    bets.forEach(function(bet){
-      var mr = intersect(bet.reds, draws[d].reds).length, mb = bet.blue === draws[d].blue;
-      var p = prizeOf(mr, mb);
-      bet.mr = mr; bet.mb = mb; bet.pName = p.n; bet.amount = p.a;
-      if(p.a > 0){ winCount++; prizeTotal += p.a; }
-    });
-    rows.push({idx:d, draw:draws[d], bets:bets, winCount:winCount, prize:prizeTotal, invest:40, net:prizeTotal-40});
+    if(bets.length){
+      bets.forEach(function(bet){
+        var mr = intersect(bet.reds, draws[d-1].reds).length, mb = bet.blue === draws[d-1].blue;
+        var p = prizeOf(mr, mb);
+        bet.mr = mr; bet.mb = mb; bet.pName = p.n; bet.amount = p.a;
+        if(p.a > 0){ winCount++; prizeTotal += p.a; }
+      });
+    }
+    rows.push({idx:d, draw:draws[d-1], bets:bets, winCount:winCount, prize:prizeTotal, invest: bets.length ? 40 : 0, net: prizeTotal - (bets.length ? 40 : 0)});
   }
   HISTORY_CACHE[m.name] = rows;
   return rows;
@@ -878,9 +885,10 @@ function genAllHistory(m){
 function renderHistoryDetail(m){
   var rows = genAllHistory(m);
   return '<div class="hist-tools">' +
-    '<span class="hist-info">共 ' + rows.length + ' 期 · 每期 20 注 · 每注 2 元（开奖/投注由固定种子确定性生成）</span>' +
+    '<span class="hist-info">共 ' + rows.length + ' 期开奖（2003001~2026100）· 前 30 期规则预热 · 第 31 期起每期投注 20 注 × 2 元（开奖/投注由固定种子确定性生成）</span>' +
     '<span class="hist-filters" id="histFilters">' +
-      '<button class="hf-btn active" onclick="renderHistoryRange(\'' + m.name + '\',\'all\')">全部 697 期</button>' +
+      '<button class="hf-btn active" onclick="renderHistoryRange(\'' + m.name + '\',\'all\')">全部 3497</button>' +
+      '<button class="hf-btn" onclick="renderHistoryRange(\'' + m.name + '\',\'697\')">最近 697</button>' +
       '<button class="hf-btn" onclick="renderHistoryRange(\'' + m.name + '\',\'100\')">最近 100</button>' +
       '<button class="hf-btn" onclick="renderHistoryRange(\'' + m.name + '\',\'50\')">最近 50</button>' +
       '<button class="hf-btn" onclick="renderHistoryRange(\'' + m.name + '\',\'20\')">最近 20</button>' +
@@ -891,11 +899,17 @@ function historyTableHtml(m, range){
   var rows = genAllHistory(m);
   var list = rows;
   if(range !== 'all'){ list = rows.slice(-parseInt(range, 10)); }
-  var html = '<table class="dtable"><thead><tr><th>测试段<br>期号</th><th>开奖号码</th><th>中奖</th><th>奖金(元)</th><th>投入(元)</th><th>净收益(元)</th><th></th></tr></thead><tbody>';
-  var tPrize = 0, tWin = 0, tNet = 0, tInv = 0;
+  var html = '<table class="dtable"><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金(元)</th><th>投入(元)</th><th>净收益(元)</th><th></th></tr></thead><tbody>';
+  var tPrize = 0, tWin = 0, tNet = 0, tInv = 0, tBets = 0;
   for(var i=0;i<list.length;i++){
     var r = list[i];
-    tPrize += r.prize; tWin += r.winCount; tInv += r.invest; tNet += r.net;
+    if(r.bets.length){ tPrize += r.prize; tWin += r.winCount; tInv += r.invest; tNet += r.net; tBets++; }
+    if(!r.bets.length){
+      html += '<tr class="drow preheat"><td>' + r.idx + '</td>' +
+        '<td class="balls">' + ballHtml(r.draw.reds,'red') + ' ' + ballHtml([r.draw.blue],'blue') + '</td>' +
+        '<td colspan="5" style="font-size:11px;color:var(--text3)">规则预热期（无投注）</td></tr>';
+      continue;
+    }
     html += '<tr class="drow" onclick="toggleDraw(this,' + r.idx + ')">' +
       '<td>' + r.idx + '</td>' +
       '<td class="balls">' + ballHtml(r.draw.reds,'red') + ' ' + ballHtml([r.draw.blue],'blue') + '</td>' +
@@ -918,7 +932,7 @@ function historyTableHtml(m, range){
     html += '</tbody></table></div></td></tr>';
   }
   var roi = tInv>0 ? (tPrize/tInv*100).toFixed(2) : '0';
-  html += '<tr class="dsum"><td colspan="6" style="text-align:left">合计（' + list.length + ' 期）：总投入 ' + tInv + ' 元 · 总奖金 ' + tPrize + ' 元 · 总中奖 ' + tWin + ' 注 · 回报率 ' + roi + '%</td>' +
+  html += '<tr class="dsum"><td colspan="6" style="text-align:left">合计（投注 ' + tBets + ' 期）：总投入 ' + tInv + ' 元 · 总奖金 ' + tPrize + ' 元 · 总中奖 ' + tWin + ' 注 · 回报率 ' + roi + '%</td>' +
     '<td style="color:' + (tNet>0 ? 'var(--green)' : 'var(--red)') + ';font-weight:800">' + (tNet>0 ? '+' : '') + tNet + ' 元</td></tr>';
   html += '</tbody></table>';
   return html;
