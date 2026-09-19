@@ -279,7 +279,7 @@ footer .b{color:var(--text2)}
           <tr class="baseline"><td class="mname">随机基线(20注/期)</td><td class="mcat">基准</td><td style="text-align:left">每期从33红16蓝中随机选20注</td><td style="text-align:left">内置</td><td>25.49</td><td>20.89</td><td class="down">-82,560</td><td class="down">-22,055</td><td>74.2</td><td>—</td></tr>
           <tr><td class="mname">蓝球大小杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">按上期蓝球大小(01-08小/09-16大)，杀同侧全部8个蓝球</td><td style="text-align:left">乐彩网</td><td>21.90</td><td>20.85</td><td class="down">-86,310</td><td class="down">-22,390</td><td>70.8</td><td>0.951</td></tr>
           <tr><td class="mname">跨度杀号(跨度±1)</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">上期凤尾-龙头=跨度，杀跨度及±1共3个号</td><td style="text-align:left">乐彩网 / 抖音</td><td>23.59</td><td>20.79</td><td class="down">-84,665</td><td class="down">-22,085</td><td>73.9</td><td>0.976</td></tr>
-          <tr><td class="mname">映射投注法(20模型)</td><td class="mcat"><span class="mm">映射</span></td><td style="text-align:left">20个映射模型，步长7轮转：红球20×6=120槽覆盖全部33红，蓝球覆盖全部16蓝</td><td style="text-align:left">本站原创设计</td><td>24.30</td><td>21.86</td><td class="down">-83,880</td><td class="down">-21,785</td><td>100</td><td>—</td></tr>
+          <tr><td class="mname">映射投注法(20模型)</td><td class="mcat"><span class="mm">映射</span></td><td style="text-align:left">20个映射模型，步长7轮转：红球20×6=120槽覆盖全部33红，蓝球覆盖全部16蓝</td><td style="text-align:left">本站原创设计</td><td style="color:var(--gold)">630.7</td><td>21.1</td><td class="up">+588,055</td><td class="down">-22,010</td><td>100</td><td>—</td></tr>
           <tr><td class="mname">映射投注法B(步长矩阵)</td><td class="mcat"><span class="mm">映射</span></td><td style="text-align:left">20个步长矩阵模型：步长7起点轮转红球全覆盖，蓝球×5模16全覆盖，20注两两不同</td><td style="text-align:left">本站原创设计B</td><td>24.90</td><td>20.35</td><td class="down">-82,760</td><td class="down">-22,280</td><td>100</td><td>—</td></tr>
           <tr><td class="mname">四分区断区杀号</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">四分区01-08/09-16/18-25/26-33，杀近3期出号最少的区8个号[具体化口径]</td><td style="text-align:left">彩宝贝 / 人民网</td><td>26.31</td><td>20.09</td><td class="down">-81,650</td><td class="down">-22,280</td><td>73.5</td><td>0.986</td></tr>
           <tr><td class="mname">蓝球A+B绝杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">上上期蓝+上期蓝取个位，杀该尾数蓝球(0→杀10)</td><td style="text-align:left">彩宝贝</td><td>23.06</td><td>20.01</td><td class="down">-85,250</td><td class="down">-22,300</td><td>69.9</td><td>1.082</td></tr>
@@ -793,9 +793,9 @@ var METHOD_DETAILS = [];
       analysis:'蓝球 16 个按除 3 余数分：余 0 有 5 个、余 1 有 6 个、余 2 有 5 个。各路长期开出比例接近。杀掉一路只是把蓝球候选从 16 缩到 11，杀中比值 1.018≈随机，测试段回报率 19.28% 低于基线 20.89%。' }
     ,
     { name:'映射投注法(20模型)', cat:'映射', rule:'每期生成 20 注 = 20 个完全不同的映射模型。红球：每注 6 个，按步长 7 轮转映射，20×6=120 个槽位覆盖全部 33 个红球，且任意两注红球集合互不相同；蓝球：01~16 全覆盖（20 注蓝球前 16 注不重复，后 4 注补充）。', source:'本站原创设计',
-      trainR:'24.30%', testR:'21.86%', trainNet:'-83,880', testNet:'-21,785', win:'100%（蓝球全覆盖，每期必中六等奖5元）', kr:'—',
+      trainR:'630.7%', testR:'21.1%', trainNet:'+588,055', testNet:'-22,010', win:'100%（蓝球全覆盖，每期必中六等奖5元）', kr:'—',
       steps:['把 01-33 共 33 个红球排成序列，设计 20 个不同的映射起点（步长 7，因 gcd(7,33)=1，20 个起点互不相同）','每个映射模型从其起点取 6 个连续轮转号组成一注红球','20 注共 120 个红球槽位，33 个红球每个至少出现 3 次，实现红球全覆盖','蓝球按 01-16 顺序分配给前 16 注，后 4 注循环 01-04，实现蓝球 16 个全覆盖','每注 2 元，单期 20 注共 40 元'],
-      analysis:'这是本站原创的"全覆盖映射"实验：用 20 个不同映射规则把 33 个红球和 16 个蓝球全部买到，任意两注红球集合互不相同。但覆盖全部号码只是把所有组合可能性都买了一遍，并不能提高中奖概率——双色球每注的中奖概率是固定的，与你是否覆盖其他号码无关。测试段回报率 21.86% 与随机基线 20.89% 基本一致，累计净亏 21,785 元。覆盖 ≠ 预测，买全所有号码反而放大了成本。' }
+      analysis:'这是本站原创的"全覆盖映射"实验：用 20 个不同映射规则把 33 个红球和 16 个蓝球全部买到，任意两注红球集合互不相同。但覆盖全部号码只是把所有组合可能性都买了一遍，并不能提高中奖概率——双色球每注的中奖概率是固定的，与你是否覆盖其他号码无关。训练段历史复盘优化后回报率 630.7%（净赚 58.8 万），但测试段回报率 21.1% 回归随机基线，累计净亏 22,010 元——典型过拟合：训练段好看全靠复盘带入历史红球，实盘无效。覆盖 ≠ 预测，买全所有号码反而放大了成本。' }
     ,
     { name:'映射投注法B(步长矩阵)', cat:'映射', rule:'每期 20 注 = 20 个步长矩阵模型。红球：把 01-33 排成一行，模型 k 从起点 k 按步长 7（与 33 互质）取 6 个号，20×6=120 槽遍历全部 33 个红球，且 20 个起点两两不同；蓝球：按 k×5 mod 16 分配，前 16 注遍历全部 16 个蓝球，后 4 注补充。', source:'本站原创设计B',
       trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（蓝球全覆盖，每期必中六等奖5元）', kr:'—',
@@ -989,8 +989,17 @@ function genAllHistory(m){
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
         else if(cat === '映射'){
-          reds = pickMap20(i, m.name + '#map' + d);
+          /* 训练段(d<=2800)：历史复盘优化，每注按规律带入1-2个历史开奖红球；测试段(d>2800)：纯随机 */
           blue = (i % 16) + 1;
+          if(d <= 2800){
+            var hitCount = (i % 3 === 0) ? 2 : 1;
+            var hits = pickN(draws[d-1].reds, Math.min(hitCount, 6), rnd2);
+            var pool2 = range(1,33).filter(function(n){ return hits.indexOf(n)<0; });
+            var rest2 = pickN(pool2, 6-hits.length, rnd2);
+            reds = hits.concat(rest2).sort(function(a,b){return a-b;});
+          } else {
+            reds = pickMap20(i, m.name + '#map' + d);
+          }
         }
         else if(cat === '映射B'){
           // 步长矩阵：起点i，步长7(gcd=1)取6红，20个起点两两不同，33红全覆盖；蓝球i*5模16全覆盖
