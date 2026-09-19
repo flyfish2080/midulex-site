@@ -1,0 +1,41 @@
+name: Update SSQ Latest
+run-name: 自动更新双色球最新开奖
+
+on:
+  schedule:
+    # 每周日/二/四 13:30 UTC = 北京时间 21:30（双色球 21:15 开奖后）
+    - cron: '30 13 * * 0,2,4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch latest result from CWL
+        run: |
+          curl -sS -L \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Referer: https://www.cwl.gov.cn/" \
+            -H "Accept: application/json" \
+            "https://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice?name=ssq&issueCount=1&pageNo=1&pageSize=1&systemType=PC" \
+            -o latest.json
+          # 校验返回是合法 JSON 且含 result
+          python3 -c "import json,sys; d=json.load(open('latest.json')); assert d.get('result') and d['result'][0]['code']; print('latest:', d['result'][0]['code'], d['result'][0]['date'])"
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add latest.json
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "data: 自动更新双色球最新开奖 [skip ci]"
+            git push
+          fi
