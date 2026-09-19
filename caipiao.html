@@ -3,35 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>彩票模型验证系统 - 统一登录</title>
+<title>彩票模型验证系统</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.container { max-width: 480px; width: 100%; }
+.container { max-width: 600px; width: 100%; }
 .header { text-align: center; margin-bottom: 40px; }
 .logo { width: 80px; height: 80px; background: linear-gradient(135deg, #e94560, #ff6b6b); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; box-shadow: 0 10px 40px rgba(233,69,96,0.4); }
 h1 { color: #fff; font-size: 28px; margin-bottom: 8px; }
 .subtitle { color: rgba(255,255,255,0.6); font-size: 14px; }
-.login-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 32px; margin-bottom: 24px; }
-.input-group { margin-bottom: 20px; }
-label { display: block; color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 8px; }
-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; font-size: 16px; outline: none; transition: all 0.3s; }
-input:focus { border-color: #e94560; background: rgba(255,255,255,0.12); }
-input::placeholder { color: rgba(255,255,255,0.3); }
-.btn-login { width: 100%; padding: 16px; background: linear-gradient(135deg, #e94560, #ff6b6b); border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 8px; }
-.btn-login:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(233,69,96,0.4); }
-.tip { text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 16px; }
-.divider { display: flex; align-items: center; margin: 24px 0; color: rgba(255,255,255,0.3); font-size: 12px; }
-.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
-.divider span { padding: 0 16px; }
-.quick-entry { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.quick-btn { padding: 20px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; text-align: center; cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
-.quick-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
-.quick-icon { font-size: 32px; margin-bottom: 8px; }
-.quick-name { color: #fff; font-size: 14px; font-weight: 600; }
-.quick-desc { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 4px; }
-.footer { text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; margin-top: 32px; }
-.error { background: rgba(233,69,96,0.1); border: 1px solid rgba(233,69,96,0.3); color: #ff6b6b; padding: 12px 16px; border-radius: 12px; font-size: 13px; text-align: center; margin-bottom: 16px; display: none; }
+.entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.entry-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 32px 20px; text-align: center; cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+.entry-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.entry-icon { font-size: 48px; margin-bottom: 16px; }
+.entry-name { color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.entry-desc { color: rgba(255,255,255,0.5); font-size: 13px; }
+.entry-rule { display: inline-block; margin-top: 12px; padding: 4px 12px; background: rgba(255,255,255,0.1); border-radius: 20px; font-size: 11px; color: rgba(255,255,255,0.7); }
+.footer { text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -39,52 +27,31 @@ input::placeholder { color: rgba(255,255,255,0.3); }
   <div class="header">
     <div class="logo">🎰</div>
     <h1>彩票模型验证系统</h1>
-    <p class="subtitle">统一登录入口 · 双色球 / 大乐透 / 快乐8</p>
+    <p class="subtitle">选择要进入的系统</p>
   </div>
 
-  <div class="login-card">
-    <div class="error" id="error">密码错误，请重试</div>
-    <div class="input-group">
-      <label>访问密码</label>
-      <input type="password" id="pwd" placeholder="请输入访问密码" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn-login" onclick="doLogin()">🔐 登录系统</button>
-    <p class="tip">默认密码：888888</p>
-  </div>
-
-  <div class="divider"><span>快捷进入</span></div>
-
-  <div class="quick-entry">
-    <a href="/ssq.html" class="quick-btn">
-      <div class="quick-icon">🔴</div>
-      <div class="quick-name">双色球</div>
-      <div class="quick-desc">红6+蓝1</div>
+  <div class="entry-grid">
+    <a href="/ssq.html" class="entry-card">
+      <div class="entry-icon">🔴</div>
+      <div class="entry-name">双色球</div>
+      <div class="entry-desc">红6+蓝1 · 3497期回测</div>
+      <div class="entry-rule">选号范围 33+16</div>
     </a>
-    <a href="/daletou.html" class="quick-btn">
-      <div class="quick-icon">🔵</div>
-      <div class="quick-name">大乐透</div>
-      <div class="quick-desc">前5+后2</div>
+    <a href="/daletou.html" class="entry-card">
+      <div class="entry-icon">🔵</div>
+      <div class="entry-name">大乐透</div>
+      <div class="entry-desc">前5+后2 · 3400期回测</div>
+      <div class="entry-rule">选号范围 35+12</div>
     </a>
-    <a href="/kuaile8.html" class="quick-btn">
-      <div class="quick-icon">🟢</div>
-      <div class="quick-name">快乐8</div>
-      <div class="quick-desc">选5中5</div>
+    <a href="/kuaile8.html" class="entry-card">
+      <div class="entry-icon">🟢</div>
+      <div class="entry-name">快乐8</div>
+      <div class="entry-desc">选5中5 · 3500期回测</div>
+      <div class="entry-rule">选号范围 80选5</div>
     </a>
   </div>
 
   <div class="footer">© 2026 多米妙妙屋 · 仅供模型验证研究</div>
 </div>
-
-<script>
-function doLogin(){
-  var pwd = document.getElementById('pwd').value;
-  if(pwd === '888888'){
-    localStorage.setItem('lottery_login', '1');
-    window.location.href = '/ssq.html';
-  } else {
-    document.getElementById('error').style.display = 'block';
-  }
-}
-</script>
 </body>
 </html>
