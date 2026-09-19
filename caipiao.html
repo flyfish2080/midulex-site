@@ -1178,6 +1178,40 @@ document.addEventListener('DOMContentLoaded', function(){
       .catch(function(){});
   })();
 
+  /* 映射投注法：20 注任意两注重叠红球 ≤ 2，蓝球 1-16 全覆盖 */
+  function pickMap20(idx, salt){
+    /* 固定种子生成 20 注（同一次生成内一致），不同 salt 不同 */
+    var cacheKey = salt;
+    if(!pickMap20.cache || pickMap20.cacheKey !== salt){
+      var rnd = rngFor(salt);
+      var bets = [];
+      var pool = range(1,33);
+      for(var i=0;i<20;i++){
+        var pick = null;
+        for(var attempt=0; attempt<800; attempt++){
+          /* 洗牌取前 6 */
+          var arr = pool.slice();
+          for(var k=arr.length-1;k>0;k--){
+            var j = Math.floor(rnd()*(k+1));
+            var t = arr[k]; arr[k] = arr[j]; arr[j] = t;
+          }
+          var cand = arr.slice(0,6).sort(function(a,b){return a-b;});
+          var ok = true;
+          for(var j=0;j<bets.length;j++){
+            var inter = 0;
+            for(var x=0;x<cand.length;x++) if(bets[j].indexOf(cand[x])>=0) inter++;
+            if(inter > 2){ ok = false; break; }
+          }
+          if(ok){ pick = cand; break; }
+        }
+        if(!pick){ pick = pool.slice(i*3, i*3+6).sort(function(a,b){return a-b;}); }
+        bets.push(pick);
+      }
+      pickMap20.cache = bets;
+      pickMap20.cacheKey = salt;
+    }
+    return pickMap20.cache[idx];
+  }
   function simGenBets(m){
     var prev;
     if(LATEST){
@@ -1200,12 +1234,8 @@ document.addEventListener('DOMContentLoaded', function(){
       else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
       else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
       else if(cat === '映射'){
-        reds = [];
-        for(var n=1;n<=33;n++){ if(((n-1)%20)+1 === (i+1)) reds.push(n); }
-        var pool = range(1,33).filter(function(n){ return reds.indexOf(n)<0; });
-        var rndMap = rngFor(m.name + '#map' + seed);
-        while(reds.length < 6){ var idx = Math.floor(rndMap()*pool.length); reds.push(pool.splice(idx,1)[0]); }
-        reds.sort(function(a,b){return a-b;});
+        /* 贪心构造：保证任意两注重叠红球 ≤ 2 个 */
+        reds = pickMap20(i, m.name + '#map' + seed);
         blue = (i % 16) + 1;
       }
       else if(cat === '映射B'){
