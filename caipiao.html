@@ -1141,6 +1141,21 @@ document.addEventListener('DOMContentLoaded', function(){
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
 
   /* ============ 模拟投注器 ============ */
+  /* 双色球开奖日：每周二、四、日；计算今天之后的下一个开奖日 */
+  function nextDrawDate(){
+    var d = new Date();
+    var target = [0,2,4];
+    var wk = ['周日','周一','周二','周三','周四','周五','周六'];
+    for(var add=1; add<=7; add++){
+      var nd = new Date(d);
+      nd.setDate(d.getDate()+add);
+      if(target.indexOf(nd.getDay())>=0){
+        return nd.getFullYear()+'年'+(nd.getMonth()+1)+'月'+nd.getDate()+'日 '+wk[nd.getDay()];
+      }
+    }
+    return '';
+  }
+
   function simGenBets(m){
     var rndDraw = rngFor(m.name + '#draw');
     var draws = [];
@@ -1186,8 +1201,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     html += '</tbody></table>';
     document.getElementById('simResult').innerHTML = html;
+    var nd = nextDrawDate();
     document.getElementById('simInfo').innerHTML =
-      '方法：<b style="color:#fff">' + m.name + '</b>（' + m.cat + '）｜测试段回报率 ' + m.testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于最近一期规则生成下一期推荐';
+      '方法：<b style="color:#fff">' + m.name + '</b>（' + m.cat + '）｜测试段回报率 ' + m.testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 <b style="color:#fff">2026100</b> 期规则，生成第 <b style="color:#fff">2026101</b> 期模拟号码｜预计开奖：' + nd;
   }
   // 填充下拉
   var simSel = document.getElementById('simMethod');
