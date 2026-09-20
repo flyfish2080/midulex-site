@@ -1263,11 +1263,10 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   function simRender(m){
     var bets = simGenBets(m);
-    var html = '<table class="dtable" style="min-width:0"><thead><tr><th>注</th><th>开奖号</th><th></th></tr></thead><tbody>';
+    var html = '<table class="dtable" style="min-width:0"><thead><tr><th>注</th><th>投注号码</th></tr></thead><tbody>';
     for(var i=0;i<bets.length;i++){
       html += '<tr><td>' + String(i+1).padStart(2,'0') + '</td>' +
-        '<td class="balls">' + ballHtml(bets[i].reds,'red') + '</td>' +
-        '<td class="balls">' + ballHtml([bets[i].blue],'blue') + '</td></tr>';
+        '<td class="balls">' + ballHtml(bets[i].reds,'red') + '</td></tr>';
     }
     html += '</tbody></table>';
     document.getElementById('simResult').innerHTML = html;
