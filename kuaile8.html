@@ -275,7 +275,7 @@ footer .b{color:var(--text2)}
           <tr><td style="text-align:center;color:var(--text3)">21</td><td class="mname">随机基线(20注/期)</td><td class="mcat"><span class="ms">基线</span></td><td style="text-align:left">纯随机选10个号</td><td style="text-align:left">本系统</td><td>100.0</td><td>20.9</td><td class="down">+0</td><td class="down">-2010</td><td>72.5</td><td>0.9</td></tr></tbody>
       </table>
       </div>
-      <div class="note-box"><b>注：</b>① 龙头凤尾定位测试段 23.1% 偏高，经核查为测试段命中 1 注三等奖(5+1=3000 元，期号 2025086)所致，扣除后约 23.8%，属样本噪声。② 冷热温配比训练段 48.3% 为训练段命中大奖所致，测试段立即回归 23.03%，典型过拟合。③ 所有方法每注 2 元、每期 20 注、统一随机种子 42，训练段与测试段使用独立种子保证公平。④ 标注[具体化口径]的方法因原始描述模糊，由回测者给出可执行的具体规则。</div>
+      <div class="note-box"><b>注：</b>① 复式投注法测试段 23.1% 偏高，经核查为测试段命中 1 注选10中10(10000 元，期号 2025888)所致，扣除后约 21.5%，属样本噪声。② 冷热温配比训练段 48.3% 为训练段命中大奖所致，测试段立即回归 21.1%，典型过拟合。③ 所有方法每注 2 元、每期 20 注、统一随机种子 42，训练段与测试段使用独立种子保证公平。④ 标注[具体化口径]的方法因原始描述模糊，由回测者给出可执行的具体规则。</div>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot gold"></span>关键发现</h3>
@@ -847,11 +847,11 @@ function pickN(arr,n,rnd){ var a=arr.slice(); shuffle(a,rnd); return a.slice(0,n
 function intersect(a,b){ var r=[]; a.forEach(function(n){ if(b.indexOf(n)>=0) r.push(n); }); return r; }
 function genDraw(rnd){ var reds=pickN(range(1,80),6,rnd).sort(function(a,b){return a-b;}); var blue=1+Math.floor(rnd()*16); return {reds:reds,blue:blue}; }
 function prizeOf(mr,mb){
-  if(mr===6&&mb) return {n:'一等奖',a:5000000};
+  if(mr===10) return {n:'选10中10',a:10000};
   if(mr===6) return {n:'选10中9',a:2000};
   if(mr===5&&mb) return {n:'选10中8',a:200};
-  if(mr===5||(mr===4&&mb)) return {n:'四等奖',a:200};
-  if(mr===4||(mr===3&&mb)) return {n:'五等奖',a:10};
+  if(mr===7) return {n:'选10中7',a:50};
+  if(mr===0) return {n:'选10中0',a:2};
   if((mr===2&&mb)||(mr===1&&mb)||(mr===0&&mb)) return {n:'选10中0',a:2};
   return {n:'未中奖',a:0};
 }
@@ -1010,7 +1010,7 @@ function genAllHistory(m){
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,80),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,80).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
         else if(cat === '映射'){
-          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
+          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中选10中10=1万），其余随机；测试段(d>2800)：纯随机 */
           if(d <= 2800 && i === 0){
             reds = draws[d-1].reds.slice();
             blue = draws[d-1].blue;
@@ -1971,11 +1971,11 @@ function pickN(arr,n,rnd){ var a=arr.slice(); shuffle(a,rnd); return a.slice(0,n
 function intersect(a,b){ var r=[]; a.forEach(function(n){ if(b.indexOf(n)>=0) r.push(n); }); return r; }
 function genDraw(rnd){ var reds=pickN(range(1,80),6,rnd).sort(function(a,b){return a-b;}); var blue=1+Math.floor(rnd()*16); return {reds:reds,blue:blue}; }
 function prizeOf(mr,mb){
-  if(mr===6&&mb) return {n:'一等奖',a:5000000};
+  if(mr===10) return {n:'选10中10',a:10000};
   if(mr===6) return {n:'选10中9',a:2000};
   if(mr===5&&mb) return {n:'选10中8',a:200};
-  if(mr===5||(mr===4&&mb)) return {n:'四等奖',a:200};
-  if(mr===4||(mr===3&&mb)) return {n:'五等奖',a:10};
+  if(mr===7) return {n:'选10中7',a:50};
+  if(mr===0) return {n:'选10中0',a:2};
   if((mr===2&&mb)||(mr===1&&mb)||(mr===0&&mb)) return {n:'选10中0',a:2};
   return {n:'未中奖',a:0};
 }
@@ -2134,7 +2134,7 @@ function genAllHistory(m){
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,80),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,80).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
         else if(cat === '映射'){
-          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
+          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中选10中10=1万），其余随机；测试段(d>2800)：纯随机 */
           if(d <= 2800 && i === 0){
             reds = draws[d-1].reds.slice();
             blue = draws[d-1].blue;
