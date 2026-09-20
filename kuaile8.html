@@ -194,11 +194,11 @@ footer .b{color:var(--text2)}
         <div class="stat-pill"><div class="n blue" id="statPlatform">8</div><div class="l">覆盖平台</div></div>
         <div class="stat-pill"><div class="n gold" id="statCollected">60+</div><div class="l">收集方法(去重前)</div></div>
         <div class="stat-pill"><div class="n blue" id="statMethods">0</div><div class="l">回测方法(去重后)</div></div>
-        <div class="stat-pill"><div class="n red">3500</div><div class="l">回测总期数</div></div>
+        <div class="stat-pill"><div class="n red" id="statTotal">3500</div><div class="l">回测总期数</div></div>
         <div class="stat-pill"><div class="n" id="statBaseline">-</div><div class="l">随机基线回报率</div></div>
         <div class="stat-pill"><div class="n red" id="statBeat">0</div><div class="l">显著战胜基线的方法</div></div>
       </div>
-      <div class="hero-verdict"><b>核心结论：</b>累计验证 40+ 种投注方法（杀号 / 选号 / 过滤 / 映射优化），没有任何一种能在测试段显著战胜随机。</div>
+      <div class="hero-verdict"><b>核心结论：</b>累计验证 <span id="statConclusion">40+</span> 种投注方法（杀号 / 选号 / 过滤 / 映射优化），没有任何一种能在测试段显著战胜随机。</div>
     </div>
   </div>
 
@@ -1351,7 +1351,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script>
 window.addEventListener('load', function(){
-  // 统计回测方法数（表格行数）
   var rows = document.querySelectorAll('#report table tbody tr');
   var methodCount = 0;
   var baseline = 0;
@@ -1361,7 +1360,6 @@ window.addEventListener('load', function(){
     if(!nameEl) return;
     methodCount++;
     var cells = row.querySelectorAll('td');
-    // 找测试回报率列（第6列，索引5）
     if(cells.length > 5){
       var testR = parseFloat(cells[5].textContent);
       if(nameEl.textContent.indexOf('随机基线') >= 0){
@@ -1374,6 +1372,9 @@ window.addEventListener('load', function(){
   });
   document.getElementById('statMethods').textContent = methodCount;
   document.getElementById('statBeat').textContent = beatCount;
+  document.getElementById('statCollected').textContent = methodCount + '+';
+  document.getElementById('statConclusion').textContent = methodCount + '+';
+  document.getElementById('statTotal').textContent = '3500';
 });
 </script>
 </body>
