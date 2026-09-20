@@ -1260,6 +1260,16 @@ document.addEventListener('DOMContentLoaded', function(){
       bets.push({reds:reds, blue:blue});
     }
     return bets;
+  function simGenBets(m){
+    // 快乐8：生成20注，每注选10个号从1-80
+    var bets = [];
+    var seed = Date.now();
+    for(var i=0;i<20;i++){
+      var rnd2 = rngFor(m.name + '#sim' + seed + '#' + i);
+      var reds = pickN(range(1,80), 10, rnd2).sort(function(a,b){return a-b;});
+      bets.push({reds: reds});
+    }
+    return bets;
   }
   function simRender(m){
     var bets = simGenBets(m);
