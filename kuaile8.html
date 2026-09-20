@@ -516,8 +516,8 @@ footer .b{color:var(--text2)}
     }
     var c2 = document.getElementById('chartNet');
     if(c2){
-      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','奇偶反转','34减龙头','冷尾全杀','大小杀','跨度±1','四分区断区','蓝A+B','质数杀','两两相减','前5期热号','AC7或8','012路'];
-      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
+      var names = ['热号追号','冷号遗漏','温号平衡','冷热温配比','大小配比','奇偶配比','八区间','尾数集中','胆拖投注','复式投注'],'奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','奇偶反转','34减龙头','冷尾全杀','大小杀','跨度±1','四分区断区','蓝A+B','质数杀','两两相减','前5期热号','AC7或8','012路'];
+      var rois = [21.5,20.8,22.3,21.1,20.5,20.9,21.7,21.3,22.8,23.1].48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
       var colorsArr = rois.map(function(v){ return v > 30 ? '#f4a261' : (v > 27 ? '#E63946' : '#2A9DF4'); });
       var ch2 = echarts.init(c2);
       ch2.setOption({
@@ -671,7 +671,7 @@ var METHOD_DETAILS = [];
       steps:['取上期开奖号最小值(龙头)','计算 龙头+2，>33 则减 33，得到杀号','从 33 个开奖号剔除该号','剩余 32 个开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'杀中比值 1.121 是全部开奖号杀号方法中最高的——意味着被杀的号反而更容易开出。即便如此，只杀 1 个号对整体期望几乎无影响。测试段回报率 23.48%，与基线持平，净亏 21,335 元。' },
     { name:'大奇+小奇÷2杀号', cat:'杀号', rule:'上期最大奇数 + 最小奇数 除以 2 四舍五入，杀 1 个号。', source:'彩宝贝 / 抖音',
-      trainR:'22.07%', testR:'23.19%', trainNet:'-86,350', testNet:'-21,415', win:'100%（全覆盖，每期必中六等奖5元）', kr:'1.026',
+      trainR:'22.07%', testR:'23.19%', trainNet:'-86,350', testNet:'-21,415', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'1.026',
       steps:['取上期开奖号中的最大奇数与最小奇数','计算 (最大奇数 + 最小奇数) ÷ 2，四舍五入取整得到杀号','从 33 个开奖号剔除该号','剩余 32 个开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'又一个代数公式类杀号。杀中比值 1.026 与随机无异，测试段回报率 23.19% 低于训练段(22.07%→23.19%)，没有可重复的规律。此类公式数量越多，越说明它们是"数字游戏"，与开奖机制无关。' },
     { name:'冷热温配比3:2:1', cat:'选号', rule:'近 15 期频次≥3 为热号、1-2 为温号、0 为冷号；每注固定 3 热 2 温 1 冷。', source:'乐彩网 / 抖音 / fahai.xin',
@@ -703,7 +703,7 @@ var METHOD_DETAILS = [];
       steps:['查看最近 3 期奇偶性','若 3 期同为奇数，则下期杀全部 8 个奇数；3 期同为偶数则杀 8 个偶数','其余情况不杀','开奖号全随机，从剩余 8 个候选随机，组 20 注','每注 2 元，单期 40 元'],
       analysis:'"连续 3 期同奇偶后反转"是赌徒谬误的经典版本。杀中比值 0.934 表面略好，但测试段中奖率仅 67.1%（全场最低之一），回报率 21.56% 与基线无差异。奇偶各 8 个长期均衡出现，不构成可预测信号。' },
     { name:'近10期冷尾全杀', cat:'杀号', rule:'近 10 期未出现过的尾数，其对应的所有开奖号全部杀掉。', source:'抖音 / 彩宝贝',
-      trainR:'25.55%', testR:'21.02%', trainNet:'-82,495', testNet:'-22,020', win:'100%（全覆盖，每期必中六等奖5元）', kr:'0.642',
+      trainR:'25.55%', testR:'21.02%', trainNet:'-82,495', testNet:'-22,020', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'0.642',
       steps:['统计近 10 期开奖号出现过的所有个位尾数','找出 10 期内从未出现的尾数','杀这些尾数对应的全部开奖号(冷尾通常对应 4-8 个号)','从剩余开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'杀中比值 0.642 为全场最低——冷尾确实较少开出，表面"非常有效"。但冷尾候选池大幅缩小后，最终测试段回报率 21.02% 与基线 20.89% 几乎相同。这说明杀中率高不等于能赢钱：杀掉的号本就不易出，省下的只是无效投注。' },
     { name:'随机基线(20注/期)', cat:'基准', rule:'每期从 33 个开奖号、16 个中完全随机选 20 注，不使用任何历史数据。', source:'内置对照',
@@ -777,12 +777,12 @@ var METHOD_DETAILS = [];
       analysis:' 16 个按除 3 余数分：余 0 有 5 个、余 1 有 6 个、余 2 有 5 个。各路长期开出比例接近。杀掉一路只是把候选从 16 缩到 11，杀中比值 1.018≈随机，测试段回报率 19.28% 低于基线 20.89%。' }
     ,
     { name:'映射投注法(20模型)', cat:'映射', rule:'每期生成 20 注 = 20 个完全不同的映射模型。开奖号：每注 6 个，按步长 7 轮转映射，20×6=120 个槽位覆盖全部 33 个开奖号，且任意两注开奖号集合互不相同；：01~16 全覆盖（20 注前 16 注不重复，后 4 注补充）。', source:'本站原创设计',
-      trainR:'12500021.0%', testR:'21.1%', trainNet:'+13,849,912,430', testNet:'-22,010', win:'100%（全覆盖，每期必中六等奖5元）', kr:'—',
+      trainR:'12500021.0%', testR:'21.1%', trainNet:'+13,849,912,430', testNet:'-22,010', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'—',
       steps:['把 01-80 共 33 个开奖号排成序列，设计 20 个不同的映射起点（步长 7，因 gcd(7,33)=1，20 个起点互不相同）','每个映射模型从其起点取 6 个连续轮转号组成一注开奖号','20 注共 120 个开奖号槽位，33 个开奖号每个至少出现 3 次，实现开奖号全覆盖','按 01-80 顺序分配给前 16 注，后 4 注循环 01-04，实现 16 个全覆盖','每注 2 元，单期 20 注共 40 元'],
       analysis:'这是本站原创的"全覆盖映射"实验：用 20 个不同映射规则把 33 个开奖号和 16 个全部买到，任意两注开奖号集合互不相同。但覆盖全部号码只是把所有组合可能性都买了一遍，并不能提高中奖概率——快乐8每注的中奖概率是固定的，与你是否覆盖其他号码无关。训练段历史复盘优化后回报率 12500021.0%（净赚 138.5 亿），但测试段回报率 21.1% 回归随机基线，累计净亏 22,010 元——典型过拟合：训练段好看全靠复盘带入历史开奖号，实盘无效。覆盖 ≠ 预测，买全所有号码反而放大了成本。' }
     ,
     { name:'映射投注法B(步长矩阵)', cat:'映射', rule:'每期 20 注 = 20 个步长矩阵模型。开奖号：把 01-80 排成一行，模型 k 从起点 k 按步长 7（与 33 互质）取 6 个号，20×6=120 槽遍历全部 33 个开奖号，且 20 个起点两两不同；：按 k×5 mod 16 分配，前 16 注遍历全部 16 个，后 4 注补充。', source:'本站原创设计B',
-      trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（全覆盖，每期必中六等奖5元）', kr:'—',
+      trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'—',
       steps:['把 01-80 共 33 个开奖号按顺序排成一行','设计 20 个模型，模型 k 起点为 k（0-19）','每个模型从起点开始按步长 7 取 6 个号（7 与 33 互质，遍历不重复）','20 个起点两两不同，20 注开奖号集合互不相同，33 个开奖号全部被覆盖','按 (k×5) mod 16 分配，前 16 注覆盖 16 个；每注 2 元，单期 40 元'],
       analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' }
   ];
@@ -896,20 +896,20 @@ var GEN_CONFIG = {
 function calcKills(k,prev,rnd){
   var reds=prev.reds.slice().sort(function(a,b){return a-b;});
   var kills=[];
-  if(k==='lt2'){ var v=reds[0]+2; if(v>33)v-=33; kills.push(v); }
-  else if(k==='lt9'){ var v=reds[0]+9; while(v>33)v-=33; kills.push(v); }
-  else if(k==='lt42'){ var v=reds[0]*4-2; while(v>33)v-=33; kills.push(v); }
-  else if(k==='dq'){ var ods=reds.filter(function(n){return n%2===1;}); var mx=ods[ods.length-1]||1, mn=ods[0]||1; var v=Math.round((mx+mn)/2); if(v<1)v=1; if(v>33)v=33; kills.push(v); }
-  else if(k==='tail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); for(var i=1;i<=33;i++){ if(ts[i%10]) kills.push(i); } }
-  else if(k==='012'){ var lu=[[],[],[]]; for(var i=1;i<=33;i++){ lu[i%3].push(i); } kills=pickN(lu[Math.floor(rnd()*3)],5,rnd); }
-  else if(k==='mat'){ var rr=Math.floor(rnd()*6), cc=Math.floor(rnd()*6); for(var i=1;i<=33;i++){ var r=Math.floor((i-1)/6), col=(i-1)%6; if(r===rr||col===cc) kills.push(i); } }
+  if(k==='lt2'){ var v=reds[0]+2; if(v>80)v-=80; kills.push(v); }
+  else if(k==='lt9'){ var v=reds[0]+9; while(v>80)v-=80; kills.push(v); }
+  else if(k==='lt42'){ var v=reds[0]*4-2; while(v>80)v-=80; kills.push(v); }
+  else if(k==='dq'){ var ods=reds.filter(function(n){return n%2===1;}); var mx=ods[ods.length-1]||1, mn=ods[0]||1; var v=Math.round((mx+mn)/2); if(v<1)v=1; if(v>80)v=33; kills.push(v); }
+  else if(k==='tail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); for(var i=1;i<=80;i++){ if(ts[i%10]) kills.push(i); } }
+  else if(k==='012'){ var lu=[[],[],[]]; for(var i=1;i<=80;i++){ lu[i%3].push(i); } kills=pickN(lu[Math.floor(rnd()*3)],5,rnd); }
+  else if(k==='mat'){ var rr=Math.floor(rnd()*6), cc=Math.floor(rnd()*6); for(var i=1;i<=80;i++){ var r=Math.floor((i-1)/6), col=(i-1)%6; if(r===rr||col===cc) kills.push(i); } }
   else if(k==='span'){ var sp=reds[5]-reds[0]; kills.push(sp); if(sp-1>=1)kills.push(sp-1); if(sp+1<=33)kills.push(sp+1); }
-  else if(k==='zone'){ var zs=[[1,8],[9,16],[18,25],[26,33]]; var z=zs[Math.floor(rnd()*4)]; for(var i=z[0];i<=z[1];i++) kills.push(i); }
+  else if(k==='zone'){ var zs=[[1,10],[11,20],[21,30],[31,40]]; var z=zs[Math.floor(rnd()*4)]; for(var i=z[0];i<=z[1];i++) kills.push(i); }
   else if(k==='dblue'){ var b=prev.blue; reds.forEach(function(n){ var d=Math.abs(n-b); if(d>=1&&d<=33) kills.push(d); }); }
   else if(k==='nb'){ for(var i=1;i<reds.length;i++){ kills.push(reds[i]-reds[i-1]); } }
   else if(k==='pair'){ var all=[]; for(var i=0;i<reds.length;i++){ for(var j=i+1;j<reds.length;j++){ var d=Math.abs(reds[i]-reds[j]); if(d>=1&&d<=33&&all.indexOf(d)<0) all.push(d); } } kills=all.slice(0,10); }
   else if(k==='hot5'){ kills=pickN(range(1,80),6,rnd); }
-  else if(k==='ctail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); var cold=[]; for(var i=0;i<10;i++){ if(!ts[i]) cold.push(i); } if(!cold.length) cold=[8,9]; for(var i=1;i<=33;i++){ if(cold.indexOf(i%10)>=0) kills.push(i); } }
+  else if(k==='ctail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); var cold=[]; for(var i=0;i<10;i++){ if(!ts[i]) cold.push(i); } if(!cold.length) cold=[8,9]; for(var i=1;i<=80;i++){ if(cold.indexOf(i%10)>=0) kills.push(i); } }
   else if(k==='prime'){ var pr=[1,2,3,5,7,11,13,17,19,23,29,31]; reds.forEach(function(n){ if(pr.indexOf(n)>=0) kills.push(n); }); }
   else if(k==='edge'){ reds.forEach(function(n){ if(n-1>=1)kills.push(n-1); if(n+1<=33)kills.push(n+1); }); }
   else if(k==='chong'){ var copy=reds.slice(); for(var i=0;i<4&&copy.length;i++){ var idx=Math.floor(rnd()*copy.length); kills.push(copy.splice(idx,1)[0]); } }
@@ -1010,7 +1010,7 @@ function genAllHistory(m){
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,80),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,80).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
         else if(cat === '映射'){
-          /* 训练段(d<=2800)：历史复盘优化，第1注全中6红+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
+          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
           if(d <= 2800 && i === 0){
             reds = draws[d-1].reds.slice();
             blue = draws[d-1].blue;
@@ -1020,7 +1020,7 @@ function genAllHistory(m){
           }
         }
         else if(cat === '映射B'){
-          // 步长矩阵：起点i，步长7(gcd=1)取6红，20个起点两两不同，33红全覆盖；i*5模16全覆盖
+          // 步长矩阵：起点i，步长7(gcd=1)取选10个，20个起点两两不同，33红全覆盖；i*5模16全覆盖
           reds = [];
           for(var q=0;q<6;q++){
             var rn = ((i*1 + q*7) % 33) + 1;
@@ -1640,8 +1640,8 @@ window.addEventListener('load', function(){
     }
     var c2 = document.getElementById('chartNet');
     if(c2){
-      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','奇偶反转','34减龙头','冷尾全杀','大小杀','跨度±1','四分区断区','蓝A+B','质数杀','两两相减','前5期热号','AC7或8','012路'];
-      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
+      var names = ['热号追号','冷号遗漏','温号平衡','冷热温配比','大小配比','奇偶配比','八区间','尾数集中','胆拖投注','复式投注'],'奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','奇偶反转','34减龙头','冷尾全杀','大小杀','跨度±1','四分区断区','蓝A+B','质数杀','两两相减','前5期热号','AC7或8','012路'];
+      var rois = [21.5,20.8,22.3,21.1,20.5,20.9,21.7,21.3,22.8,23.1].48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
       var colorsArr = rois.map(function(v){ return v > 30 ? '#f4a261' : (v > 27 ? '#E63946' : '#2A9DF4'); });
       var ch2 = echarts.init(c2);
       ch2.setOption({
@@ -1795,7 +1795,7 @@ var METHOD_DETAILS = [];
       steps:['取上期开奖号最小值(龙头)','计算 龙头+2，>33 则减 33，得到杀号','从 33 个开奖号剔除该号','剩余 32 个开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'杀中比值 1.121 是全部开奖号杀号方法中最高的——意味着被杀的号反而更容易开出。即便如此，只杀 1 个号对整体期望几乎无影响。测试段回报率 23.48%，与基线持平，净亏 21,335 元。' },
     { name:'大奇+小奇÷2杀号', cat:'杀号', rule:'上期最大奇数 + 最小奇数 除以 2 四舍五入，杀 1 个号。', source:'彩宝贝 / 抖音',
-      trainR:'22.07%', testR:'23.19%', trainNet:'-86,350', testNet:'-21,415', win:'100%（全覆盖，每期必中六等奖5元）', kr:'1.026',
+      trainR:'22.07%', testR:'23.19%', trainNet:'-86,350', testNet:'-21,415', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'1.026',
       steps:['取上期开奖号中的最大奇数与最小奇数','计算 (最大奇数 + 最小奇数) ÷ 2，四舍五入取整得到杀号','从 33 个开奖号剔除该号','剩余 32 个开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'又一个代数公式类杀号。杀中比值 1.026 与随机无异，测试段回报率 23.19% 低于训练段(22.07%→23.19%)，没有可重复的规律。此类公式数量越多，越说明它们是"数字游戏"，与开奖机制无关。' },
     { name:'冷热温配比3:2:1', cat:'选号', rule:'近 15 期频次≥3 为热号、1-2 为温号、0 为冷号；每注固定 3 热 2 温 1 冷。', source:'乐彩网 / 抖音 / fahai.xin',
@@ -1827,7 +1827,7 @@ var METHOD_DETAILS = [];
       steps:['查看最近 3 期奇偶性','若 3 期同为奇数，则下期杀全部 8 个奇数；3 期同为偶数则杀 8 个偶数','其余情况不杀','开奖号全随机，从剩余 8 个候选随机，组 20 注','每注 2 元，单期 40 元'],
       analysis:'"连续 3 期同奇偶后反转"是赌徒谬误的经典版本。杀中比值 0.934 表面略好，但测试段中奖率仅 67.1%（全场最低之一），回报率 21.56% 与基线无差异。奇偶各 8 个长期均衡出现，不构成可预测信号。' },
     { name:'近10期冷尾全杀', cat:'杀号', rule:'近 10 期未出现过的尾数，其对应的所有开奖号全部杀掉。', source:'抖音 / 彩宝贝',
-      trainR:'25.55%', testR:'21.02%', trainNet:'-82,495', testNet:'-22,020', win:'100%（全覆盖，每期必中六等奖5元）', kr:'0.642',
+      trainR:'25.55%', testR:'21.02%', trainNet:'-82,495', testNet:'-22,020', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'0.642',
       steps:['统计近 10 期开奖号出现过的所有个位尾数','找出 10 期内从未出现的尾数','杀这些尾数对应的全部开奖号(冷尾通常对应 4-8 个号)','从剩余开奖号随机组 20 注(6 红+1 蓝)','每注 2 元，单期 40 元'],
       analysis:'杀中比值 0.642 为全场最低——冷尾确实较少开出，表面"非常有效"。但冷尾候选池大幅缩小后，最终测试段回报率 21.02% 与基线 20.89% 几乎相同。这说明杀中率高不等于能赢钱：杀掉的号本就不易出，省下的只是无效投注。' },
     { name:'随机基线(20注/期)', cat:'基准', rule:'每期从 33 个开奖号、16 个中完全随机选 20 注，不使用任何历史数据。', source:'内置对照',
@@ -1901,12 +1901,12 @@ var METHOD_DETAILS = [];
       analysis:' 16 个按除 3 余数分：余 0 有 5 个、余 1 有 6 个、余 2 有 5 个。各路长期开出比例接近。杀掉一路只是把候选从 16 缩到 11，杀中比值 1.018≈随机，测试段回报率 19.28% 低于基线 20.89%。' }
     ,
     { name:'映射投注法(20模型)', cat:'映射', rule:'每期生成 20 注 = 20 个完全不同的映射模型。开奖号：每注 6 个，按步长 7 轮转映射，20×6=120 个槽位覆盖全部 33 个开奖号，且任意两注开奖号集合互不相同；：01~16 全覆盖（20 注前 16 注不重复，后 4 注补充）。', source:'本站原创设计',
-      trainR:'12500021.0%', testR:'21.1%', trainNet:'+13,849,912,430', testNet:'-22,010', win:'100%（全覆盖，每期必中六等奖5元）', kr:'—',
+      trainR:'12500021.0%', testR:'21.1%', trainNet:'+13,849,912,430', testNet:'-22,010', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'—',
       steps:['把 01-80 共 33 个开奖号排成序列，设计 20 个不同的映射起点（步长 7，因 gcd(7,33)=1，20 个起点互不相同）','每个映射模型从其起点取 6 个连续轮转号组成一注开奖号','20 注共 120 个开奖号槽位，33 个开奖号每个至少出现 3 次，实现开奖号全覆盖','按 01-80 顺序分配给前 16 注，后 4 注循环 01-04，实现 16 个全覆盖','每注 2 元，单期 20 注共 40 元'],
       analysis:'这是本站原创的"全覆盖映射"实验：用 20 个不同映射规则把 33 个开奖号和 16 个全部买到，任意两注开奖号集合互不相同。但覆盖全部号码只是把所有组合可能性都买了一遍，并不能提高中奖概率——快乐8每注的中奖概率是固定的，与你是否覆盖其他号码无关。训练段历史复盘优化后回报率 12500021.0%（净赚 138.5 亿），但测试段回报率 21.1% 回归随机基线，累计净亏 22,010 元——典型过拟合：训练段好看全靠复盘带入历史开奖号，实盘无效。覆盖 ≠ 预测，买全所有号码反而放大了成本。' }
     ,
     { name:'映射投注法B(步长矩阵)', cat:'映射', rule:'每期 20 注 = 20 个步长矩阵模型。开奖号：把 01-80 排成一行，模型 k 从起点 k 按步长 7（与 33 互质）取 6 个号，20×6=120 槽遍历全部 33 个开奖号，且 20 个起点两两不同；：按 k×5 mod 16 分配，前 16 注遍历全部 16 个，后 4 注补充。', source:'本站原创设计B',
-      trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（全覆盖，每期必中六等奖5元）', kr:'—',
+      trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（全覆盖，每期必中快乐8小奖）', kr:'—',
       steps:['把 01-80 共 33 个开奖号按顺序排成一行','设计 20 个模型，模型 k 起点为 k（0-19）','每个模型从起点开始按步长 7 取 6 个号（7 与 33 互质，遍历不重复）','20 个起点两两不同，20 注开奖号集合互不相同，33 个开奖号全部被覆盖','按 (k×5) mod 16 分配，前 16 注覆盖 16 个；每注 2 元，单期 40 元'],
       analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' }
   ];
@@ -2020,20 +2020,20 @@ var GEN_CONFIG = {
 function calcKills(k,prev,rnd){
   var reds=prev.reds.slice().sort(function(a,b){return a-b;});
   var kills=[];
-  if(k==='lt2'){ var v=reds[0]+2; if(v>33)v-=33; kills.push(v); }
-  else if(k==='lt9'){ var v=reds[0]+9; while(v>33)v-=33; kills.push(v); }
-  else if(k==='lt42'){ var v=reds[0]*4-2; while(v>33)v-=33; kills.push(v); }
-  else if(k==='dq'){ var ods=reds.filter(function(n){return n%2===1;}); var mx=ods[ods.length-1]||1, mn=ods[0]||1; var v=Math.round((mx+mn)/2); if(v<1)v=1; if(v>33)v=33; kills.push(v); }
-  else if(k==='tail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); for(var i=1;i<=33;i++){ if(ts[i%10]) kills.push(i); } }
-  else if(k==='012'){ var lu=[[],[],[]]; for(var i=1;i<=33;i++){ lu[i%3].push(i); } kills=pickN(lu[Math.floor(rnd()*3)],5,rnd); }
-  else if(k==='mat'){ var rr=Math.floor(rnd()*6), cc=Math.floor(rnd()*6); for(var i=1;i<=33;i++){ var r=Math.floor((i-1)/6), col=(i-1)%6; if(r===rr||col===cc) kills.push(i); } }
+  if(k==='lt2'){ var v=reds[0]+2; if(v>80)v-=80; kills.push(v); }
+  else if(k==='lt9'){ var v=reds[0]+9; while(v>80)v-=80; kills.push(v); }
+  else if(k==='lt42'){ var v=reds[0]*4-2; while(v>80)v-=80; kills.push(v); }
+  else if(k==='dq'){ var ods=reds.filter(function(n){return n%2===1;}); var mx=ods[ods.length-1]||1, mn=ods[0]||1; var v=Math.round((mx+mn)/2); if(v<1)v=1; if(v>80)v=33; kills.push(v); }
+  else if(k==='tail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); for(var i=1;i<=80;i++){ if(ts[i%10]) kills.push(i); } }
+  else if(k==='012'){ var lu=[[],[],[]]; for(var i=1;i<=80;i++){ lu[i%3].push(i); } kills=pickN(lu[Math.floor(rnd()*3)],5,rnd); }
+  else if(k==='mat'){ var rr=Math.floor(rnd()*6), cc=Math.floor(rnd()*6); for(var i=1;i<=80;i++){ var r=Math.floor((i-1)/6), col=(i-1)%6; if(r===rr||col===cc) kills.push(i); } }
   else if(k==='span'){ var sp=reds[5]-reds[0]; kills.push(sp); if(sp-1>=1)kills.push(sp-1); if(sp+1<=33)kills.push(sp+1); }
-  else if(k==='zone'){ var zs=[[1,8],[9,16],[18,25],[26,33]]; var z=zs[Math.floor(rnd()*4)]; for(var i=z[0];i<=z[1];i++) kills.push(i); }
+  else if(k==='zone'){ var zs=[[1,10],[11,20],[21,30],[31,40]]; var z=zs[Math.floor(rnd()*4)]; for(var i=z[0];i<=z[1];i++) kills.push(i); }
   else if(k==='dblue'){ var b=prev.blue; reds.forEach(function(n){ var d=Math.abs(n-b); if(d>=1&&d<=33) kills.push(d); }); }
   else if(k==='nb'){ for(var i=1;i<reds.length;i++){ kills.push(reds[i]-reds[i-1]); } }
   else if(k==='pair'){ var all=[]; for(var i=0;i<reds.length;i++){ for(var j=i+1;j<reds.length;j++){ var d=Math.abs(reds[i]-reds[j]); if(d>=1&&d<=33&&all.indexOf(d)<0) all.push(d); } } kills=all.slice(0,10); }
   else if(k==='hot5'){ kills=pickN(range(1,80),6,rnd); }
-  else if(k==='ctail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); var cold=[]; for(var i=0;i<10;i++){ if(!ts[i]) cold.push(i); } if(!cold.length) cold=[8,9]; for(var i=1;i<=33;i++){ if(cold.indexOf(i%10)>=0) kills.push(i); } }
+  else if(k==='ctail'){ var ts={}; reds.forEach(function(n){ts[n%10]=1;}); var cold=[]; for(var i=0;i<10;i++){ if(!ts[i]) cold.push(i); } if(!cold.length) cold=[8,9]; for(var i=1;i<=80;i++){ if(cold.indexOf(i%10)>=0) kills.push(i); } }
   else if(k==='prime'){ var pr=[1,2,3,5,7,11,13,17,19,23,29,31]; reds.forEach(function(n){ if(pr.indexOf(n)>=0) kills.push(n); }); }
   else if(k==='edge'){ reds.forEach(function(n){ if(n-1>=1)kills.push(n-1); if(n+1<=33)kills.push(n+1); }); }
   else if(k==='chong'){ var copy=reds.slice(); for(var i=0;i<4&&copy.length;i++){ var idx=Math.floor(rnd()*copy.length); kills.push(copy.splice(idx,1)[0]); } }
@@ -2134,7 +2134,7 @@ function genAllHistory(m){
         else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
         else if(cat === '蓝杀'){ reds = pickN(range(1,80),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,80).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
         else if(cat === '映射'){
-          /* 训练段(d<=2800)：历史复盘优化，第1注全中6红+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
+          /* 训练段(d<=2800)：历史复盘优化，第1注全中选10个+开奖（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
           if(d <= 2800 && i === 0){
             reds = draws[d-1].reds.slice();
             blue = draws[d-1].blue;
@@ -2144,7 +2144,7 @@ function genAllHistory(m){
           }
         }
         else if(cat === '映射B'){
-          // 步长矩阵：起点i，步长7(gcd=1)取6红，20个起点两两不同，33红全覆盖；i*5模16全覆盖
+          // 步长矩阵：起点i，步长7(gcd=1)取选10个，20个起点两两不同，33红全覆盖；i*5模16全覆盖
           reds = [];
           for(var q=0;q<6;q++){
             var rn = ((i*1 + q*7) % 33) + 1;
