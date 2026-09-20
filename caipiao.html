@@ -77,14 +77,18 @@ h1 { color: #fff; font-size: 28px; margin-bottom: 8px; }
   var dx = 0.5 + Math.random()*0.5, dy = 0.5 + Math.random()*0.5;
   if(Math.random() < 0.5) dx = -dx;
   if(Math.random() < 0.5) dy = -dy;
+  var paused = false, rafId = null;
   function move(){
+    if(paused) return;
     x += dx; y += dy;
     if(x <= 0 || x >= w - aw - 10) dx = -dx;
     if(y <= 0 || y >= h - ah - 10) dy = -dy;
     ad.style.left = x + 'px';
     ad.style.top = y + 'px';
-    requestAnimationFrame(move);
+    rafId = requestAnimationFrame(move);
   }
+  ad.addEventListener('mouseenter', function(){ paused = true; if(rafId) cancelAnimationFrame(rafId); });
+  ad.addEventListener('mouseleave', function(){ paused = false; move(); });
   move();
 })();
 </script>
