@@ -1384,38 +1384,44 @@ window.addEventListener('load', function(){
 function copySimResult(){
   var method = document.getElementById('simMethod').value;
   var count = document.getElementById('simCount').value;
+  var resultEl = document.getElementById('simResult');
   
-  // 从表格里提取号码，格式化
-  var rows = document.querySelectorAll('#simResult tbody tr');
-  var lines = [];
+  if(!resultEl){
+    alert('❌ 请先生成号码');
+    return;
+  }
   
-  rows.forEach(function(row, idx){
-    var cells = row.querySelectorAll('td');
-    if(cells.length >= 2){
-      var betNo = cells[0].innerText.trim();
-      var reds = cells[1].innerText.trim().replace(/\s+/g, ' ');
-      var blue = cells.length >= 3 ? cells[2].innerText.trim().replace(/\s+/g, ' ') : '';
-      var balls = blue ? reds + ' + ' + blue : reds;
-      lines.push('第' + betNo + '注：' + balls);
+  // 直接用表格innerText，然后格式化
+  var rawText = resultEl.innerText;
+  var lines = rawText.split('\n').filter(function(l){ return l.trim(); });
+  
+  var output = '【' + method + '】模拟投注号码（' + count + '注）\n';
+  output += '='.repeat(30) + '\n';
+  
+  for(var i=1;i<lines.length;i++){
+    var line = lines[i].trim().replace(/\s+/g, ' ');
+    output += '第' + String(i).padStart(2,'0') + '注：' + line + '\n';
+    if(i < lines.length-1){
+      output += '-'.repeat(20) + '\n';
     }
-  });
+  }
   
-  var text = '【' + method + '】模拟投注号码（' + count + '注）\n';
-  text += '='.repeat(30) + '\n';
-  text += lines.join('\n' + '-'.repeat(20) + '\n');
-  text += '\n' + '='.repeat(30);
+  output += '='.repeat(30);
   
-  navigator.clipboard.writeText(text).then(function(){
-    alert('✅ 号码已复制到剪贴板！');
-  }).catch(function(){
-    var textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
+  // 复制
+  var textarea = document.createElement('textarea');
+  textarea.value = output;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try{
     document.execCommand('copy');
-    document.body.removeChild(textarea);
     alert('✅ 号码已复制到剪贴板！');
-  });
+  }catch(e){
+    alert('❌ 复制失败，请手动复制');
+  }
+  document.body.removeChild(textarea);
 }
 
 // 分享到微信
