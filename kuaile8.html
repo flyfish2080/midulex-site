@@ -1226,41 +1226,6 @@ document.addEventListener('DOMContentLoaded', function(){
     return pickMap20.cache[idx];
   }
   function simGenBets(m){
-    var prev;
-    if(LATEST){
-      prev = { reds: LATEST.red.slice(), blue: LATEST.blue, bluePrev: LATEST.blue };
-    } else {
-      var rndDraw = rngFor(m.name + '#draw');
-      var draws = [];
-      for(var i=0;i<3500;i++) draws.push(genDraw(rndDraw));
-      prev = draws[draws.length-1];
-      prev.bluePrev = draws[draws.length-2].blue;
-    }
-    var bets = [];
-    var g = GEN_CONFIG[m.name], cat = m.cat;
-    var seed = Date.now();
-    for(var i=0;i<20;i++){
-      var rnd2 = rngFor(m.name + '#sim' + seed + '#' + i);
-      var reds = [], blue = 0;
-      if(cat === '基准' || cat === '选号'){ reds = pickReds(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '杀号'){ var kills = calcKills(g.kill, prev, rnd2); var pool = range(1,80).filter(function(n){ return kills.indexOf(n)<0; }); reds = pickN(pool,6,rnd2).sort(function(a,b){return a-b;}); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
-      else if(cat === '蓝杀'){ reds = pickN(range(1,80),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,80).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
-      else if(cat === '映射'){
-        /* 贪心构造：保证任意两注重叠开奖号 ≤ 2 个 */
-        reds = pickMap20(i, m.name + '#map' + seed);
-        blue = 0;
-      }
-      else if(cat === '映射B'){
-        reds = [];
-        for(var q=0;q<6;q++){ var rn = ((i*1 + q*7) % 33) + 1; if(reds.indexOf(rn)<0) reds.push(rn); }
-        reds.sort(function(a,b){return a-b;});
-        blue = ((i*5) % 16) + 1;
-      }
-      bets.push({reds:reds, blue:blue});
-    }
-    return bets;
-  function simGenBets(m){
     // 快乐8：生成20注，每注选10个号从1-80
     var bets = [];
     var seed = Date.now();
