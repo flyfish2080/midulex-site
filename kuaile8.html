@@ -396,14 +396,14 @@ footer .b{color:var(--text2)}
     <div class="sec-head"><div class="tagline">DASHBOARDS</div></div><div class="view" id="dashboards"><h2>已有数据看板入口</h2>
     <p>以下看板已部署上线，点击卡片即可在新标签页打开。</p></div>
     <div class="dash-grid">
-      <a class="dash" href="https://www.dmmmw.site/moxing/ssq-stats-dashboard/index.html" target="_blank" rel="noopener">
+      <a class="dash" href="https://www.dmmmw.site/moxing/kl8-stats-dashboard/index.html" target="_blank" rel="noopener">
         <div class="ic">📊</div><h3>快乐8统计看板</h3>
-        <p class="p">每期开奖数据、和值、AC 值、奇偶比等常用数值的交互式统计（E:\自己开发工具\moxing\ssq-stats-dashboard\index.html）</p>
+        <p class="p">每期开奖数据、和值、AC 值、奇偶比等常用数值的交互式统计（E:\自己开发工具\moxing\kl8-stats-dashboard\index.html）</p>
         <div class="go">打开统计看板</div>
       </a>
-      <a class="dash" href="https://www.dmmmw.site/moxing/ssq-methods-dashboard/index.html" target="_blank" rel="noopener">
+      <a class="dash" href="https://www.dmmmw.site/moxing/kl8-methods-dashboard/index.html" target="_blank" rel="noopener">
         <div class="ic">🏆</div><h3>快乐8方法排行</h3>
-        <p class="p">20 种投注方法统一回测排行——随机单式基线 20.16%，高回报方法均为过拟合（E:\自己开发工具\moxing\ssq-methods-dashboard\index.html）</p>
+        <p class="p">20 种投注方法统一回测排行——随机单式基线 20.16%，高回报方法均为过拟合（E:\自己开发工具\moxing\kl8-methods-dashboard\index.html）</p>
         <div class="go">打开方法排行</div>
       </a>
       <a class="dash" href="https://www.dmmmw.site/caipiao.html#report" target="_blank" rel="noopener">
@@ -659,9 +659,9 @@ var METHOD_DETAILS = [
     analysis: ''
   };
   METHOD_DETAILS = [
-    { name:'复式投注法', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
+    { name:'复式投注法', cat:'选号', rule:'最小号取 1-10 区间，最大号取 71-80 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
       trainR:'25.47%', testR:'23.1%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
-      steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成开奖号组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配(01-80)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
+      steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 1-10，凤尾必须落在 71-80，二者相差不小于 16','随机生成开奖号组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配(01-80)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
       analysis:'测试段回报率 23.1% 为 20 种方法最高，但经核查是 2025888 期命中 1 注选10中10(10000 元)的样本噪声，扣除后约 21.5%。净收益 -1,750 元仍大幅亏损。复式投注区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
     { name:'冷热温配比法', cat:'杀号', rule:'把开奖号按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
       trainR:'24.78%', testR:'22.3%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'22.3%',
