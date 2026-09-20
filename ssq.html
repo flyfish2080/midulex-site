@@ -1410,14 +1410,35 @@ function shareSimResult(){
   
   var text = '【' + method + '】模拟投注号码（' + count + '注）\n' + result;
   
-  if(navigator.share){
-    navigator.share({
-      title: '模拟投注号码',
-      text: text
-    }).catch(function(){});
+  // 先复制到剪贴板
+  navigator.clipboard.writeText(text).then(function(){
+    console.log('号码已复制');
+  }).catch(function(){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  });
+  
+  // 尝试打开微信
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if(isMobile){
+    // 手机端尝试打开微信
+    window.location.href = 'weixin://';
+    
+    // 2秒后检测是否成功打开
+    setTimeout(function(){
+      // 如果页面还在前台，说明打开失败
+      if(!document.hidden){
+        alert('💡 号码已复制\n\n未检测到微信，请手动打开微信粘贴分享');
+      }
+    }, 2000);
   } else {
-    copySimResult();
-    alert('💡 已复制号码，打开微信粘贴分享即可');
+    // 电脑端提示
+    alert('💡 号码已复制到剪贴板\n\n请手动打开微信，粘贴分享给好友或群聊');
   }
 }
 </script>
