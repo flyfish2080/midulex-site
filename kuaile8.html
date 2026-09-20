@@ -203,7 +203,7 @@ footer .b{color:var(--text2)}
   </div>
 
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">SNAPSHOT</div><h2>一句话看懂全部验证</h2>
+    <div class="sec-head"><div class="tagline">SNAPSHOT</div><div class="view" id="view-home"><h2>一句话看懂全部验证</h2>
     <p>训练段回报率可以任意拟合做高（最高 58.7%），但一进入从未见过的测试段，所有方法全部跌回随机档（19-24%）。这是本项目每一轮实验反复复现的同一张图。</p></div>
     <div class="grid-2">
       <div class="card"><h3><span class="dot red"></span>训练段：想多高有多高</h3>
@@ -237,7 +237,7 @@ footer .b{color:var(--text2)}
 <!-- ================= 验证报告 ================= -->
 <div class="view" id="report">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">REPORT · 2026-09-17</div><h2>网友快乐8投注方法全网回测验证报告</h2>
+    <div class="sec-head"><div class="tagline">REPORT · 2026-09-17</div></div><div class="view" id="view-report" style="display:none"><h2>网友快乐8投注方法全网回测验证报告</h2>
     <p>数据区间 2020001 ~ 2026100（共 3500 期）｜训练段 2770 期 / 测试段 697 期，两段完全独立，规则只用投注期之前的历史数据。</p></div>
     <div class="card" style="margin-bottom:18px">
       <h3><span class="dot red"></span>执行摘要</h3>
@@ -321,7 +321,7 @@ footer .b{color:var(--text2)}
 <!-- ================= 历史结论 ================= -->
 <div class="view" id="history">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div><h2>历史验证结论汇总</h2>
+    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div></div><div class="view" id="view-history" style="display:none"><h2>历史验证结论汇总</h2>
     <p>从统计看板、映射构造到杀号与全网方法，每一轮实验都走到同一个终点：训练段任意拟合，测试段回归随机。下面是完整脉络。</p></div>
 
     <div class="card" style="margin-bottom:24px">
@@ -375,7 +375,7 @@ footer .b{color:var(--text2)}
 <!-- ================= 模拟投注 ================= -->
 <div class="view" id="simulate">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">SIMULATOR</div><h2>模拟投注器</h2>
+    <div class="sec-head"><div class="tagline">SIMULATOR</div></div><div class="view" id="view-simulate" style="display:none"><h2>模拟投注器</h2>
     <p>任选本站验证过的一种方法，基于该方法规则生成下一期 20 注推荐号码。<b style="color:var(--gold)">仅作方法演示与娱乐，不构成任何投注建议——所有方法回测均无法战胜随机基线。</b></p></div>
     <div class="card" style="max-width:760px;margin:0 auto">
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px">
@@ -393,7 +393,7 @@ footer .b{color:var(--text2)}
 <!-- ================= 看板入口 ================= -->
 <div class="view" id="dashboards">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">DASHBOARDS</div><h2>已有数据看板入口</h2>
+    <div class="sec-head"><div class="tagline">DASHBOARDS</div></div><div class="view" id="view-dashboards" style="display:none"><h2>已有数据看板入口</h2>
     <p>以下看板已部署上线，点击卡片即可在新标签页打开。</p></div>
     <div class="dash-grid">
       <a class="dash" href="https://www.dmmmw.site/moxing/ssq-stats-dashboard/index.html" target="_blank" rel="noopener">
@@ -1312,7 +1312,7 @@ document.addEventListener('DOMContentLoaded', function(){
 .float-ad .close:hover{opacity:1;}
 @media(max-width:640px){.float-ad{width:240px;padding:18px 20px;}}
 </style>
-<div class="float-ad" id="floatAd">
+</div><div class="float-ad" id="floatAd">
   <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
   <h3>🏆 欢迎来挑战</h3>
   <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奖励人民币 <span class="prize">10000元。</span></p>
@@ -1445,7 +1445,7 @@ window.addEventListener('load', function(){
 <!-- ================= 历史结论 ================= -->
 <div class="view" id="history">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div><h2>历史验证结论汇总</h2>
+    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div></div><div class="view" id="view-history" style="display:none"><h2>历史验证结论汇总</h2>
     <p>从统计看板、映射构造到杀号与全网方法，每一轮实验都走到同一个终点：训练段任意拟合，测试段回归随机。下面是完整脉络。</p></div>
 
     <div class="card" style="margin-bottom:24px">
@@ -1499,7 +1499,7 @@ window.addEventListener('load', function(){
 <!-- ================= 模拟投注 ================= -->
 <div class="view" id="simulate">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">SIMULATOR</div><h2>模拟投注器</h2>
+    <div class="sec-head"><div class="tagline">SIMULATOR</div></div><div class="view" id="view-simulate" style="display:none"><h2>模拟投注器</h2>
     <p>任选本站验证过的一种方法，基于该方法规则生成下一期 20 注推荐号码。<b style="color:var(--gold)">仅作方法演示与娱乐，不构成任何投注建议——所有方法回测均无法战胜随机基线。</b></p></div>
     <div class="card" style="max-width:760px;margin:0 auto">
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px">
@@ -1517,7 +1517,7 @@ window.addEventListener('load', function(){
 <!-- ================= 看板入口 ================= -->
 <div class="view" id="dashboards">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">DASHBOARDS</div><h2>已有数据看板入口</h2>
+    <div class="sec-head"><div class="tagline">DASHBOARDS</div></div><div class="view" id="view-dashboards" style="display:none"><h2>已有数据看板入口</h2>
     <p>以下看板已部署上线，点击卡片即可在新标签页打开。</p></div>
     <div class="dash-grid">
       <a class="dash" href="https://www.dmmmw.site/moxing/ssq-stats-dashboard/index.html" target="_blank" rel="noopener">
