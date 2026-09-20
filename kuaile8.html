@@ -174,7 +174,7 @@ footer .b{color:var(--text2)}
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>快乐8模型验证网</div>
   <nav>
-    <a href="#home" data-nav="home" class="active">首页</a>
+    <a href="/caipiao.html#home首页</a>
     <a href="#report" data-nav="report">验证报告</a>
     <a href="#history" data-nav="history">历史结论</a>
     <a href="#simulate" data-nav="simulate">模拟投注器</a>
@@ -1315,5 +1315,50 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+
+<style>
+.float-ad{position:fixed;width:260px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;padding:18px;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.3);z-index:9999;}
+.float-ad h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.float-ad p{font-size:12px;line-height:1.6;opacity:0.95;}
+.float-ad .prize{display:inline-block;margin-top:8px;padding:3px 10px;background:#ffd700;color:#333;border-radius:20px;font-weight:bold;font-size:12px;}
+.float-ad .close{position:absolute;top:6px;right:10px;cursor:pointer;opacity:0.6;font-size:16px;}
+.float-ad .close:hover{opacity:1;}
+@media(max-width:640px){.float-ad{width:220px;padding:14px;}}
+</style>
+<div class="float-ad" id="floatAd">
+  <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
+  <h3>🏆 欢迎来挑战</h3>
+  <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奉送奖金 <span class="prize">10000元</span></p>
+</div>
+<script>
+(function(){
+  var ad = document.getElementById('floatAd');
+  var w = window.innerWidth, h = window.innerHeight;
+  var aw = ad.offsetWidth, ah = ad.offsetHeight;
+  var x = Math.random() * (w - aw - 20), y = Math.random() * (h - ah - 20);
+  var dx = 0.5 + Math.random()*0.5, dy = 0.5 + Math.random()*0.5;
+  if(Math.random() < 0.5) dx = -dx;
+  if(Math.random() < 0.5) dy = -dy;
+  var timer = null;
+  function start(){
+    if(timer) return;
+    timer = setInterval(function(){
+      x += dx; y += dy;
+      if(x <= 0 || x >= w - aw - 10) dx = -dx;
+      if(y <= 0 || y >= h - ah - 10) dy = -dy;
+      ad.style.left = x + 'px';
+      ad.style.top = y + 'px';
+    }, 30);
+  }
+  function stop(){
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+  ad.onmouseenter = stop;
+  ad.onmouseleave = start;
+  ad.style.left = x + 'px';
+  ad.style.top = y + 'px';
+  start();
+})();
+</script>
 </body>
 </html>
