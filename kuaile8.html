@@ -191,12 +191,12 @@ footer .b{color:var(--text2)}
       <h1>彩票<span class="red">模型</span><span class="blue">验证网</span></h1>
       <p class="sub">用 3500 期快乐8历史开奖数据，对网络上流传的每一种投注方法做<b>训练/测试两段独立回测</b>——不猜、不编、每个数字可复现。</p>
       <div class="stat-bar">
-        <div class="stat-pill"><div class="n blue">8</div><div class="l">覆盖平台</div></div>
-        <div class="stat-pill"><div class="n gold">60+</div><div class="l">收集方法(去重前)</div></div>
-        <div class="stat-pill"><div class="n blue">23</div><div class="l">回测方法(去重后)</div></div>
+        <div class="stat-pill"><div class="n blue" id="statPlatform">8</div><div class="l">覆盖平台</div></div>
+        <div class="stat-pill"><div class="n gold" id="statCollected">60+</div><div class="l">收集方法(去重前)</div></div>
+        <div class="stat-pill"><div class="n blue" id="statMethods">0</div><div class="l">回测方法(去重后)</div></div>
         <div class="stat-pill"><div class="n red">3500</div><div class="l">回测总期数</div></div>
-        <div class="stat-pill"><div class="n">20.9%</div><div class="l">随机基线回报率</div></div>
-        <div class="stat-pill"><div class="n red">0</div><div class="l">显著战胜基线的方法</div></div>
+        <div class="stat-pill"><div class="n" id="statBaseline">-</div><div class="l">随机基线回报率</div></div>
+        <div class="stat-pill"><div class="n red" id="statBeat">0</div><div class="l">显著战胜基线的方法</div></div>
       </div>
       <div class="hero-verdict"><b>核心结论：</b>累计验证 40+ 种投注方法（杀号 / 选号 / 过滤 / 映射优化），没有任何一种能在测试段显著战胜随机。</div>
     </div>
@@ -1363,6 +1363,34 @@ document.addEventListener('DOMContentLoaded', function(){
   ad.style.top = y + 'px';
   start();
 })();
+</script>
+
+<script>
+window.addEventListener('load', function(){
+  // 统计回测方法数（表格行数）
+  var rows = document.querySelectorAll('#report table tbody tr');
+  var methodCount = 0;
+  var baseline = 0;
+  var beatCount = 0;
+  rows.forEach(function(row){
+    var nameEl = row.querySelector('.mname');
+    if(!nameEl) return;
+    methodCount++;
+    var cells = row.querySelectorAll('td');
+    // 找测试回报率列（第6列，索引5）
+    if(cells.length > 5){
+      var testR = parseFloat(cells[5].textContent);
+      if(nameEl.textContent.indexOf('随机基线') >= 0){
+        baseline = testR;
+        document.getElementById('statBaseline').textContent = testR.toFixed(1) + '%';
+      } else if(baseline > 0 && testR > baseline){
+        beatCount++;
+      }
+    }
+  });
+  document.getElementById('statMethods').textContent = methodCount;
+  document.getElementById('statBeat').textContent = beatCount;
+});
 </script>
 </body>
 </html>
