@@ -1382,16 +1382,30 @@ window.addEventListener('load', function(){
 <script>
 // 复制号码到剪贴板
 function copySimResult(){
-  var result = document.getElementById('simResult').innerText;
   var method = document.getElementById('simMethod').value;
   var count = document.getElementById('simCount').value;
   
-  var text = '【' + method + '】模拟投注号码（' + count + '注）\n' + result;
+  // 从表格里提取号码，格式化
+  var rows = document.querySelectorAll('#simResult tbody tr');
+  var lines = [];
+  
+  rows.forEach(function(row, idx){
+    var cells = row.querySelectorAll('td');
+    if(cells.length >= 2){
+      var betNo = cells[0].innerText.trim();
+      var balls = cells[1].innerText.trim().replace(/\s+/g, ' ');
+      lines.push('第' + betNo + '注：' + balls);
+    }
+  });
+  
+  var text = '【' + method + '】模拟投注号码（' + count + '注）\n';
+  text += '='.repeat(30) + '\n';
+  text += lines.join('\n' + '-'.repeat(20) + '\n');
+  text += '\n' + '='.repeat(30);
   
   navigator.clipboard.writeText(text).then(function(){
     alert('✅ 号码已复制到剪贴板！');
   }).catch(function(){
-    // 降级方案
     var textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
