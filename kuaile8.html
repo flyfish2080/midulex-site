@@ -381,6 +381,8 @@ footer .b{color:var(--text2)}
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px">
         <label style="font-size:14px;color:var(--text2)">选择方法：</label>
         <select id="simMethod" style="flex:1;min-width:220px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:14px;padding:9px 12px;border-radius:8px;font-family:var(--sans)"></select>
+        <label style="font-size:14px;color:var(--text2)">注数：</label>
+        <input type="number" id="simCount" value="20" min="1" max="100" style="width:70px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:14px;padding:9px 12px;border-radius:8px;font-family:var(--sans)">
         <button id="simGen" style="background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--sans);font-weight:600">🎯 生成模拟号码</button>
       </div>
       <div id="simLatest" style="display:none;font-size:13px;color:var(--green);margin-bottom:10px;padding:8px 12px;background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px"></div>
@@ -1247,10 +1249,11 @@ document.addEventListener('DOMContentLoaded', function(){
     return pickMap20.cache[idx];
   }
   function simGenBets(m){
-    // 快乐8：生成20注，每注选10个号从1-80
+    // 快乐8：根据用户输入的注数生成
+    var count = parseInt(document.getElementById('simCount').value) || 20;
     var bets = [];
     var seed = Date.now();
-    for(var i=0;i<20;i++){
+    for(var i=0;i<count;i++){
       var rnd2 = rngFor(m.name + '#sim' + seed + '#' + i);
       var reds = pickN(range(1,80), 10, rnd2).sort(function(a,b){return a-b;});
       bets.push({reds: reds});
