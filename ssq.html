@@ -1391,22 +1391,34 @@ function copySimResult(){
     return;
   }
   
-  // 直接用表格innerText，然后格式化
-  var rawText = resultEl.innerText;
-  var lines = rawText.split('\n').filter(function(l){ return l.trim(); });
+  // 从表格里提取号码，确保每个号码之间有空格
+  var rows = resultEl.querySelectorAll('tbody tr');
+  var lines = [];
+  
+  rows.forEach(function(row, idx){
+    var cells = row.querySelectorAll('td');
+    if(cells.length >= 2){
+      var betNo = cells[0].innerText.trim();
+      // 提取红球号码
+      var redBalls = cells[1].innerText.trim().match(/\d+/g) || [];
+      var redStr = redBalls.join(' ');
+      
+      // 如果有蓝球列
+      var blueStr = '';
+      if(cells.length >= 3){
+        var blueBalls = cells[2].innerText.trim().match(/\d+/g) || [];
+        blueStr = blueBalls.join(' ');
+      }
+      
+      var balls = blueStr ? redStr + ' + ' + blueStr : redStr;
+      lines.push('第' + betNo + '注：' + balls);
+    }
+  });
   
   var output = '【' + method + '】模拟投注号码（' + count + '注）\n';
   output += '='.repeat(30) + '\n';
-  
-  for(var i=1;i<lines.length;i++){
-    var line = lines[i].trim().replace(/\s+/g, ' ');
-    output += '第' + String(i).padStart(2,'0') + '注：' + line + '\n';
-    if(i < lines.length-1){
-      output += '-'.repeat(20) + '\n';
-    }
-  }
-  
-  output += '='.repeat(30);
+  output += lines.join('\n' + '-'.repeat(20) + '\n');
+  output += '\n' + '='.repeat(30);
   
   // 复制
   var textarea = document.createElement('textarea');
