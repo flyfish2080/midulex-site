@@ -1376,6 +1376,32 @@ window.addEventListener('load', function(){
   document.getElementById('statConclusion').textContent = methodCount;
   document.getElementById('statTotal').textContent = '3500';
 });
+
+<script>
+// 视图切换
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>{
+    v.style.display = (v.id === 'view-'+name) ? 'block' : 'none';
+  });
+  document.querySelectorAll('nav a[data-nav]').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('data-nav') === name);
+  });
+}
+// 导航点击事件
+document.querySelectorAll('nav a[data-nav]').forEach(a=>{
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var name = this.getAttribute('data-nav');
+    showView(name);
+    location.hash = name;
+  });
+});
+// 初始化
+window.addEventListener('load', function(){
+  var h = location.hash.slice(1);
+  if(h) showView(h);
+});
+</script>
 </script>
 </body>
 </html>
