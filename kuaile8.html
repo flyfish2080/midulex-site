@@ -18,7 +18,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.75;font-size:15px}
-body::before{content:"";position:fixed;inset:0;background:
+body::before{content:"";position:fixed;z-index:100;inset:0;background:
   radial-gradient(1100px 500px at 85% -10%, rgba(42,157,244,.14), transparent 60%),
   radial-gradient(900px 480px at 8% 0%, rgba(230,57,70,.12), transparent 55%);
   pointer-events:none;z-index:0}
@@ -557,7 +557,7 @@ footer .b{color:var(--text2)}
   </div>
 </div>
 <style>
-.detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
+.detail-overlay{position:fixed;z-index:100;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
 .detail-overlay.show{display:block}
 .detail-page{max-width:960px;margin:0 auto;padding:0 0 60px}
 .detail-head{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:rgba(13,20,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -1301,7 +1301,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 <style>
-.float-ad{position:fixed;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:9999;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.float-ad{position:fixed;z-index:100;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:100;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
 .float-ad::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);}
 .float-ad h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-weight:700;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .float-ad p{font-size:14px;line-height:1.7;opacity:0.95;text-indent:2em;margin-bottom:10px;}
@@ -1681,7 +1681,7 @@ window.addEventListener('load', function(){
   </div>
 </div>
 <style>
-.detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
+.detail-overlay{position:fixed;z-index:100;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
 .detail-overlay.show{display:block}
 .detail-page{max-width:960px;margin:0 auto;padding:0 0 60px}
 .detail-head{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:rgba(13,20,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -2425,7 +2425,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 <style>
-.float-ad{position:fixed;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:9999;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.float-ad{position:fixed;z-index:100;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:100;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
 .float-ad::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);}
 .float-ad h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-weight:700;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .float-ad p{font-size:14px;line-height:1.7;opacity:0.95;text-indent:2em;margin-bottom:10px;}
