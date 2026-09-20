@@ -174,7 +174,7 @@ footer .b{color:var(--text2)}
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>快乐8模型验证</div>
   <nav><a href="/caipiao.html">回到首页</a>
-    <a href="/caipiao.html#home首页</a>
+    <a href="#home" data-nav="home">首页</a>
     <a href="#report" data-nav="report">验证报告</a>
     <a href="#history" data-nav="history">历史结论</a>
     <a href="#simulate" data-nav="simulate">模拟投注器</a>
@@ -2421,6 +2421,29 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+
+<script>
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+  var el = document.getElementById('view-'+name);
+  if(el) el.style.display='block';
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  document.querySelector('nav a[data-nav="'+name+'"]').classList.add('active');
+}
+document.querySelectorAll('nav a[data-nav]').forEach(a=>{
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var name = this.getAttribute('data-nav');
+    showView(name);
+    location.hash = name;
+  });
+});
+// 初始化
+if(location.hash){
+  var h = location.hash.slice(1);
+  showView(h);
+}
+</script>
 </script>
 
 
