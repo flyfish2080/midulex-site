@@ -845,7 +845,7 @@ function range(a,b){ var r=[]; for(var i=a;i<=b;i++){ r.push(i); } return r; }
 function shuffle(arr,rnd){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(rnd()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; } return arr; }
 function pickN(arr,n,rnd){ var a=arr.slice(); shuffle(a,rnd); return a.slice(0,n); }
 function intersect(a,b){ var r=[]; a.forEach(function(n){ if(b.indexOf(n)>=0) r.push(n); }); return r; }
-function genDraw(rnd){ var reds=pickN(range(1,80),6,rnd).sort(function(a,b){return a-b;}); var blue=1+Math.floor(rnd()*16); return {reds:reds,blue:blue}; }
+function genDraw(rnd){ var reds=pickN(range(1,80),20,rnd).sort(function(a,b){return a-b;}); return {reds:reds,blue:blue}; }
 function prizeOf(mr,mb){
   if(mr===10) return {n:'选10中10',a:10000};
   if(mr===6) return {n:'选10中9',a:2000};
