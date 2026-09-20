@@ -1194,7 +1194,7 @@ document.addEventListener('DOMContentLoaded', function(){
   /* 真实最新开奖：从同域 latest.json 拉取（GitHub Action 定时更新） */
   var LATEST = null;
   (function(){
-    fetch('latest.json?_t=' + Date.now())
+    fetch('kuaile8.json?_t=' + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(j){
         if(j && j.result && j.result[0]){
