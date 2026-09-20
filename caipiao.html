@@ -53,5 +53,21 @@ h1 { color: #fff; font-size: 28px; margin-bottom: 8px; }
 
   <div class="footer">© 2026 米多乐享 · 仅供模型验证研究</div>
 </div>
+
+<style>
+.float-ad{position:fixed;bottom:20px;right:20px;width:280px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;padding:20px;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.3);z-index:9999;animation:floatAd 3s ease-in-out infinite;}
+@keyframes floatAd{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.float-ad h3{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.float-ad p{font-size:13px;line-height:1.6;opacity:0.95;}
+.float-ad .prize{display:inline-block;margin-top:10px;padding:4px 12px;background:#ffd700;color:#333;border-radius:20px;font-weight:bold;font-size:13px;}
+.float-ad .close{position:absolute;top:8px;right:12px;cursor:pointer;opacity:0.6;font-size:16px;}
+.float-ad .close:hover{opacity:1;}
+@media(max-width:640px){.float-ad{width:calc(100% - 40px);right:20px;left:20px;}}
+</style>
+<div class="float-ad" id="floatAd">
+  <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
+  <h3>🏆 欢迎来挑战</h3>
+  <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奉送奖金 <span class="prize">10000元</span></p>
+</div>
 </body>
 </html>
