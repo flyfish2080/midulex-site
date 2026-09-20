@@ -918,11 +918,8 @@ function calcKills(k,prev,rnd){
   return out;
 }
 function pickReds(m,rnd){
-  var g=GEN_CONFIG[m.name], p=g.pick;
-  if(p==='ltfw'){ var lt=1+Math.floor(rnd()*9), ft=25+Math.floor(rnd()*9); var mid=pickN(range(1,80).filter(function(n){return n!==lt&&n!==ft;}),4,rnd); return [lt,ft].concat(mid).sort(function(a,b){return a-b;}); }
-  if(p==='h321'){ var hot=pickN(range(1,80),9,rnd); var rest=range(1,80).filter(function(n){return hot.indexOf(n)<0;}); var warm=pickN(rest,12,rnd); var cold=range(1,80).filter(function(n){return hot.indexOf(n)<0&&warm.indexOf(n)<0;}); return pickN(hot,3,rnd).concat(pickN(warm,2,rnd)).concat(pickN(cold,1,rnd)).sort(function(a,b){return a-b;}); }
-  if(p==='omis'){ var ws=range(1,80).map(function(n){return {n:n,w:1+(n*7)%20};}); var res=[]; while(res.length<6){ var tot=ws.reduce(function(s,x){return s+x.w;},0); var r=rnd()*tot, acc=0, ch=null; for(var i=0;i<ws.length;i++){ acc+=ws[i].w; if(r<acc){ ch=ws.splice(i,1)[0]; break; } } if(ch) res.push(ch.n); } return res.sort(function(a,b){return a-b;}); }
-  return pickN(range(1,80),6,rnd).sort(function(a,b){return a-b;});
+  // 快乐8：随机选10个号从1-80
+  return pickN(range(1,80), 10, rnd).sort(function(a,b){return a-b;});
 }
 function filterPick(m,rnd){
   var g=GEN_CONFIG[m.name], f=g.filter, tries=0;
