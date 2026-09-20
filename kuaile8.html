@@ -1185,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', function(){
             blue: parseInt(r0.blue, 10)
           };
           var el = document.getElementById('simLatest');
-          if(el){ el.textContent = '上一期（' + LATEST.code + ' ' + LATEST.date + '）：开奖号 ' + LATEST.red.join(' ') + '  ' + (LATEST.blue<10?'0'+LATEST.blue:LATEST.blue); el.style.display='block'; }
+          if(el){ el.textContent = '上一期（' + LATEST.code + ' ' + LATEST.date + '）：开奖号 ' + LATEST.red.join(' '); el.style.display='block'; }
         }
       })
       .catch(function(){});
