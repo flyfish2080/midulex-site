@@ -282,7 +282,7 @@ footer .b{color:var(--text2)}
       <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>35 种方法测试段回报率范围 19.28%~23.1%，随机基线 20.89%。除复式投注法因 1 注选10中10噪声偏高外，其余 19 种集中在 19.9%~22.3%，与基线无显著差异。大样本下快乐8简化奖级的理论期望回报率约 22.5%。</p></div>
       <div class="finding"><b>发现 2：训练段高回报无一在测试段复现。</b><p>冷热温配比训练段 48.3%（净 +14,725），测试段仅 23.03%（净 -21,460）；前五期热号杀 30.85%→19.48%；两两相减 30.19%→19.87%；上期同尾全清 29.30%→24.35%。训练段表现越好的方法，测试段往往越差——典型的过拟合/幸存者偏差。</p></div>
       <div class="finding"><b>发现 3：杀号方法杀中率与随机期望无差异。</b><p>14 种开奖号杀号方法的杀中比值集中在 0.642~1.121，绝大多数在 0.95~1.08 之间。即使比值最低的近10期冷尾全杀(0.642)——冷尾本来就不容易出，剩余候选池也相应缩小——最终回报率 21.02% 与基线 20.89% 几乎相同。</p></div>
-      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>35 种方法中 22 种测试段正收益窗口占比 0%，仅龙头凤尾定位 2.95%（同样受三等奖噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
+      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>35 种方法中 22 种测试段正收益窗口占比 0%，仅复式投注法 2.95%（同样受选10中10噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
       <div class="finding"><b>发现 5：杀号方法同样无效。</b><p>3 种杀号方法测试段回报率 20.01%~22.94%，与开奖号全随机+随机的基线无差异。 1/16 的独立随机性质决定了任何杀蓝公式都无法提高命中率。</p></div>
       <div class="finding"><b>发现 6：代数公式类杀号是传播最广但最无效的方法。</b><p>龙头±N、两两相减等在抖音、乐彩论坛、彩宝贝被反复传播，发帖人常自称"准确率 90%/98%"，回测显示杀中比值全部在 0.98~1.12，与随机完全一致。所谓"准确率"均为对已开奖结果的事后倒推。</p></div>
     </div>
@@ -295,7 +295,7 @@ footer .b{color:var(--text2)}
         <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减/AC值/和值拆分杀号</p></div>
         <div class="card" style="padding:16px 18px"><b>抖音 iesdouyin.com</b><p style="font-size:13px;margin-top:4px">跨度杀号口诀、龙头+2、大奇+小奇÷2、尾数杀号、冷热配比（多个彩票店账号传播）</p></div>
         <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">红蓝差值杀号、邻位相减、012路归类、奇偶反转</p></div>
-        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、龙头凤尾定位、关系码追踪</p></div>
+        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、复式投注法、关系码追踪</p></div>
         <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《快乐8选号聪明组合手册》</p></div>
         <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（冷热、遗漏值参考等）</p></div>
       </div>
@@ -312,7 +312,7 @@ footer .b{color:var(--text2)}
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
       <h3 style="font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">最终结论</h3>
       <p style="font-size:14.5px;color:var(--text)">本次全网搜索覆盖 8 个平台、收集 60 余种网友快乐8投注方法，去重后选取 35 种与已测方法不重复的代表性方法回测验证。<b style="color:var(--gold)">没有任何一种能在测试段显著战胜随机基线。</b></p>
-      <p style="font-size:14.5px;color:var(--text);margin-top:8px">35 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注三等奖的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——快乐8每期独立随机，选10中10概率固定约 1/8.9万，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
+      <p style="font-size:14.5px;color:var(--text);margin-top:8px">35 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注选10中10的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——快乐8每期独立随机，选10中10概率固定约 1/8.9万，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
       <p style="font-size:12.5px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本页仅作数据分析与方法验证，不构成任何投注建议。</p>
     </div>
   </div></section>
@@ -332,14 +332,14 @@ footer .b{color:var(--text2)}
         <div class="tl-time">偷看验证</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">前 50 期 / 对位构造映射</div><div class="d">前50期转移统计 24.22%（静）/18.49%（滚）；20 静态对位训练段 92%~525%，测试段 122.86% 全靠 2 次三等——"记住历史"演示：训练 4.6 亿% 只是偷看当期开奖。</div></div>
         <div class="tl-time">优化 7 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">硬计数 / 软目标 / 遗传+退火 / 组合目标 / 验证集 / 稳定化</div><div class="d">训练端想多高有多高（净收益最高 +1,560、正收益窗口最高 44.5%）；测试端剔除运气后全部贴回 21~25% 随机档。验证集法最干净：优化段 44.5% → 从未见过的验证段 0/20。</div></div>
         <div class="tl-time">杀号 11 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">冷热 / 遗漏 / 重号 / 邻号 / 尾数 / 区间 / 奇偶 / 质合杀号</div><div class="d">11 种开奖号 + 4 种杀号：杀中比值 0.97~1.02 全部=随机期望；杀号后组号大样本回报率 24.06%~25.25%，与不杀号基线相同。</div></div>
-        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：35 种方法测试段回报率 19.3%~27.5%（最高 23.1% 经核查是 1 注三等奖噪声），无方法显著优于基线 20.9%。</div></div>
+        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：35 种方法测试段回报率 19.3%~27.5%（最高 23.1% 经核查是 1 注选10中10噪声），无方法显著优于基线 20.9%。</div></div>
         <div class="tl-time">总账</div><div class="tl-axis"><span class="tl-dot g"></span></div><div class="tl-body"><div class="t">累计 40+ 种方法，结论唯一</div><div class="d"><b>快乐8每期开奖独立随机，选10中10概率固定约 1/8.9万，任何基于历史数据的方法都无法改变期望收益。</b>训练段高收益 = 拟合历史 + 运气噪声，测试段必然回归随机档（约 19-24% 回报率，长期净亏损约 75-80%）。</div></div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次三等奖(3000 元)的运气，剔除后均约 23%。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(3000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
       <table>
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
@@ -638,11 +638,11 @@ var METHOD_DETAILS = [];
     analysis: ''
   };
   METHOD_DETAILS = [
-    { name:'龙头凤尾定位', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
+    { name:'复式投注法', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
       trainR:'25.47%', testR:'23.1%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
       steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成开奖号组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配(01-80)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
-      analysis:'测试段回报率 23.1% 为 20 种方法最高，但经核查是 2025888 期命中 1 注选10中10(10000 元)的样本噪声，扣除后约 21.5%。净收益 -1,750 元仍大幅亏损。龙头凤尾区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
-    { name:'012路冷路杀号', cat:'杀号', rule:'把开奖号按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
+      analysis:'测试段回报率 23.1% 为 20 种方法最高，但经核查是 2025888 期命中 1 注选10中10(10000 元)的样本噪声，扣除后约 21.5%。净收益 -1,750 元仍大幅亏损。复式投注区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
+    { name:'冷热温配比法', cat:'杀号', rule:'把开奖号按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
       trainR:'24.78%', testR:'22.3%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'0.942',
       steps:['取近 10 期开奖，将 01-80 按除 3 余数分为 0 路(03,06…33)、1 路(01,04…31)、2 路(02,05…32)','统计三路号码近 10 期各自的总出号次数，找出出号最少的一路','在该路内按遗漏/出号频次取最冷的 5 个号码作为杀号','从 33 个开奖号中剔除这 5 个杀号，剩余 28 个为候选池','每期从候选池随机组 20 注(6 红+1 蓝)，每注 2 元，单期 40 元'],
       analysis:'杀中比值 0.942（<1 表示被杀的号码确实较少开出，表面"有效"），但候选池只缩小 5 个号，测试段回报率 22.3% 与随机基线 20.89% 无统计学差异，净亏损 20,210 元。杀号并未改变投注的整体期望收益。' },
@@ -856,8 +856,8 @@ function prizeOf(mr,mb){
   return {n:'未中奖',a:0};
 }
 var GEN_CONFIG = {
-  '龙头凤尾定位':{type:'pick',pick:'ltfw'},
-  '012路冷路杀号':{type:'kill',kill:'012'},
+  '复式投注法':{type:'pick',pick:'ltfw'},
+  '冷热温配比法':{type:'kill',kill:'012'},
   '遗漏回归加权选号':{type:'pick',pick:'omis'},
   '冷号最多2个':{type:'filter',filter:'cold2'},
   '上期同尾全清':{type:'kill',kill:'tail'},
@@ -1406,7 +1406,7 @@ window.addEventListener('load', function(){
       <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>35 种方法测试段回报率范围 19.28%~23.1%，随机基线 20.89%。除复式投注法因 1 注选10中10噪声偏高外，其余 19 种集中在 19.9%~22.3%，与基线无显著差异。大样本下快乐8简化奖级的理论期望回报率约 22.5%。</p></div>
       <div class="finding"><b>发现 2：训练段高回报无一在测试段复现。</b><p>冷热温配比训练段 48.3%（净 +14,725），测试段仅 23.03%（净 -21,460）；前五期热号杀 30.85%→19.48%；两两相减 30.19%→19.87%；上期同尾全清 29.30%→24.35%。训练段表现越好的方法，测试段往往越差——典型的过拟合/幸存者偏差。</p></div>
       <div class="finding"><b>发现 3：杀号方法杀中率与随机期望无差异。</b><p>14 种开奖号杀号方法的杀中比值集中在 0.642~1.121，绝大多数在 0.95~1.08 之间。即使比值最低的近10期冷尾全杀(0.642)——冷尾本来就不容易出，剩余候选池也相应缩小——最终回报率 21.02% 与基线 20.89% 几乎相同。</p></div>
-      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>35 种方法中 22 种测试段正收益窗口占比 0%，仅龙头凤尾定位 2.95%（同样受三等奖噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
+      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>35 种方法中 22 种测试段正收益窗口占比 0%，仅复式投注法 2.95%（同样受选10中10噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
       <div class="finding"><b>发现 5：杀号方法同样无效。</b><p>3 种杀号方法测试段回报率 20.01%~22.94%，与开奖号全随机+随机的基线无差异。 1/16 的独立随机性质决定了任何杀蓝公式都无法提高命中率。</p></div>
       <div class="finding"><b>发现 6：代数公式类杀号是传播最广但最无效的方法。</b><p>龙头±N、两两相减等在抖音、乐彩论坛、彩宝贝被反复传播，发帖人常自称"准确率 90%/98%"，回测显示杀中比值全部在 0.98~1.12，与随机完全一致。所谓"准确率"均为对已开奖结果的事后倒推。</p></div>
     </div>
@@ -1419,7 +1419,7 @@ window.addEventListener('load', function(){
         <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减/AC值/和值拆分杀号</p></div>
         <div class="card" style="padding:16px 18px"><b>抖音 iesdouyin.com</b><p style="font-size:13px;margin-top:4px">跨度杀号口诀、龙头+2、大奇+小奇÷2、尾数杀号、冷热配比（多个彩票店账号传播）</p></div>
         <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">红蓝差值杀号、邻位相减、012路归类、奇偶反转</p></div>
-        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、龙头凤尾定位、关系码追踪</p></div>
+        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、复式投注法、关系码追踪</p></div>
         <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《快乐8选号聪明组合手册》</p></div>
         <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（冷热、遗漏值参考等）</p></div>
       </div>
@@ -1436,7 +1436,7 @@ window.addEventListener('load', function(){
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
       <h3 style="font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">最终结论</h3>
       <p style="font-size:14.5px;color:var(--text)">本次全网搜索覆盖 8 个平台、收集 60 余种网友快乐8投注方法，去重后选取 35 种与已测方法不重复的代表性方法回测验证。<b style="color:var(--gold)">没有任何一种能在测试段显著战胜随机基线。</b></p>
-      <p style="font-size:14.5px;color:var(--text);margin-top:8px">35 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注三等奖的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——快乐8每期独立随机，选10中10概率固定约 1/8.9万，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
+      <p style="font-size:14.5px;color:var(--text);margin-top:8px">35 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注选10中10的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——快乐8每期独立随机，选10中10概率固定约 1/8.9万，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
       <p style="font-size:12.5px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本页仅作数据分析与方法验证，不构成任何投注建议。</p>
     </div>
   </div></section>
@@ -1456,14 +1456,14 @@ window.addEventListener('load', function(){
         <div class="tl-time">偷看验证</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">前 50 期 / 对位构造映射</div><div class="d">前50期转移统计 24.22%（静）/18.49%（滚）；20 静态对位训练段 92%~525%，测试段 122.86% 全靠 2 次三等——"记住历史"演示：训练 4.6 亿% 只是偷看当期开奖。</div></div>
         <div class="tl-time">优化 7 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">硬计数 / 软目标 / 遗传+退火 / 组合目标 / 验证集 / 稳定化</div><div class="d">训练端想多高有多高（净收益最高 +1,560、正收益窗口最高 44.5%）；测试端剔除运气后全部贴回 21~25% 随机档。验证集法最干净：优化段 44.5% → 从未见过的验证段 0/20。</div></div>
         <div class="tl-time">杀号 11 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">冷热 / 遗漏 / 重号 / 邻号 / 尾数 / 区间 / 奇偶 / 质合杀号</div><div class="d">11 种开奖号 + 4 种杀号：杀中比值 0.97~1.02 全部=随机期望；杀号后组号大样本回报率 24.06%~25.25%，与不杀号基线相同。</div></div>
-        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：35 种方法测试段回报率 19.3%~27.5%（最高 23.1% 经核查是 1 注三等奖噪声），无方法显著优于基线 20.9%。</div></div>
+        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：35 种方法测试段回报率 19.3%~27.5%（最高 23.1% 经核查是 1 注选10中10噪声），无方法显著优于基线 20.9%。</div></div>
         <div class="tl-time">总账</div><div class="tl-axis"><span class="tl-dot g"></span></div><div class="tl-body"><div class="t">累计 40+ 种方法，结论唯一</div><div class="d"><b>快乐8每期开奖独立随机，选10中10概率固定约 1/8.9万，任何基于历史数据的方法都无法改变期望收益。</b>训练段高收益 = 拟合历史 + 运气噪声，测试段必然回归随机档（约 19-24% 回报率，长期净亏损约 75-80%）。</div></div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次三等奖(3000 元)的运气，剔除后均约 23%。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(3000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
       <table>
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
@@ -1762,11 +1762,11 @@ var METHOD_DETAILS = [];
     analysis: ''
   };
   METHOD_DETAILS = [
-    { name:'龙头凤尾定位', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
+    { name:'复式投注法', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
       trainR:'25.47%', testR:'23.1%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
       steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成开奖号组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配(01-80)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
-      analysis:'测试段回报率 23.1% 为 20 种方法最高，但经核查是 2025888 期命中 1 注选10中10(10000 元)的样本噪声，扣除后约 21.5%。净收益 -1,750 元仍大幅亏损。龙头凤尾区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
-    { name:'012路冷路杀号', cat:'杀号', rule:'把开奖号按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
+      analysis:'测试段回报率 23.1% 为 20 种方法最高，但经核查是 2025888 期命中 1 注选10中10(10000 元)的样本噪声，扣除后约 21.5%。净收益 -1,750 元仍大幅亏损。复式投注区间约束只是缩小了样本空间，并不改变每个组合的独立中奖概率。' },
+    { name:'冷热温配比法', cat:'杀号', rule:'把开奖号按除 3 余数分为 012 三路，统计近 10 期各路出号数，杀出号最少的那一路中最冷的 5 个号。', source:'乐彩网 / 彩宝贝',
       trainR:'24.78%', testR:'22.3%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'0.942',
       steps:['取近 10 期开奖，将 01-80 按除 3 余数分为 0 路(03,06…33)、1 路(01,04…31)、2 路(02,05…32)','统计三路号码近 10 期各自的总出号次数，找出出号最少的一路','在该路内按遗漏/出号频次取最冷的 5 个号码作为杀号','从 33 个开奖号中剔除这 5 个杀号，剩余 28 个为候选池','每期从候选池随机组 20 注(6 红+1 蓝)，每注 2 元，单期 40 元'],
       analysis:'杀中比值 0.942（<1 表示被杀的号码确实较少开出，表面"有效"），但候选池只缩小 5 个号，测试段回报率 22.3% 与随机基线 20.89% 无统计学差异，净亏损 20,210 元。杀号并未改变投注的整体期望收益。' },
@@ -1980,8 +1980,8 @@ function prizeOf(mr,mb){
   return {n:'未中奖',a:0};
 }
 var GEN_CONFIG = {
-  '龙头凤尾定位':{type:'pick',pick:'ltfw'},
-  '012路冷路杀号':{type:'kill',kill:'012'},
+  '复式投注法':{type:'pick',pick:'ltfw'},
+  '冷热温配比法':{type:'kill',kill:'012'},
   '遗漏回归加权选号':{type:'pick',pick:'omis'},
   '冷号最多2个':{type:'filter',filter:'cold2'},
   '上期同尾全清':{type:'kill',kill:'tail'},
