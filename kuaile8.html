@@ -1317,18 +1317,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 <style>
-.float-ad{position:fixed;width:260px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;padding:18px;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.3);z-index:9999;}
-.float-ad h3{font-size:20px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.float-ad p{font-size:15.6px;line-height:1.6;opacity:0.95;}
-.float-ad .prize{display:inline-block;margin-top:8px;padding:3px 10px;background:#ffd700;color:#333;border-radius:20px;font-weight:bold;font-size:15.6px;}
-.float-ad .close{position:absolute;top:6px;right:10px;cursor:pointer;opacity:0.6;font-size:16px;}
+.float-ad{position:fixed;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:9999;background:rgba(102,126,234,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(102,126,234,0.35), inset 0 1px 0 rgba(255,255,255,0.2);}
+.float-ad::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);}
+.float-ad h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-weight:700;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.float-ad p{font-size:14px;line-height:1.7;opacity:0.95;text-indent:2em;margin-bottom:10px;}
+.float-ad .prize{display:inline-block;margin-top:4px;padding:4px 14px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#1a1a2e;border-radius:20px;font-weight:700;font-size:14px;box-shadow:0 4px 12px rgba(255,215,0,0.4);}
+.float-ad .wx{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.1);border-radius:10px;font-size:13px;}
+.float-ad .wx b{color:#7cf596;font-weight:600;}
+.float-ad .close{position:absolute;top:8px;right:12px;cursor:pointer;opacity:0.5;font-size:18px;transition:opacity 0.2s;line-height:1;}
 .float-ad .close:hover{opacity:1;}
-@media(max-width:640px){.float-ad{width:220px;padding:14px;}}
+@media(max-width:640px){.float-ad{width:240px;padding:18px 20px;}}
 </style>
 <div class="float-ad" id="floatAd">
   <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
   <h3>🏆 欢迎来挑战</h3>
-  <p style="text-indent:2em;">　　你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奖励人民币 <span class="prize">10000元</span><br>报名挑战请加微信号：<b>flyfish2080</b></p>
+  <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奖励人民币 <span class="prize">10000元</span></p>
+  <div class="wx">💬 报名挑战请加微信：<b>flyfish2080</b></div>
 </div>
 <script>
 (function(){
