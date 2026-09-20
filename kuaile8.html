@@ -242,7 +242,7 @@ footer .b{color:var(--text2)}
     <div class="card" style="margin-bottom:18px">
       <h3><span class="dot red"></span>执行摘要</h3>
       <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>35 种</b>网友投注方法（18 种开奖号杀号、9 种选号/过滤、6 种杀号、1 种映射全覆盖），在 3500 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.9%~23.1% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
-      <p style="margin-top:8px">训练段出现的高回报率（最高 113.3%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的选号命中率集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
+      <p style="margin-top:8px">训练段出现的高回报率（最高 58.7%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的选号命中率集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot blue"></span>完整回测对比表</h3>
@@ -294,7 +294,7 @@ footer .b{color:var(--text2)}
         <div class="card" style="padding:16px 18px"><b>唯彩看球 vipc.cn</b><p style="font-size:13px;margin-top:4px">ABCDEF 十七式杀号、龙头差值杀蓝、余数冷热选号</p></div>
         <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减/AC值/和值拆分杀号</p></div>
         <div class="card" style="padding:16px 18px"><b>抖音 iesdouyin.com</b><p style="font-size:13px;margin-top:4px">跨度杀号口诀、龙头+2、大奇+小奇÷2、尾数杀号、冷热配比（多个彩票店账号传播）</p></div>
-        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">红蓝差值杀号、邻位相减、012路归类、奇偶反转</p></div>
+        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">热号追号、冷号遗漏、温号平衡、冷热温配比</p></div>
         <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、复式投注法、关系码追踪</p></div>
         <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《快乐8选号聪明组合手册》</p></div>
         <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（冷热、遗漏值参考等）</p></div>
@@ -306,7 +306,7 @@ footer .b{color:var(--text2)}
       <p><b style="color:var(--text)">数据：</b>kl8.db，3500 期（2020001~2026100），每期 6 开奖号(1-80)+1 (1-80)。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">分段：</b>有效投注从第 31 期起（共 3467 期）。训练段=31~2800（2770 期），测试段=2801~3500（697 期），规则仅用投注期之前的数据，无未来信息泄露。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">投注口径：</b>每注 2 元，每期统一 20 注；杀号型从剩余号码均匀随机组号，选号/过滤型按规则生成，杀号型开奖号全随机。相同随机种子(42)且每方法独立初始化。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>选10中10=1万，选10中9=2千，选10中8=2百)=200，五等(4+0/3+1)=10，六等(2+1/1+1/0+1)=5。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>选10中10=1万，选10中9=2千，选10中8=2百)，小奖(选10中0)=2。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">指标：</b>回报率=总奖金/总投入×100%；中奖率=有奖金的期数/总期数；正收益占比=20 期滑动窗口（成本 800 元）中奖金&gt;800 的窗口占比；选号命中率=每期杀中开奖开奖号均值/随机期望。</p>
     </div>
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
@@ -339,7 +339,7 @@ footer .b{color:var(--text2)}
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(3000 元)的运气，剔除后均约 23%。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(10000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
       <table>
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
@@ -1418,7 +1418,7 @@ window.addEventListener('load', function(){
         <div class="card" style="padding:16px 18px"><b>唯彩看球 vipc.cn</b><p style="font-size:13px;margin-top:4px">ABCDEF 十七式杀号、龙头差值杀蓝、余数冷热选号</p></div>
         <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减/AC值/和值拆分杀号</p></div>
         <div class="card" style="padding:16px 18px"><b>抖音 iesdouyin.com</b><p style="font-size:13px;margin-top:4px">跨度杀号口诀、龙头+2、大奇+小奇÷2、尾数杀号、冷热配比（多个彩票店账号传播）</p></div>
-        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">红蓝差值杀号、邻位相减、012路归类、奇偶反转</p></div>
+        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">热号追号、冷号遗漏、温号平衡、冷热温配比</p></div>
         <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、复式投注法、关系码追踪</p></div>
         <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《快乐8选号聪明组合手册》</p></div>
         <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（冷热、遗漏值参考等）</p></div>
@@ -1430,7 +1430,7 @@ window.addEventListener('load', function(){
       <p><b style="color:var(--text)">数据：</b>kl8.db，3500 期（2020001~2026100），每期 6 开奖号(1-80)+1 (1-80)。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">分段：</b>有效投注从第 31 期起（共 3467 期）。训练段=31~2800（2770 期），测试段=2801~3500（697 期），规则仅用投注期之前的数据，无未来信息泄露。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">投注口径：</b>每注 2 元，每期统一 20 注；杀号型从剩余号码均匀随机组号，选号/过滤型按规则生成，杀号型开奖号全随机。相同随机种子(42)且每方法独立初始化。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>选10中10=1万，选10中9=2千，选10中8=2百)=200，五等(4+0/3+1)=10，六等(2+1/1+1/0+1)=5。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>选10中10=1万，选10中9=2千，选10中8=2百)，小奖(选10中0)=2。</p>
       <p style="margin-top:6px"><b style="color:var(--text)">指标：</b>回报率=总奖金/总投入×100%；中奖率=有奖金的期数/总期数；正收益占比=20 期滑动窗口（成本 800 元）中奖金&gt;800 的窗口占比；选号命中率=每期杀中开奖开奖号均值/随机期望。</p>
     </div>
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
@@ -1463,7 +1463,7 @@ window.addEventListener('load', function(){
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(3000 元)的运气，剔除后均约 23%。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(10000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
       <table>
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
