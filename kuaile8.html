@@ -967,7 +967,7 @@ function ballHtml(nums,type,hits){
   var h='';
   for(var i=0;i<nums.length;i++){
     var n=nums[i], hit=hits&&hits.indexOf(n)>=0;
-    h += '<span class="ball '+(type==='red'?'br':'bb')+(hit?' hit':'')+'">'+(n<10?'0'+n:n)+'</span>';
+    h += '<span class="ball '+(type==='blue'?'bg':'br')+(hit?' hit':'')+'">'+(n<10?'0'+n:n)+'</span>';
   }
   return h;
 }
@@ -1090,13 +1090,13 @@ function historyTableHtml(m, loaded){
     if(r.bets.length){ tPrize += r.prize; tWin += r.winCount; tInv += r.invest; tNet += r.net; tBets++; }
     if(!r.bets.length){
       html += '<tr class="drow preheat"><td>' + r.idx + '</td>' +
-        '<td class="balls">' + ballHtml(r.draw.reds,'red') + ' ' + ballHtml([r.draw.blue],'blue') + '</td>' +
+        '<td class="balls">' + ballHtml(r.draw.reds,'red') + '</td>' +
         '<td colspan="5" style="font-size:11px;color:var(--text3)">规则预热期（无投注）</td></tr>';
       continue;
     }
     html += '<tr class="drow" onclick="toggleDraw(this,' + r.idx + ')">' +
       '<td>' + r.idx + '</td>' +
-      '<td class="balls">' + ballHtml(r.draw.reds,'red') + ' ' + ballHtml([r.draw.blue],'blue') + '</td>' +
+      '<td class="balls">' + ballHtml(r.draw.reds,'red') + '</td>' +
       '<td>' + (r.winCount>0 ? '<b style="color:var(--gold)">' + r.winCount + ' 注</b>' : '0 注') + '</td>' +
       '<td>' + (r.prize>0 ? '<b style="color:var(--green)">+' + r.prize + '</b>' : '0') + '</td>' +
       '<td>40</td>' +
