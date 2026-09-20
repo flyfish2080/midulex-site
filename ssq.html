@@ -1393,7 +1393,9 @@ function copySimResult(){
     var cells = row.querySelectorAll('td');
     if(cells.length >= 2){
       var betNo = cells[0].innerText.trim();
-      var balls = cells[1].innerText.trim().replace(/\s+/g, ' ');
+      var reds = cells[1].innerText.trim().replace(/\s+/g, ' ');
+      var blue = cells.length >= 3 ? cells[2].innerText.trim().replace(/\s+/g, ' ') : '';
+      var balls = blue ? reds + ' + ' + blue : reds;
       lines.push('第' + betNo + '注：' + balls);
     }
   });
