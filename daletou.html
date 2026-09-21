@@ -1230,7 +1230,6 @@ function toggleDraw(tr,idx){
   if(t) t.textContent=show?'▴':'▾';
 }
 // 绑定 report 表格中所有方法名
-function bindMethodDetail(){
   var names = document.querySelectorAll('#report .mname');
   for(var i=0;i<names.length;i++){
     (function(el){
@@ -1239,10 +1238,6 @@ function bindMethodDetail(){
       el.addEventListener('click', function(){ openMethodDetail(el.textContent.trim()); });
     })(names[i]);
   }
-}
-document.addEventListener('DOMContentLoaded', bindMethodDetail);
-// 兜底：延迟再绑定一次
-setTimeout(bindMethodDetail, 500);
   // 键盘 Esc 关闭
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
 
