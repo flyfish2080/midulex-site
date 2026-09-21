@@ -1405,5 +1405,28 @@ window.METHOD_DETAILS = METHOD_DETAILS;
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 500);
     });
-    </script></body>
+    </script>
+<script>
+// 等待页面加载完成
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    // 给所有方法行绑定点击事件
+    document.querySelectorAll('table.resizable tbody tr').forEach(function(row) {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', function(e) {
+        e.preventDefault();
+        var mname = row.querySelector('.mname');
+        if (!mname) return;
+        // 调用openMethodDetail，不管它在哪里
+        if (typeof openMethodDetail === 'function') {
+          openMethodDetail(mname.textContent.trim());
+        } else if (typeof window.openMethodDetail === 'function') {
+          window.openMethodDetail(mname.textContent.trim());
+        }
+      });
+    });
+  }, 1000);
+});
+</script>
+</body>
 </html>
