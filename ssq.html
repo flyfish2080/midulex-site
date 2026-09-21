@@ -246,7 +246,22 @@ footer .b{color:var(--text2)}
     </style>
 
 
-</head>
+
+    <style>
+      th { position:relative; }
+      .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:6px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+        background:transparent;
+      }
+      .resize-handle:hover { background:#3b82f6; }
+    </style>
+    </head>
 <body>
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>双色球模型验证</div>
@@ -1794,5 +1809,50 @@ function shareSimResult(){
       setTimeout(initColumnResize, 500);
     });
     </script>
-</body>
+
+    <script>
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          if (th.querySelector('.resize-handle')) return;
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          handle.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            var startX = e.pageX;
+            var startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(ev) {
+              var diff = ev.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 1000);
+      setInterval(initColumnResize, 2000);
+    });
+    </script>
+    </body>
 </html>
