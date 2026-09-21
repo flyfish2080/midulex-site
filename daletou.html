@@ -862,21 +862,7 @@ var METHOD_DETAILS = [
 function openMethodDetail(name){
   var m = null;
   for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
-  if(!m){
-    document.getElementById('detailTitle').textContent = name;
-    document.getElementById('detailTag').textContent = '优化类';
-    document.getElementById('detailTag').style.background = 'rgba(139,124,246,.14)';
-    document.getElementById('detailTag').style.borderColor = '#8b7cf6';
-    document.getElementById('detailTag').style.color = '#8b7cf6';
-    document.getElementById('detailBody').innerHTML = 
-      '<div class="dsec"><h3><span class="n">1</span>说明</h3>' +
-      '<div class="rule">该方法属于优化类方法，是在基础方法上进行算法优化得到的，暂无单独详情页。</div></div>' +
-      '<div class="dsec"><h3><span class="n">2</span>提示</h3>' +
-      '<p style="color:var(--text3)">点击其他基础方法（如热号追号法、胆拖投注法等）可以查看完整详情。</p></div>';
-    document.getElementById('detailOverlay').classList.add('show');
-    document.body.style.overflow = 'hidden';
-    return;
-  }
+  if(!m){ return; }
   document.getElementById('detailTitle').textContent = m.name;
   document.getElementById('detailTag').textContent = m.cat;
   var catColor = m.cat==='杀号' ? '#E63946' : (m.cat==='选号' ? '#2A9DF4' : (m.cat==='过滤' ? '#f4a261' : (m.cat==='蓝杀' ? '#8b7cf6' : '#6b7ea3')));
@@ -906,7 +892,7 @@ function openMethodDetail(name){
     '</div>' +
     '<div class="vs-baseline">📊 与随机基线对比：测试段回报率 <b>' + m.testR + '</b> vs 随机基线 <b>20.89%</b>' + (parseFloat(m.testR) > 24 ? '，表面略高但多为样本噪声/大奖运气，经核查不具统计显著性' : '，无显著差异') + '；每期 20 注×2 元=40 元成本，测试段累计净亏损 <b style="color:#E63946">' + m.testNet + ' 元</b>。</div>' +
     '</div>' +
-    '<div class="dsec"><h3><span class="n">4</span>历史投注明细（默认最近 10 期，可加载全部 3400 期）</h3>' + '<p style="font-size:12px;color:var(--text3);margin-bottom:2px">默认展示最近 10 期，点击「加载更多」可逐步加载直至全部 3400 期（对应开奖期号 2007001~2026100）：前 30 期为规则预热期，第 31 期起每期投注 20 注、每注 2 元、投入 40 元；开奖与投注号码由固定种子确定性生成。点击投注期行可展开查看该期每一注号码与中奖收益。</p>' + renderHistoryDetail(m) + '</div>' + '<div class="dsec"><h3><span class="n">5</span>分析与建议</h3>' +
+    '<div class="dsec"><h3><span class="n">4</span>历史投注明细（默认最近 10 期，可加载全部 3497 期）</h3>' + '<p style="font-size:12px;color:var(--text3);margin-bottom:2px">默认展示最近 10 期，点击「加载更多」可逐步加载直至全部 3497 期（对应开奖期号 2003001~2026100）：前 30 期为规则预热期，第 31 期起每期投注 20 注、每注 2 元、投入 40 元；开奖与投注号码由固定种子确定性生成。点击投注期行可展开查看该期每一注号码与中奖收益。</p>' + renderHistoryDetail(m) + '</div>' + '<div class="dsec"><h3><span class="n">5</span>分析与建议</h3>' +
     '<div class="analysis-box">' + m.analysis + '</div>' +
     '<p style="font-size:12px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。</p></div>';
   try {
