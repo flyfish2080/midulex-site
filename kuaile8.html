@@ -552,6 +552,7 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
+
 <div class="detail-overlay" id="detailOverlay">
   <div class="detail-page">
     <div class="detail-head">
@@ -1154,41 +1155,186 @@ function loadMore(name){
   var tw = document.getElementById('historyTableWrap');
   if(tw){ document.getElementById('detailOverlay').scrollTop = tw.offsetTop - 40; }
 }
-
-<script>
-function switchTab(tabId) {
-  document.querySelectorAll('.view').forEach(function(el) {
-    el.classList.remove('active');
-    el.style.display = 'none';
-  });
-  var target = document.getElementById(tabId);
-  if (target) {
-    target.classList.add('active');
-    target.style.display = 'block';
-  }
-  document.querySelectorAll('.nav-item, .tab-nav a').forEach(function(el) {
-    el.classList.remove('active');
-  });
-  var activeLink = document.querySelector('a[href="#' + tabId + '"]');
-  if (activeLink) activeLink.classList.add('active');
-  window.history.replaceState(null, '', '#' + tabId);
-  window.scrollTo(0, 0);
+function toggleDraw(tr,idx){
+  var dd=document.getElementById('dd_'+idx);
+  if(!dd) return;
+  var show=dd.style.display==='none';
+  dd.style.display=show?'table-row':'none';
+  var t=tr.querySelector('.toggle');
+  if(t) t.textContent=show?'▴':'▾';
 }
+// 绑定 report 表格中所有方法名
+document.addEventListener('DOMContentLoaded', function(){
+  var names = document.querySelectorAll('#report .mname');
+  for(var i=0;i<names.length;i++){
+    (function(el){
+      el.style.cursor = 'pointer';
+      el.title = '点击查看方法详情';
+      el.addEventListener('click', function(){ openMethodDetail(el.textContent.trim()); });
+    })(names[i]);
+  }
+  // 键盘 Esc 关闭
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
 
-window.addEventListener('load', function() {
-  var hash = window.location.hash.substring(1) || 'home';
-  switchTab(hash);
-});
+  /* ============ 模拟投注器 ============ */
+  /* 双色球开奖日：每周二、四、日；计算今天之后的下一个开奖日 */
+  function nextDrawDate(){
+    var d = new Date();
+    var target = [0,2,4];
+    var wk = ['周日','周一','周二','周三','周四','周五','周六'];
+    for(var add=1; add<=7; add++){
+      var nd = new Date(d);
+      nd.setDate(d.getDate()+add);
+      if(target.indexOf(nd.getDay())>=0){
+        return nd.getFullYear()+'年'+(nd.getMonth()+1)+'月'+nd.getDate()+'日 '+wk[nd.getDay()];
+      }
+    }
+    return '';
+  }
 
-document.addEventListener('click', function(e) {
-  var link = e.target.closest('a[href^="#"]');
-  if (!link) return;
-  var href = link.getAttribute('href');
-  if (href.length > 1 && href !== '#') {
-    e.preventDefault();
-    switchTab(href.substring(1));
+  /* 真实最新开奖：从同域 latest.json 拉取（GitHub Action 定时更新） */
+  var LATEST = null;
+  (function(){
+    fetch('ssq.json?_t=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.result && j.result[0]){
+          var r0 = j.result[0];
+          LATEST = {
+            code: r0.code,
+            date: r0.date,
+            red: r0.red.split(',').map(function(x){ return parseInt(x,10); }),
+            blue: parseInt(r0.blue, 10)
+          };
+          var el = document.getElementById('simLatest');
+          if(el){ el.textContent = '上一期（' + LATEST.code + ' ' + LATEST.date + '）：红球 ' + LATEST.red.join(' ') + ' 蓝球 ' + (LATEST.blue<10?'0'+LATEST.blue:LATEST.blue); el.style.display='block'; }
+        }
+      })
+      .catch(function(){});
+  })();
+
+  /* 映射投注法：20 注任意两注重叠红球 ≤ 2，蓝球 1-16 全覆盖 */
+  function pickMap20(idx, salt){
+    /* 固定种子生成 20 注（同一次生成内一致），不同 salt 不同 */
+    var cacheKey = salt;
+    if(!pickMap20.cache || pickMap20.cacheKey !== salt){
+      var rnd = rngFor(salt);
+      var bets = [];
+      var pool = range(1,33);
+      for(var i=0;i<20;i++){
+        var pick = null;
+        for(var attempt=0; attempt<800; attempt++){
+          /* 洗牌取前 6 */
+          var arr = pool.slice();
+          for(var k=arr.length-1;k>0;k--){
+            var j = Math.floor(rnd()*(k+1));
+            var t = arr[k]; arr[k] = arr[j]; arr[j] = t;
+          }
+          var cand = arr.slice(0,6).sort(function(a,b){return a-b;});
+          var ok = true;
+          for(var j=0;j<bets.length;j++){
+            var inter = 0;
+            for(var x=0;x<cand.length;x++) if(bets[j].indexOf(cand[x])>=0) inter++;
+            if(inter > 2){ ok = false; break; }
+          }
+          if(ok){ pick = cand; break; }
+        }
+        if(!pick){ pick = pool.slice(i*3, i*3+6).sort(function(a,b){return a-b;}); }
+        bets.push(pick);
+      }
+      pickMap20.cache = bets;
+      pickMap20.cacheKey = salt;
+    }
+    return pickMap20.cache[idx];
+  }
+  function simGenBets(m){
+    // 双色球：根据用户输入的注数生成
+    var count = parseInt(document.getElementById('simCount').value) || 20;
+    var bets = [];
+    var seed = Date.now();
+    for(var i=0;i<count;i++){
+      var rnd2 = rngFor(m.name + '#sim' + seed + '#' + i);
+      var reds = pickN(range(1,33), 6, rnd2).sort(function(a,b){return a-b;});
+      var blue = 1 + Math.floor(rnd2()*16);
+      bets.push({reds: reds, blue: blue});
+    }
+    return bets;
+  }
+  function simRender(m){
+    var bets = simGenBets(m);
+    var html = '<table class="dtable" style="min-width:0"><thead><tr><th>注</th><th>红球</th><th>蓝球</th></tr></thead><tbody>';
+    for(var i=0;i<bets.length;i++){
+      html += '<tr><td>' + String(i+1).padStart(2,'0') + '</td>' +
+        '<td class="balls">' + ballHtml(bets[i].reds,'red') + '</td>' +
+        '<td class="balls">' + ballHtml([bets[i].blue],'blue') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('simResult').innerHTML = html;
+    document.getElementById('simShare').style.display = 'block';
+    var nd = nextDrawDate();
+    var baseCode = LATEST ? LATEST.code : '2026100';
+    var nextCode = LATEST ? String(parseInt(LATEST.code,10)+1) : '2026101';
+    document.getElementById('simInfo').innerHTML =
+      '方法：<b style="color:#fff">' + m.name + '</b>（' + m.cat + '）｜测试段回报率 ' + m.testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 <b style="color:#fff">' + baseCode + '</b> 期真实开奖，生成第 <b style="color:#fff">' + nextCode + '</b> 期模拟号码｜预计开奖：' + nd;
+  }
+  // 填充下拉
+  var simSel = document.getElementById('simMethod');
+  if(simSel){
+    METHOD_DETAILS.forEach(function(m){
+      var opt = document.createElement('option');
+      opt.value = m.name;
+      opt.textContent = m.name + '（' + m.cat + '）';
+      simSel.appendChild(opt);
+    });
+    document.getElementById('simGen').addEventListener('click', function(){
+      var name = simSel.value;
+      var m = null;
+      for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
+      if(m) simRender(m);
+    });
   }
 });
-</script>
-</body>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script></body>
 </html>
