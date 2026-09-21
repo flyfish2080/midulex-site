@@ -195,7 +195,17 @@ footer .b{color:var(--text2)}
 }
 
       .resizable th { position:relative; }
-      </style>
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 
 <style>
 @media (min-width: 1024px) {
@@ -235,6 +245,8 @@ footer .b{color:var(--text2)}
       .resizable th .resize-handle:hover { background:#3b82f6; }
     </style>
 
+
+
     <style>
       th { position:relative; }
       .resize-handle {
@@ -253,8 +265,8 @@ footer .b{color:var(--text2)}
 <body>
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>双色球模型验证</div>
-  <nav>
-    <a href="/caipiao.html">回到首页</a>
+  <nav><a href="/caipiao.html">回到首页</a>
+    <a href="/caipiao.html#home首页</a>
     <a href="#report" data-nav="report">验证报告</a>
     <a href="#history" data-nav="history">历史结论</a>
     <a href="#simulate" data-nav="simulate">模拟投注器</a>
@@ -532,69 +544,173 @@ footer .b{color:var(--text2)}
   <div style="margin-top:8px">理性购彩，量力而行。本站仅作数据分析与方法验证，不构成任何投注建议。</div>
 </div></footer>
 
+<script>
+(function(){
+  "use strict";
+  /* hero 球阵 */
+  var hb = document.getElementById('heroBalls');
+  if(hb){
+    var colors = ['r','b'];
+    for(var i=0;i<18;i++){
+      var b = document.createElement('div');
+      b.className = 'hero-ball ' + colors[i%2];
+      var s = 26 + Math.random()*66;
+      b.style.width = s + 'px'; b.style.height = s + 'px';
+      b.style.left = (Math.random()*94 + 2) + '%';
+      b.style.top = (Math.random()*86 + 4) + '%';
+      b.style.animationDelay = (Math.random()*4) + 's';
+      b.style.animationDuration = (7 + Math.random()*6) + 's';
+      hb.appendChild(b);
+    }
+  }
 
+  /* hash 路由 */
+  var views = ['home','report','history','simulate','dashboards'];
+  var links = document.querySelectorAll('nav a[data-nav]');
+  function show(name){
+    views.forEach(function(v){
+      var el = document.getElementById(v);
+      if(el) el.classList.toggle('active', v === name);
+    });
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('data-nav') === name);
+    });
+    if(name === 'history'){ ensureEcharts(function(){ setTimeout(renderCharts, 60); }); }
+  }
+  function current(){
+    var h = (location.hash || '').replace('#','');
+    return views.indexOf(h) >= 0 ? h : 'home';
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(){
+      show(a.getAttribute('data-nav'));
+    });
+  });
+  window.addEventListener('hashchange', function(){ show(current()); });
+  show(current());
+
+  /* 表格第3列(具体化口径)悬停显示完整文本 */
+  document.querySelectorAll('table tbody tr td:nth-child(3)').forEach(function(td){
+    td.title = td.textContent;
+  });
+
+  /* ECharts：按需加载（进入历史结论页才下载，加速首屏） */
+  var drawn = false;
+  function ensureEcharts(cb){
+    if(typeof echarts !== 'undefined'){ cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js';
+    s.onload = function(){ cb(); };
+    document.head.appendChild(s);
+  }
+  function renderCharts(){
+    if(drawn || typeof echarts === 'undefined') return;
+    drawn = true;
+    var c1 = document.getElementById('chartOptim');
+    if(c1){
+      var ch = echarts.init(c1);
+      ch.setOption({
+        backgroundColor:'transparent',
+        title:{text:'映射优化 7 法：训练 vs 测试回报率（对数轴）', left:'center', top:6, textStyle:{color:'#dce6f5',fontSize:15,fontWeight:600}},
+        tooltip:{trigger:'axis', triggerOn:'mousemove|click', renderMode:'richText', confine:true,
+          valueFormatter:function(v){ return v + '%'; }},
+        legend:{data:['训练段','测试段'], top:34, textStyle:{color:'#93a5c8'}},
+        grid:{left:64,right:20,top:78,bottom:36,containLabel:true},
+        xAxis:{type:'category', data:['v1硬计数','v2硬计数','v3软目标','v4遗传退火','A组合','B验证集','C稳定化'],
+          axisLabel:{color:'#93a5c8'}, axisLine:{lineStyle:{color:'#33467a'}}},
+        yAxis:{type:'log', logBase:10, min:10, max:1000,
+          axisLabel:{color:'#93a5c8', formatter:function(v){ return v + '%'; }},
+          splitLine:{lineStyle:{color:'rgba(38,53,92,.6)'}}},
+        series:[
+          {name:'训练段', type:'bar', barWidth:'32%', data:[54.73,64.04,83.75,76.43,510.57,898.61,105.39],
+            itemStyle:{color:'#E63946', borderRadius:[4,4,0,0]},
+            label:{show:true, position:'top', color:'#ff8b94', fontSize:10, formatter:function(p){ return p.value>100?Math.round(p.value)+'%':p.value+'%'; }}},
+          {name:'测试段', type:'bar', barWidth:'32%', data:[21.56,35.47,23.10,33.81,23.58,33.75,21.34],
+            itemStyle:{color:'#2A9DF4', borderRadius:[4,4,0,0]},
+            label:{show:true, position:'top', color:'#8ed0ff', fontSize:10, formatter:function(p){ return p.value + '%'; }}}
+        ]
+      });
+    }
+    var c2 = document.getElementById('chartNet');
+    if(c2){
+      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','蓝球15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','蓝球奇偶反转','34减龙头','冷尾全杀','蓝球大小杀','跨度±1','四分区断区','蓝A+B','蓝球质数杀','两两相减','前5期热号','AC7或8','蓝球012路'];
+      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
+      var colorsArr = rois.map(function(v){ return v > 30 ? '#f4a261' : (v > 27 ? '#E63946' : '#2A9DF4'); });
+      var ch2 = echarts.init(c2);
+      ch2.setOption({
+        backgroundColor:'transparent',
+        title:{text:'35 种网友方法：测试段回报率分布（基线 20.89%）', left:'center', top:6, textStyle:{color:'#dce6f5',fontSize:15,fontWeight:600}},
+        tooltip:{trigger:'axis', triggerOn:'mousemove|click', renderMode:'richText', confine:true,
+          valueFormatter:function(v){ return v + '%'; }},
+        grid:{left:90,right:24,top:50,bottom:40},
+        xAxis:{type:'value', max:38,
+          axisLabel:{color:'#93a5c8', formatter:'{value}%'},
+          splitLine:{lineStyle:{color:'rgba(38,53,92,.6)'}}},
+        yAxis:{type:'category', data:names, inverse:true,
+          axisLabel:{color:'#dce6f5', fontSize:11}, axisLine:{show:false}, axisTick:{show:false}},
+        series:[
+          {type:'bar', data:rois, barWidth:'55%',
+            itemStyle:{color:function(p){ return colorsArr[p.dataIndex]; }, borderRadius:[0,3,3,0]},
+            label:{show:true, position:'right', color:'#93a5c8', fontSize:10, formatter:function(p){ return p.value + '%'; }}},
+          {type:'line', data:[], markLine:{silent:true, symbol:'none',
+            data:[{xAxis:20.89, lineStyle:{color:'#f4a261',width:2,type:'dashed'}, label:{formatter:'基线 20.89%', color:'#f4a261', position:'insideEndTop'}}]}}
+        ]
+      });
+    }
+    window.addEventListener('resize', function(){ if(ch){ch.resize();} if(ch2){ch2.resize();} });
+  }
+})();
+
+    
+    // 列宽拖拽功能（事件委托）
+    document.addEventListener('mousedown', function(e) {
+      if (!e.target.classList.contains('resize-handle')) return;
+      
+      var th = e.target.parentElement;
+      var startX = e.pageX;
+      var startWidth = th.offsetWidth;
+      
+      e.preventDefault();
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      
+      function onMouseMove(ev) {
+        var diff = ev.pageX - startX;
+        th.style.width = (startWidth + diff) + 'px';
+      }
+      
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      }
+      
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+    
+    // 动态为所有th添加resize-handle
+    function addResizeHandles() {
+      var ths = document.querySelectorAll('table.resizable th:not(.has-resize)');
+      ths.forEach(function(th) {
+        th.classList.add('has-resize');
+        var handle = document.createElement('div');
+        handle.className = 'resize-handle';
+        th.appendChild(handle);
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      addResizeHandles();
+      // 定时检查新表格
+      setInterval(addResizeHandles, 1000);
+    });
+    
+    </script>
 
 <!-- ================= 方法详情（新页） ================= -->
-
-
-<script>
-
-
-
-
-<script>
-// Tab切换功能
-function switchTab(tabId) {
-  // 隐藏所有view
-  document.querySelectorAll('.view').forEach(function(el) {
-    el.classList.remove('active');
-    el.style.display = 'none';
-  });
-  // 显示当前view
-  var target = document.getElementById(tabId);
-  if (target) {
-    target.classList.add('active');
-    target.style.display = 'block';
-  }
-  // 更新导航样式
-  document.querySelectorAll('.nav-item, .tab-nav a').forEach(function(el) {
-    el.classList.remove('active');
-  });
-  var activeLink = document.querySelector('a[href="#' + tabId + '"]');
-  if (activeLink) {
-    activeLink.classList.add('active');
-  }
-  // 更新hash
-  if (window.location.hash !== '#' + tabId) {
-    window.history.replaceState(null, '', '#' + tabId);
-  }
-  window.scrollTo(0, 0);
-}
-
-// 初始化：根据hash显示对应tab
-function initTab() {
-  var hash = window.location.hash.substring(1) || 'home';
-  switchTab(hash);
-}
-
-// 页面加载后初始化
-window.addEventListener('load', function() {
-  setTimeout(initTab, 100);
-});
-
-// 点击导航链接时切换tab
-document.addEventListener('click', function(e) {
-  var link = e.target.closest('a[href^="#"]');
-  if (!link) return;
-  var href = link.getAttribute('href');
-  if (href.length > 1) {
-    e.preventDefault();
-    var tabId = href.substring(1);
-    switchTab(tabId);
-  }
-});
-</script>
-
 <div class="detail-overlay" id="detailOverlay">
   <div class="detail-page">
     <div class="detail-head">
@@ -847,16 +963,6 @@ var METHOD_DETAILS = [];
       steps:['把 01-33 共 33 个红球按顺序排成一行','设计 20 个模型，模型 k 起点为 k（0-19）','每个模型从起点开始按步长 7 取 6 个号（7 与 33 互质，遍历不重复）','20 个起点两两不同，20 注红球集合互不相同，33 个红球全部被覆盖','蓝球按 (k×5) mod 16 分配，前 16 注覆盖 16 个蓝球；每注 2 元，单期 40 元'],
       analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' }
   ];
-
-window.openMethodDetail = openMethodDetail;
-window.closeMethodDetail = closeMethodDetail;
-window.renderHistoryDetail = renderHistoryDetail;
-window.historyTableHtml = historyTableHtml;
-window.renderHistoryRange = renderHistoryRange;
-window.loadMore = loadMore;
-window.toggleDraw = toggleDraw;
-window.genAllHistory = genAllHistory;
-window.METHOD_DETAILS = METHOD_DETAILS;
 })();
 
 function openMethodDetail(name){
@@ -1263,17 +1369,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
       })
       .catch(function(){});
-  
-window.openMethodDetail = openMethodDetail;
-window.closeMethodDetail = closeMethodDetail;
-window.renderHistoryDetail = renderHistoryDetail;
-window.historyTableHtml = historyTableHtml;
-window.renderHistoryRange = renderHistoryRange;
-window.loadMore = loadMore;
-window.toggleDraw = toggleDraw;
-window.genAllHistory = genAllHistory;
-window.METHOD_DETAILS = METHOD_DETAILS;
-})();
+  })();
 
   /* 映射投注法：20 注任意两注重叠红球 ≤ 2，蓝球 1-16 全覆盖 */
   function pickMap20(idx, salt){
@@ -1399,27 +1495,364 @@ window.METHOD_DETAILS = METHOD_DETAILS;
       setTimeout(initColumnResize, 500);
     });
     </script>
+
+
+<style>
+.float-ad{position:fixed;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:9999;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.float-ad::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);}
+.float-ad h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-weight:700;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.float-ad p{font-size:14px;line-height:1.7;opacity:0.95;text-indent:2em;margin-bottom:10px;}
+.float-ad .prize{color:#ffd700;font-weight:700;font-size:15px;}
+.float-ad .wx{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.1);border-radius:10px;font-size:13px;}
+.float-ad .wx b{color:#7cf596;font-weight:600;}
+.float-ad .close{position:absolute;top:8px;right:12px;cursor:pointer;opacity:0.5;font-size:18px;transition:opacity 0.2s;line-height:1;}
+.float-ad .close:hover{opacity:1;}
+@media(max-width:640px){.float-ad{width:240px;padding:18px 20px;}}
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
+<div class="float-ad" id="floatAd">
+  <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
+  <h3>🏆 欢迎来挑战</h3>
+  <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奖励人民币 <span class="prize">10000元。</span></p>
+  <div class="wx">💬 报名挑战请加微信：<b style="cursor:pointer;text-decoration:underline;" onclick="navigator.clipboard&amp;&amp;navigator.clipboard.writeText('flyfish2080');alert('微信号 flyfish2080 已复制，请打开微信添加好友')">flyfish2080</b></div>
+</div>
 <script>
-// 等待页面加载完成
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    // 给所有方法行绑定点击事件
-    document.querySelectorAll('table.resizable tbody tr').forEach(function(row) {
-      row.style.cursor = 'pointer';
-      row.addEventListener('click', function(e) {
-        e.preventDefault();
-        var mname = row.querySelector('.mname');
-        if (!mname) return;
-        // 调用openMethodDetail，不管它在哪里
-        if (typeof openMethodDetail === 'function') {
-          openMethodDetail(mname.textContent.trim());
-        } else if (typeof window.openMethodDetail === 'function') {
-          window.openMethodDetail(mname.textContent.trim());
-        }
+(function(){
+  var ad = document.getElementById('floatAd');
+  var w = window.innerWidth, h = window.innerHeight;
+  var aw = ad.offsetWidth, ah = ad.offsetHeight;
+  var x = Math.random() * (w - aw - 20), y = Math.random() * (h - ah - 20);
+  var dx = 0.5 + Math.random()*0.5, dy = 0.5 + Math.random()*0.5;
+  if(Math.random() < 0.5) dx = -dx;
+  if(Math.random() < 0.5) dy = -dy;
+  var timer = null;
+  function start(){
+    if(timer) return;
+    timer = setInterval(function(){
+      x += dx; y += dy;
+      if(x <= 0 || x >= w - aw - 10) dx = -dx;
+      if(y <= 0 || y >= h - ah - 10) dy = -dy;
+      ad.style.left = x + 'px';
+      ad.style.top = y + 'px';
+    }, 30);
+  }
+  function stop(){
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+  ad.onmouseenter = stop;
+  ad.onmouseleave = start;
+  ad.style.left = x + 'px';
+  ad.style.top = y + 'px';
+  start();
+})();
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
       });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
     });
-  }, 1000);
+    </script>
+
+<script>
+window.addEventListener('load', function(){
+  // 统计回测方法数（表格行数）
+  var rows = document.querySelectorAll('#report table tbody tr');
+  var methodCount = 0;
+  var baseline = 0;
+  var beatCount = 0;
+  rows.forEach(function(row){
+    var nameEl = row.querySelector('.mname');
+    if(!nameEl) return;
+    methodCount++;
+    var cells = row.querySelectorAll('td');
+    // 找测试回报率列（第6列，索引5）
+    if(cells.length > 5){
+      var testR = parseFloat(cells[5].textContent);
+      if(nameEl.textContent.indexOf('随机基线') >= 0){
+        baseline = testR;
+        document.getElementById('statBaseline').textContent = testR.toFixed(1) + '%';
+      } else if(baseline > 0 && testR > baseline){
+        beatCount++;
+      }
+    }
+  });
+  document.getElementById('statMethods').textContent = methodCount;
+  document.getElementById('statBeat').textContent = beatCount;
 });
-</script>
-</body>
+
+<script>
+// 复制号码到剪贴板
+function copySimResult(){
+  var method = document.getElementById('simMethod').value;
+  var count = document.getElementById('simCount').value;
+  var resultEl = document.getElementById('simResult');
+  
+  if(!resultEl){
+    alert('❌ 请先生成号码');
+    return;
+  }
+  
+  // 从表格里提取号码，确保每个号码之间有空格
+  var rows = resultEl.querySelectorAll('tbody tr');
+  var lines = [];
+  
+  rows.forEach(function(row, idx){
+    var cells = row.querySelectorAll('td');
+    if(cells.length >= 2){
+      var betNo = cells[0].innerText.trim();
+      // 提取红球号码
+      var redBalls = cells[1].innerText.trim().match(/\d+/g) || [];
+      var redStr = redBalls.join(' ');
+      
+      // 如果有蓝球列
+      var blueStr = '';
+      if(cells.length >= 3){
+        var blueBalls = cells[2].innerText.trim().match(/\d+/g) || [];
+        blueStr = blueBalls.join(' ');
+      }
+      
+      var balls = blueStr ? redStr + ' + ' + blueStr : redStr;
+      lines.push('第' + betNo + '注：' + balls);
+    }
+  });
+  
+  var output = '【' + method + '】模拟投注号码（' + count + '注）\n';
+  output += '='.repeat(30) + '\n';
+  output += lines.join('\n' + '-'.repeat(20) + '\n');
+  output += '\n' + '='.repeat(30);
+  
+  // 复制
+  var textarea = document.createElement('textarea');
+  textarea.value = output;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try{
+    document.execCommand('copy');
+    alert('✅ 号码已复制到剪贴板！');
+  }catch(e){
+    alert('❌ 复制失败，请手动复制');
+  }
+  document.body.removeChild(textarea);
+}
+
+// 分享到微信
+function shareSimResult(){
+  var result = document.getElementById('simResult').innerText;
+  var method = document.getElementById('simMethod').value;
+  var count = document.getElementById('simCount').value;
+  
+  var text = '【' + method + '】模拟投注号码（' + count + '注）\n' + result;
+  
+  // 先复制到剪贴板
+  navigator.clipboard.writeText(text).then(function(){
+    console.log('号码已复制');
+  }).catch(function(){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  });
+  
+  // 尝试打开微信
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if(isMobile){
+    // 手机端尝试打开微信
+    window.location.href = 'weixin://';
+    
+    // 2秒后检测是否成功打开
+    setTimeout(function(){
+      // 如果页面还在前台，说明打开失败
+      if(!document.hidden){
+        alert('💡 号码已复制\n\n未检测到微信，请手动打开微信粘贴分享');
+      }
+    }, 2000);
+  } else {
+    // 电脑端提示
+    alert('💡 号码已复制到剪贴板\n\n请手动打开微信，粘贴分享给好友或群聊');
+  }
+}
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
+
+    <script>
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          if (th.querySelector('.resize-handle')) return;
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          handle.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            var startX = e.pageX;
+            var startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(ev) {
+              var diff = ev.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 1000);
+      setInterval(initColumnResize, 2000);
+    });
+    </script>
+    </body>
 </html>
