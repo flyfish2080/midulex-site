@@ -1193,45 +1193,41 @@ function genAllHistory(m){
   var rnd = rngFor(m.name + '#draw');
   var draws = [];
   for(var i=0;i<3500;i++){ 
-    // 快乐8：开奖开20个号(1-80)
     var balls = [];
     while(balls.length < 20){
       var n = 1 + Math.floor(rnd()*80);
       if(balls.indexOf(n) < 0) balls.push(n);
     }
     balls.sort(function(a,b){return a-b;});
-    draws.push({ balls: balls }); 
+    draws.push({ reds: balls, blue: [] }); 
   }
   var rows = [], N = 3500;
   for(var d=1; d<=N; d++){
     var prev = d>=2 ? draws[d-2] : null;
     var bets = [];
+    var prize = 0, winCount = 0, invest = 0, net = 0;
     if(d >= 31){
+      invest = 40;
       var rnd2 = rngFor(m.name + '#bet' + d);
       for(var i=0;i<20;i++){
-        // 快乐8：每注选10个号(1-80)
         var pick = [];
         while(pick.length < 10){
           var n = 1 + Math.floor(rnd2()*80);
           if(pick.indexOf(n) < 0) pick.push(n);
         }
         pick.sort(function(a,b){return a-b;});
-        bets.push(pick);
+        var hit = pick.filter(function(n){ return draws[d-1].reds.indexOf(n) >= 0; }).length;
+        var amount = 0;
+        if(hit === 10) amount = 10000;
+        else if(hit === 9) amount = 2000;
+        else if(hit === 8) amount = 200;
+        if(amount > 0) winCount++;
+        prize += amount;
+        bets.push({ reds: pick, blue: [], mr: hit, mb: 0, amount: amount });
       }
+      net = prize - invest;
     }
-    // 计算中奖
-    var prize = 0;
-    if(d >= 31){
-      var drawBalls = draws[d-1].balls;
-      bets.forEach(function(bet){
-        var h = bet.filter(function(n){ return drawBalls.indexOf(n) >= 0; }).length;
-        // 快乐8选10中10=10000，中9=2000，中8=200
-        if(h === 10) prize += 10000;
-        else if(h === 9) prize += 2000;
-        else if(h === 8) prize += 200;
-      });
-    }
-    rows.push({ period: '2020' + String(d).padStart(3,'0'), date: '2020-01-01', draw: draws[d-1].balls, bets: bets, prize: prize, cost: d>=31 ? 40 : 0 });
+    rows.push({ idx: d, draw: draws[d-1], bets: bets, prize: prize, winCount: winCount, invest: invest, net: net });
   }
   HISTORY_CACHE[m.name] = rows;
   return rows;
