@@ -712,21 +712,22 @@ th { position: relative; }
 
 
 
+
+
 <script>
-// 关闭详情弹窗
-window.closeMethodDetail = function(){
+function closeMethodDetail(){
   document.getElementById('detailOverlay').classList.remove('show');
   document.body.style.overflow = '';
 }
 
-window.window.METHOD_DETAILS = [];
+var METHOD_DETAILS = [];
 (function(){
   var base = {
     head: { n:'01', t:'具体投注方法' },
     steps: [],
     analysis: ''
   };
-  window.METHOD_DETAILS = [
+  METHOD_DETAILS = [
     { name:'龙头凤尾定位', cat:'选号', rule:'龙头(最小号)取 01-09 区间，凤尾(最大号)取 25-33 区间，在满足"龙头∈[01,09] 且 凤尾∈[25,33]"约束下用拒绝采样生成 20 注。', source:'fahai.xin / 乐彩网',
       trainR:'25.47%', testR:'34.63%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—',
       steps:['取最近一期开奖号码，确认龙头(6 红中的最小值)与凤尾(最大值)的历史区间分布','设定约束：龙头必须落在 01-09，凤尾必须落在 25-33，二者相差不小于 16','随机生成红球组合，若龙头或凤尾超出约束则拒绝并重新采样（拒绝采样法）','对通过约束的组合随机搭配蓝球(01-16)，每期生成 20 注','每注 2 元，单期投入 40 元，按开奖节奏连续执行'],
@@ -877,7 +878,7 @@ window.window.METHOD_DETAILS = [];
   ];
 })();
 
-window.openMethodDetail = function(name){
+function openMethodDetail(name){
   var m = null;
   for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
   if(!m){ return; }
@@ -1079,7 +1080,7 @@ function pickMap20(idx, salt){
   return pickMap20.cache[idx];
 }
 
-window.genAllHistory = function(m){
+function genAllHistory(m){
   if(HISTORY_CACHE[m.name]){ return HISTORY_CACHE[m.name]; }
   var rnd = rngFor(m.name + '#draw');
   var draws = [];
@@ -1136,7 +1137,7 @@ window.genAllHistory = function(m){
   return rows;
 }
 var HIST_VIEW = {};
-window.renderHistoryDetail = function(m){
+function renderHistoryDetail(m){
   if(!HIST_VIEW[m.name]){ HIST_VIEW[m.name] = 10; }
   var rows = genAllHistory(m);
   return '<div class="hist-tools">' +
@@ -1151,7 +1152,7 @@ window.renderHistoryDetail = function(m){
     '</span></div>' +
     '<div id="historyTableWrap">' + historyTableHtml(m, 10) + '</div>';
 }
-window.historyTableHtml = function(m, loaded){
+function historyTableHtml(m, loaded){
   var rows = genAllHistory(m);
   var total = rows.length;
   var isAll = loaded === 'all' || loaded >= total;
@@ -1199,7 +1200,7 @@ window.historyTableHtml = function(m, loaded){
   html += '</tbody></table></div>';
   return html;
 }
-window.renderHistoryRange = function(name, val){
+function renderHistoryRange(name, val){
   HIST_VIEW[name] = val;
   var wrap = document.getElementById('historyTableWrap');
   if(!wrap){ return; }
@@ -1215,7 +1216,7 @@ window.renderHistoryRange = function(name, val){
   var tw = document.getElementById('historyTableWrap');
   if(tw){ document.getElementById('detailOverlay').scrollTop = tw.offsetTop - 80; }
 }
-window.loadMore = function(name){
+function loadMore(name){
   var rows = genAllHistory({name:name, cat:'x'});
   var cur = HIST_VIEW[name] || 10;
   if(cur === 'all'){ return; }
@@ -1226,13 +1227,59 @@ window.loadMore = function(name){
   if(tw){ document.getElementById('detailOverlay').scrollTop = tw.offsetTop - 40; }
 }
 
+function openMethodDetail(name){
+  var m = null;
+  for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
+  if(!m){ return; }
+  document.getElementById('detailTitle').textContent = m.name;
+  document.getElementById('detailTag').textContent = m.cat;
+  var catColor = m.cat==='杀号' ? '#E63946' : (m.cat==='选号' ? '#2A9DF4' : (m.cat==='过滤' ? '#f4a261' : (m.cat==='蓝杀' ? '#8b7cf6' : '#6b7ea3')));
+  document.getElementById('detailTag').style.background = 'rgba(42,157,244,.14)';
+  document.getElementById('detailTag').style.borderColor = catColor;
+  document.getElementById('detailTag').style.color = catColor;
+
+  var stepsHtml = '';
+  for(var s=0;s<m.steps.length;s++){
+    stepsHtml += '<li>' + m.steps[s] + '</li>';
+  }
+  var metricGood = function(v){ return (m.kr !== '—' && parseFloat(m.kr) < 0.9); };
+  var krV = m.kr === '—' ? '无' : m.kr;
+  var html =
+    '<div class="dsec"><h3><span class="n">1</span>具体投注方法</h3>' +
+    '<div class="rule">' + m.rule + '</div>' +
+    '<p style="margin-top:10px;font-size:12.5px;color:var(--text3)">来源：' + m.source + '</p></div>' +
+    '<div class="dsec"><h3><span class="n">2</span>投注过程</h3><ol>' + stepsHtml + '</ol></div>' +
+    '<div class="dsec"><h3><span class="n">3</span>历史投注效果</h3>' +
+    '<div class="metric-grid">' +
+      '<div class="metric"><div class="k">训练段回报率</div><div class="v warn">' + m.trainR + '</div><div class="sub">基线 25.49%</div></div>' +
+      '<div class="metric"><div class="k">测试段回报率</div><div class="v ' + (parseFloat(m.testR) > 30 ? 'good' : '') + '">' + m.testR + '</div><div class="sub">基线 20.89%</div></div>' +
+      '<div class="metric"><div class="k">训练段净收益</div><div class="v ' + (m.trainNet.indexOf('+')===0 ? 'good' : 'bad') + '">' + m.trainNet + '</div><div class="sub">元</div></div>' +
+      '<div class="metric"><div class="k">测试段净收益</div><div class="v bad">' + m.testNet + '</div><div class="sub">元</div></div>' +
+      '<div class="metric"><div class="k">测试段中奖率</div><div class="v">' + m.win + '</div><div class="sub">有奖期数占比</div></div>' +
+      '<div class="metric"><div class="k">杀中比值</div><div class="v ' + (metricGood() ? 'good' : '') + '">' + krV + '</div><div class="sub">=1 与随机相同</div></div>' +
+    '</div>' +
+    '<div class="vs-baseline">📊 与随机基线对比：测试段回报率 <b>' + m.testR + '</b> vs 随机基线 <b>20.89%</b>' + (parseFloat(m.testR) > 24 ? '，表面略高但多为样本噪声/大奖运气，经核查不具统计显著性' : '，无显著差异') + '；每期 20 注×2 元=40 元成本，测试段累计净亏损 <b style="color:#E63946">' + m.testNet + ' 元</b>。</div>' +
+    '</div>' +
+    '<div class="dsec"><h3><span class="n">4</span>历史投注明细（默认最近 10 期，可加载全部 3497 期）</h3>' + '<p style="font-size:12px;color:var(--text3);margin-bottom:2px">默认展示最近 10 期，点击「加载更多」可逐步加载直至全部 3497 期（对应开奖期号 2003001~2026100）：前 30 期为规则预热期，第 31 期起每期投注 20 注、每注 2 元、投入 40 元；开奖与投注号码由固定种子确定性生成。点击投注期行可展开查看该期每一注号码与中奖收益。</p>' + renderHistoryDetail(m) + '</div>' + '<div class="dsec"><h3><span class="n">5</span>分析与建议</h3>' +
+    '<div class="analysis-box">' + m.analysis + '</div>' +
+    '<p style="font-size:12px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。</p></div>';
+  try {
+    document.getElementById('detailBody').innerHTML = html;
+  } catch(e){
+    document.getElementById('detailBody').innerHTML = '<div style="color:#ff6b6b;padding:20px">加载详情出错: ' + e.message + '</div>';
+  }
+  document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('detailOverlay').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
 // 点击行打开详情
 document.addEventListener('click', function(e) {
   var row = e.target.closest('tr');
   if (!row) return;
   var mname = row.querySelector('.mname');
   if (!mname) return;
-  window.openMethodDetail(mname.textContent.trim());
+  openMethodDetail(mname.textContent.trim());
 });
 
 function addPointerStyle() {
