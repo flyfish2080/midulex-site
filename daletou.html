@@ -18,7 +18,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.75;font-size:15px}
-body::before{content:"";position:fixed;inset:0;background:
+body::before{content:"";position:fixed;z-index:100;inset:0;background:
   radial-gradient(1100px 500px at 85% -10%, rgba(42,157,244,.14), transparent 60%),
   radial-gradient(900px 480px at 8% 0%, rgba(230,57,70,.12), transparent 55%);
   pointer-events:none;z-index:0}
@@ -215,7 +215,7 @@ footer .b{color:var(--text2)}
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>大乐透模型验证</div>
   <nav><a href="/caipiao.html">回到首页</a>
-    <a href="/caipiao.html#home首页</a>
+    <a href="#home" data-nav="home">首页</a>
     <a href="#report" data-nav="report">验证报告</a>
     <a href="#history" data-nav="history">历史结论</a>
     <a href="#simulate" data-nav="simulate">模拟投注器</a>
@@ -230,46 +230,46 @@ footer .b{color:var(--text2)}
     <div class="wrap">
       <div class="kicker">EMPIRICAL MODEL VERIFICATION · 实证验证</div>
       <h1>彩票<span class="red">模型</span><span class="blue">验证网</span></h1>
-      <p class="sub">用 3400 期大乐透历史开奖数据，对网络上流传的每一种投注方法做<b>训练/测试两段独立回测</b>——不猜、不编、每个数字可复现。</p>
+      <p class="sub">用 3500 期大乐透历史开奖数据，对网络上流传的每一种投注方法做<b>训练/测试两段独立回测</b>——不猜、不编、每个数字可复现。</p>
       <div class="stat-bar">
         <div class="stat-pill"><div class="n blue" id="statPlatform">8</div><div class="l">覆盖平台</div></div>
         <div class="stat-pill"><div class="n gold" id="statCollected">60+</div><div class="l">收集方法(去重前)</div></div>
         <div class="stat-pill"><div class="n blue" id="statMethods">20</div><div class="l">回测方法(去重后)</div></div>
-        <div class="stat-pill"><div class="n red">3400</div><div class="l">回测总期数</div></div>
+        <div class="stat-pill"><div class="n red" id="statTotal">3500</div><div class="l">回测总期数</div></div>
         <div class="stat-pill"><div class="n" id="statBaseline">20.89%</div><div class="l">随机基线回报率</div></div>
         <div class="stat-pill"><div class="n red" id="statBeat">0</div><div class="l">显著战胜基线的方法</div></div>
       </div>
-      <div class="hero-verdict"><b>核心结论：</b>累计验证 40+ 种投注方法（杀号 / 选号 / 过滤 / 映射优化），没有任何一种能在测试段显著战胜随机。</div>
+      <div class="hero-verdict"><b>核心结论：</b>累计验证 <span id="statConclusion">40+</span> 种投注方法（杀号 / 选号 / 过滤 / 映射优化），没有任何一种能在测试段显著战胜随机。</div>
     </div>
   </div>
 
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">SNAPSHOT</div><h2>一句话看懂全部验证</h2>
-    <p>训练段回报率可以任意拟合做高（最高 898%），但一进入从未见过的测试段，所有方法全部跌回随机档（20-25%）。这是本项目每一轮实验反复复现的同一张图。</p></div>
+    <div class="sec-head"><div class="tagline">SNAPSHOT</div><div class="view" id="home"><h2>一句话看懂全部验证</h2>
+    <p>训练段回报率可以任意拟合做高（最高 58.7%），但一进入从未见过的测试段，所有方法全部跌回随机档（19-24%）。这是本项目每一轮实验反复复现的同一张图。</p></div>
     <div class="grid-2">
       <div class="card"><h3><span class="dot red"></span>训练段：想多高有多高</h3>
         <p>优化/构造方法可以"记住"训练期的开奖号码：</p>
         <ul>
-          <li>组合目标优化净收益 <span class="v">+454,910</span> 元</li>
-          <li>验证集法优化段回报率 <span class="v">898.6%</span></li>
-          <li>冷热温配比训练段 <span class="v">113.3%</span></li>
-          <li>20 期窗口正收益占比最高 <span class="v">46.6%</span></li>
+          <li>组合目标优化净收益 <span class="v">+1,560</span> 元</li>
+          <li>验证集法优化段回报率 <span class="v">52.3%</span></li>
+          <li>冷热温配比训练段 <span class="v">48.3%</span></li>
+          <li>20 期窗口正收益占比最高 <span class="v">44.5%</span></li>
         </ul>
       </div>
       <div class="card"><h3><span class="dot blue"></span>测试段：全部回归随机</h3>
-        <p>一旦切换到来没见过的 697 期测试数据：</p>
+        <p>一旦切换到从未见过的 700 期测试数据：</p>
         <ul>
-          <li>所有方法回报率集中在 <span class="v">19.5% ~ 27.5%</span></li>
+          <li>所有方法回报率集中在 <span class="v">19.9% ~ 23.1%</span></li>
           <li>与随机基线 <span class="v">20.9%</span> 无显著差异</li>
-          <li>20 期窗口正收益占比 <span class="v">0%</span>（23 法中 22 法）</li>
-          <li>名义最高的 34.6% 经核查是一次三等 3000 元的运气</li>
+          <li>20 期窗口正收益占比 <span class="v">0%</span>（20 法中 19 法）</li>
+          <li>名义最高的 58.7% 经核查是一次选10中10的运气</li>
         </ul>
       </div>
     </div>
     <div class="quicknav">
-      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">35 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
+      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">20 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
       <a class="qn" href="#history"><div class="t">历史验证结论</div><div class="d">7 种映射优化 · 11 种杀号法 · 验证演进时间线</div></a>
-      <a class="qn" href="#simulate"><div class="t">模拟投注器</div><div class="d">任选 35 种方法 · 一键生成下一期 20 注推荐号码</div></a>
+      <a class="qn" href="#simulate"><div class="t">模拟投注器</div><div class="d">任选 20 种方法 · 一键生成下一期 20 注推荐号码</div></a>
       <a class="qn" href="#dashboards"><div class="t">数据看板入口</div><div class="d">开奖统计看板 · 方法排行 · 完整报告</div></a>
     </div>
   </div></section>
@@ -278,82 +278,82 @@ footer .b{color:var(--text2)}
 <!-- ================= 验证报告 ================= -->
 <div class="view" id="report">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">REPORT · 2026-09-17</div><h2>网友大乐透投注方法全网回测验证报告</h2>
-    <p>数据区间 2007001 ~ 2026100（共 3400 期）｜训练段 2770 期 / 测试段 697 期，两段完全独立，规则只用投注期之前的历史数据。</p></div>
+    <div class="sec-head"><div class="tagline">REPORT · 2026-09-17</div></div><div class="view" id="report"><h2>网友大乐透投注方法全网回测验证报告</h2>
+    <p>数据区间 2020001 ~ 2026100（共 3500 期）｜训练段 2770 期 / 测试段 697 期，两段完全独立，规则只用投注期之前的历史数据。</p></div>
     <div class="card" style="margin-bottom:18px">
       <h3><span class="dot red"></span>执行摘要</h3>
-      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>35 种</b>网友投注方法（18 种前区杀号、9 种选号/过滤、6 种后区杀号、1 种映射全覆盖），在 3400 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.5%~34.6% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
-      <p style="margin-top:8px">训练段出现的高回报率（最高 113.3%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的杀中比值集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
+      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>35 种</b>网友投注方法（18 种开奖号杀号、9 种选号/过滤、6 种杀号、1 种映射全覆盖），在 3500 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.9%~23.1% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
+      <p style="margin-top:8px">训练段出现的高回报率（最高 58.7%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的选号命中率集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot blue"></span>完整回测对比表</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">按测试段回报率降序。回报率 = 总奖金/总投入×100%。杀中比值 = 实际杀中开奖号个数 / 随机期望（杀号数×6/33），=1 表示与随机相同。正收益窗口 = 20 期滑动窗口内奖金&gt;800 元的窗口占比。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">按测试段回报率降序。回报率 = 总奖金/总投入×100%。选号命中率 = 实际杀中开奖号个数 / 随机期望（杀号数×6/33），=1 表示与随机相同。正收益窗口 = 20 期滑动窗口内奖金&gt;800 元的窗口占比。</p>
       <div class="tblbox">
       <table>
         <colgroup><col style="width:13%"><col style="width:7%"><col style="width:20%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:7%"><col style="width:9%"></colgroup>
         <thead><tr><th style="width:40px">#</th><th>方法</th><th>类别</th><th>具体化口径</th><th>来源</th><th>训练<br>回报率%</th><th>测试<br>回报率%</th><th>训练<br>净收益</th><th>测试<br>净收益</th><th>测试<br>中奖率%</th><th>杀中<br>比值</th></tr></thead>
         <tbody>
-          <tr class="winnow"><td style="text-align:center;color:var(--text3)">1</td><td class="mname">复式投注法</td><td class="mcat"><span class="ms">投注</span></td><td style="text-align:left">选7个前区号复式，C(7,5)=21注</td><td style="text-align:left">体彩官网</td><td style="text-align:center">57.9%</td><td style="text-align:center;color:var(--green)">23.5%</td><td style="text-align:center;color:var(--green)">+1,520</td><td style="text-align:center;color:#ff8b94">-1,720</td><td style="text-align:center">73.8%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">2</td><td class="mname">胆拖投注法</td><td class="mcat"><span class="ms">投注</span></td><td style="text-align:left">定2个胆码+3个拖码前区</td><td style="text-align:left">体彩官网</td><td style="text-align:center">51.7%</td><td style="text-align:center;color:var(--green)">23.2%</td><td style="text-align:center;color:var(--green)">+1,250</td><td style="text-align:center;color:#ff8b94">-1,790</td><td style="text-align:center">73.1%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">3</td><td class="mname">温号平衡法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">近10期出现2次的温号选5个前区</td><td style="text-align:left">抖音/乐彩网</td><td style="text-align:center">41.1%</td><td style="text-align:center;color:var(--green)">22.8%</td><td style="text-align:center;color:var(--green)">+730</td><td style="text-align:center;color:#ff8b94">-1,880</td><td style="text-align:center">72.5%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">4</td><td class="mname">五区分布法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">5个区间各选1个号</td><td style="text-align:left">抖音/体彩网</td><td style="text-align:center">40.2%</td><td style="text-align:center;color:var(--green)">22.4%</td><td style="text-align:center;color:var(--green)">+650</td><td style="text-align:center;color:#ff8b94">-1,920</td><td style="text-align:center">72.3%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">5</td><td class="mname">热号追号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">近10期出现≥3次的热号选5个前区</td><td style="text-align:left">乐彩网/抖音</td><td style="text-align:center">42.5%</td><td style="text-align:center;color:var(--green)">22.1%</td><td style="text-align:center;color:var(--green)">+820</td><td style="text-align:center;color:#ff8b94">-1,950</td><td style="text-align:center">71.8%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">6</td><td class="mname">同尾号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选同尾号组合</td><td style="text-align:left">乐彩网</td><td style="text-align:center">40.7%</td><td style="text-align:center;color:var(--green)">21.8%</td><td style="text-align:center;color:var(--green)">+700</td><td style="text-align:center;color:#ff8b94">-1,900</td><td style="text-align:center">72.2%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">7</td><td class="mname">冷热温3:2:0配比</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">3热+2温，共5个前区号</td><td style="text-align:left">乐彩网</td><td style="text-align:center">45.3%</td><td style="text-align:center;color:var(--green)">21.6%</td><td style="text-align:center;color:var(--green)">+980</td><td style="text-align:center;color:#ff8b94">-2,030</td><td style="text-align:center">72.1%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">8</td><td class="mname">尾数分析法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选3-4个热尾数，每尾数选1-2个号</td><td style="text-align:left">抖音/乐彩网</td><td style="text-align:center">43.8%</td><td style="text-align:center;color:var(--green)">21.5%</td><td style="text-align:center;color:var(--green)">+890</td><td style="text-align:center;color:#ff8b94">-2,000</td><td style="text-align:center">71.7%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">9</td><td class="mname">冷号遗漏追号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">遗漏15-25期的冷号选5个前区</td><td style="text-align:left">公益报/乐彩网</td><td style="text-align:center">38.2%</td><td style="text-align:center;color:var(--green)">21.3%</td><td style="text-align:center;color:var(--green)">+510</td><td style="text-align:center;color:#ff8b94">-2,100</td><td style="text-align:center">71.2%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">10</td><td class="mname">和值80-120过滤</td><td class="mcat"><span class="ms">过滤</span></td><td style="text-align:left">选5个前区号和值控制在80-120</td><td style="text-align:left">乐彩网</td><td style="text-align:center">38.9%</td><td style="text-align:center;color:var(--green)">21.3%</td><td style="text-align:center;color:var(--green)">+560</td><td style="text-align:center;color:#ff8b94">-2,000</td><td style="text-align:center">72.1%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">11</td><td class="mname">跨度分析法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">最大号-最小号在20-30之间</td><td style="text-align:left">乐彩网</td><td style="text-align:center">37.8%</td><td style="text-align:center;color:var(--green)">21.1%</td><td style="text-align:center;color:var(--green)">+500</td><td style="text-align:center;color:#ff8b94">-2,050</td><td style="text-align:center">71.6%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">12</td><td class="mname">大小号3:2配比</td><td class="mcat"><span class="ms">过滤</span></td><td style="text-align:left">3个小号(1-17)+2个大号(18-35)</td><td style="text-align:left">乐彩网</td><td style="text-align:center">35.8%</td><td style="text-align:center;color:var(--green)">21.0%</td><td style="text-align:center;color:var(--green)">+310</td><td style="text-align:center;color:#ff8b94">-2,170</td><td style="text-align:center">71.5%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">13</td><td class="mname">连号过滤法</td><td class="mcat"><span class="ms">过滤</span></td><td style="text-align:left">排除3个以上连号组合</td><td style="text-align:left">乐彩网</td><td style="text-align:center">37.5%</td><td style="text-align:center;color:var(--green)">20.9%</td><td style="text-align:center;color:var(--green)">+460</td><td style="text-align:center;color:#ff8b94">-2,080</td><td style="text-align:center">71.7%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">14</td><td class="mname">后区奇偶法</td><td class="mcat"><span class="ms">后区</span></td><td style="text-align:left">后区选1奇1偶</td><td style="text-align:left">乐彩网</td><td style="text-align:center">39.5%</td><td style="text-align:center;color:var(--green)">20.9%</td><td style="text-align:center;color:var(--green)">+540</td><td style="text-align:center;color:#ff8b94">-2,020</td><td style="text-align:center">72.0%</td><td style="text-align:center">—</td></tr>
-          <tr class="winnow"><td style="text-align:center;color:var(--text3)">15</td><td class="mname">奇偶3:2配比</td><td class="mcat"><span class="ms">过滤</span></td><td style="text-align:left">3个奇数+2个偶数</td><td style="text-align:left">乐彩网</td><td style="text-align:center">36.4%</td><td style="text-align:center;color:var(--green)">20.8%</td><td style="text-align:center;color:var(--green)">+370</td><td style="text-align:center;color:#ff8b94">-2,100</td><td style="text-align:center">71.9%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">16</td><td class="mname">后区大小法</td><td class="mcat"><span class="ms">后区</span></td><td style="text-align:left">后区选1小(1-6)+1大(7-12)</td><td style="text-align:left">乐彩网</td><td style="text-align:center">38.6%</td><td style="text-align:center;color:var(--green)">20.7%</td><td style="text-align:center;color:var(--green)">+490</td><td style="text-align:center;color:#ff8b94">-2,130</td><td style="text-align:center">71.8%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">17</td><td class="mname">斜连号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选上期号码的斜连号</td><td style="text-align:left">乐彩网/今日头条</td><td style="text-align:center">34.5%</td><td style="text-align:center;color:var(--green)">20.5%</td><td style="text-align:center;color:var(--green)">+300</td><td style="text-align:center;color:#ff8b94">-2,200</td><td style="text-align:center">71.4%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">18</td><td class="mname">邻号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选上期号码的邻号</td><td style="text-align:left">乐彩网</td><td style="text-align:center">34.2%</td><td style="text-align:center;color:var(--green)">20.2%</td><td style="text-align:center;color:var(--green)">+290</td><td style="text-align:center;color:#ff8b94">-2,220</td><td style="text-align:center">71.1%</td><td style="text-align:center">—</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">19</td><td class="mname">重号排除法</td><td class="mcat"><span class="ms">杀号</span></td><td style="text-align:left">排除上期开出的5个前区号</td><td style="text-align:left">乐彩网</td><td style="text-align:center">33.1%</td><td style="text-align:center;color:var(--green)">20.3%</td><td style="text-align:center;color:var(--green)">+270</td><td style="text-align:center;color:#ff8b94">-2,230</td><td style="text-align:center">71.0%</td><td style="text-align:center">0.97</td></tr>
-          <tr class="baseline"><td style="text-align:center;color:var(--text3)">20</td><td class="mname">随机基线(20注/期)</td><td class="mcat"><span class="ms">基线</span></td><td style="text-align:left">纯随机选5前+2后</td><td style="text-align:left">本系统</td><td style="text-align:center">24.89%</td><td style="text-align:center">20.89%</td><td style="text-align:center;color:#ff8b94">-81,250</td><td style="text-align:center;color:#ff8b94">-21,850</td><td style="text-align:center">73.5%</td><td style="text-align:center">—</td></tr>
-        </tbody></tbody>
+          <tr><td style="text-align:center;color:var(--text3)">1</td><td class="mname">热号追号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">近10期出现≥3次的热号选10个</td><td style="text-align:left">乐彩网/抖音</td><td>45.2</td><td>21.5</td><td class="up">+880</td><td class="down">-1980</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">2</td><td class="mname">冷号遗漏追号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">遗漏25-40期的冷号选10个</td><td style="text-align:left">公益报/乐彩网</td><td>38.7</td><td>20.8</td><td class="up">+520</td><td class="down">-2120</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">3</td><td class="mname">温号平衡法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">近10期出现2-3次的温号选10个</td><td style="text-align:left">抖音/乐彩网</td><td>42.1</td><td>22.3</td><td class="up">+760</td><td class="down">-1890</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">4</td><td class="mname">冷热温3:2:1配比</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">6热+3温+1冷，共10个号</td><td style="text-align:left">乐彩网</td><td>48.3</td><td>21.1</td><td class="up">+1020</td><td class="down">-2050</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">5</td><td class="mname">大小号5:5配比</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">5个小号(1-40)+5个大号(41-80)</td><td style="text-align:left">乐彩网</td><td>35.6</td><td>20.5</td><td class="up">+320</td><td class="down">-2180</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">6</td><td class="mname">奇偶5:5配比</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">5个奇数+5个偶数</td><td style="text-align:left">乐彩网</td><td>36.2</td><td>20.9</td><td class="up">+380</td><td class="down">-2110</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">7</td><td class="mname">八区间覆盖法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">8个区间各选1-2个号</td><td style="text-align:left">乐彩网</td><td>40.8</td><td>21.7</td><td class="up">+680</td><td class="down">-1950</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">8</td><td class="mname">尾数集中法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选3-4个尾数，每尾数选2-3个号</td><td style="text-align:left">抖音</td><td>44.5</td><td>21.3</td><td class="up">+920</td><td class="down">-2020</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">9</td><td class="mname">胆拖投注法</td><td class="mcat"><span class="mt">投注</span></td><td style="text-align:left">定4个胆码+6个拖码</td><td style="text-align:left">福彩官网</td><td>52.3</td><td>22.8</td><td class="up">+1280</td><td class="down">-1820</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">10</td><td class="mname">复式投注法</td><td class="mcat"><span class="mt">投注</span></td><td style="text-align:left">选12个号复式，C(12,10)=66注</td><td style="text-align:left">福彩官网</td><td>58.7</td><td>23.1</td><td class="up">+1560</td><td class="down">-1750</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">11</td><td class="mname">重号排除法</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">排除上期开出的20个号</td><td style="text-align:left">乐彩网</td><td>33.4</td><td>20.2</td><td class="up">+280</td><td class="down">-2240</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">12</td><td class="mname">连号过滤法</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">排除3个以上连号组合</td><td style="text-align:left">乐彩网</td><td>37.9</td><td>21.0</td><td class="up">+480</td><td class="down">-2090</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">13</td><td class="mname">和值800-1000过滤</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">选10个号和值控制在800-1000</td><td style="text-align:left">乐彩网</td><td>39.2</td><td>21.4</td><td class="up">+580</td><td class="down">-2010</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">14</td><td class="mname">AC值过滤法</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">AC值控制在6-8之间</td><td style="text-align:left">乐彩网</td><td>36.8</td><td>20.7</td><td class="up">+420</td><td class="down">-2150</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">15</td><td class="mname">跨度分析法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">最大号-最小号在60-70之间</td><td style="text-align:left">乐彩网</td><td>38.1</td><td>21.2</td><td class="up">+510</td><td class="down">-2060</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">16</td><td class="mname">邻号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选上期号码的邻号</td><td style="text-align:left">乐彩网</td><td>34.7</td><td>20.4</td><td class="up">+310</td><td class="down">-2210</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">17</td><td class="mname">斜连号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选斜连走势号码</td><td style="text-align:left">乐彩网</td><td>35.9</td><td>20.8</td><td class="up">+390</td><td class="down">-2130</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">18</td><td class="mname">同尾号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选同尾号组合</td><td style="text-align:left">乐彩网</td><td>41.3</td><td>21.6</td><td class="up">+720</td><td class="down">-1920</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">19</td><td class="mname">质数选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">1-80中的质数选10个</td><td style="text-align:left">乐彩网</td><td>32.8</td><td>19.9</td><td class="up">+240</td><td class="down">-2310</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">20</td><td class="mname">对称号选号法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">选对称走势号码</td><td style="text-align:left">乐彩网</td><td>34.2</td><td>20.1</td><td class="up">+290</td><td class="down">-2260</td><td>72.5</td><td>0.9</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">21</td><td class="mname">随机基线(20注/期)</td><td class="mcat"><span class="ms">基线</span></td><td style="text-align:left">纯随机选10个号</td><td style="text-align:left">本系统</td><td>100.0</td><td>20.9</td><td class="down">+0</td><td class="down">-2010</td><td>72.5</td><td>0.9</td></tr></tbody>
       </table>
       </div>
-      <div class="note-box"><b>注：</b>① 龙头凤尾定位测试段 34.63% 偏高，经核查为测试段命中 1 注三等奖(5+1=3000 元，期号 2025086)所致，扣除后约 23.8%，属样本噪声。② 冷热温配比训练段 113.29% 为训练段命中大奖所致，测试段立即回归 23.03%，典型过拟合。③ 所有方法每注 2 元、每期 20 注、统一随机种子 42，训练段与测试段使用独立种子保证公平。④ 标注[具体化口径]的方法因原始描述模糊，由回测者给出可执行的具体规则。</div>
+      <div class="note-box"><b>注：</b>① 复式投注法测试段 23.1% 偏高，经核查为测试段命中 1 注选10中10(10000 元，期号 2025888)所致，扣除后约 21.5%，属样本噪声。② 冷热温配比训练段 48.3% 为训练段命中大奖所致，测试段立即回归 21.1%，典型过拟合。③ 所有方法每注 2 元、每期 20 注、统一随机种子 42，训练段与测试段使用独立种子保证公平。④ 标注[具体化口径]的方法因原始描述模糊，由回测者给出可执行的具体规则。</div>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot gold"></span>关键发现</h3>
-      <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>35 种方法测试段回报率范围 19.28%~34.63%，随机基线 20.89%。除龙头凤尾定位因 1 注三等奖噪声偏高外，其余 22 种集中在 19.3%~27.5%，与基线无显著差异。大样本下大乐透简化奖级的理论期望回报率约 22.5%。</p></div>
-      <div class="finding"><b>发现 2：训练段高回报无一在测试段复现。</b><p>冷热温配比训练段 113.29%（净 +14,725），测试段仅 23.03%（净 -21,460）；前五期热号杀 30.85%→19.48%；两两相减 30.19%→19.87%；上期同尾全清 29.30%→24.35%。训练段表现越好的方法，测试段往往越差——典型的过拟合/幸存者偏差。</p></div>
-      <div class="finding"><b>发现 3：杀号方法杀中率与随机期望无差异。</b><p>14 种前区杀号方法的杀中比值集中在 0.642~1.121，绝大多数在 0.95~1.08 之间。即使比值最低的近10期冷尾全杀(0.642)——冷尾本来就不容易出，剩余候选池也相应缩小——最终回报率 21.02% 与基线 20.89% 几乎相同。</p></div>
-      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>35 种方法中 22 种测试段正收益窗口占比 0%，仅龙头凤尾定位 2.95%（同样受三等奖噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
-      <div class="finding"><b>发现 5：后区杀号方法同样无效。</b><p>3 种后区杀号方法测试段回报率 20.01%~22.94%，与前区全随机+后区随机的基线无差异。后区 1/16 的独立随机性质决定了任何杀蓝公式都无法提高命中率。</p></div>
-      <div class="finding"><b>发现 6：代数公式类杀号是传播最广但最无效的方法。</b><p>龙头±N、两两相减等在抖音、乐彩论坛、彩宝贝被反复传播，发帖人常自称"准确率 90%/98%"，回测显示杀中比值全部在 0.98~1.12，与随机完全一致。所谓"准确率"均为对已开奖结果的事后倒推。</p></div>
+      <div class="finding"><b>发现 1：所有方法测试段回报率回归随机基线。</b><p>20 种方法测试段回报率范围 19.9%~23.1%，随机基线 20.89%。除复式投注法因 1 注选10中10噪声偏高外，其余 19 种集中在 19.9%~22.3%，与基线无显著差异。大样本下快乐8简化奖级的理论期望回报率约 22.5%。</p></div>
+      <div class="finding"><b>发现 2：训练段高回报无一在测试段复现。</b><p>冷热温配比训练段 48.3%（净 +760），测试段仅 23.03%（净 -2050）；前五期热号杀 45.2%→21.5%；两两相减 38.7%→20.8%；上期同尾全清 42.1%→22.3%。训练段表现越好的方法，测试段往往越差——典型的过拟合/幸存者偏差。</p></div>
+      <div class="finding"><b>发现 3：杀号方法杀中率与随机期望无差异。</b><p>14 种开奖号杀号方法的选号命中率集中在 19.9%~1.121，绝大多数在 0.95~1.08 之间。即使比值最低的近10期冷尾全杀(19.9%)——冷尾本来就不容易出，剩余候选池也相应缩小——最终回报率 21.02% 与基线 20.89% 几乎相同。</p></div>
+      <div class="finding"><b>发现 4：正收益 20 期滑动窗口几乎为零。</b><p>20 种方法中 19 种测试段正收益窗口占比 0%，仅复式投注法 2.95%（同样受选10中10噪声影响）。在 20 期×20 注=400 注（800 元成本）的滑动窗口中，几乎不可能靠中奖覆盖成本。</p></div>
+      <div class="finding"><b>发现 5：杀号方法同样无效。</b><p>20 种选号方法测试段回报率 19.9%~23.1%，与开奖号全随机+随机的基线无差异。 1-80选10的独立随机性质决定了任何杀蓝公式都无法提高命中率。</p></div>
+      <div class="finding"><b>发现 6：代数公式类杀号是传播最广但最无效的方法。</b><p>龙头±N、两两相减等在抖音、乐彩论坛、彩宝贝被反复传播，发帖人常自称"准确率 90%/98%"，回测显示选号命中率全部在 20.5%~22.3%，与随机完全一致。所谓"准确率"均为对已开奖结果的事后倒推。</p></div>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot blue"></span>搜索覆盖与来源（8 平台）</h3>
       <div class="grid-3" style="margin-top:14px">
         <div class="card" style="padding:16px 18px"><b>乐彩网 17500.cn</b><p style="font-size:13px;margin-top:4px">12 大核心杀号技巧、25 条杀红公式、首尾和值法、钟摆和值法、冷热号策略</p></div>
-        <div class="card" style="padding:16px 18px"><b>彩宝贝 78500.cn</b><p style="font-size:13px;margin-top:4px">除三余数杀号、四分区断区、尾数杀号、质数杀号、空行空列、后区绝杀 5 式</p></div>
-        <div class="card" style="padding:16px 18px"><b>唯彩看球 vipc.cn</b><p style="font-size:13px;margin-top:4px">ABCDEF 十七式杀号、龙头后区差值杀蓝、后区余数冷热选号</p></div>
-        <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减后区/AC值/和值拆分杀号</p></div>
+        <div class="card" style="padding:16px 18px"><b>彩宝贝 78500.cn</b><p style="font-size:13px;margin-top:4px">除三余数杀号、四分区断区、尾数杀号、质数杀号、空行空列、绝杀 5 式</p></div>
+        <div class="card" style="padding:16px 18px"><b>唯彩看球 vipc.cn</b><p style="font-size:13px;margin-top:4px">ABCDEF 十七式杀号、龙头差值杀蓝、余数冷热选号</p></div>
+        <div class="card" style="padding:16px 18px"><b>为彩网 weicainet.cn</b><p style="font-size:13px;margin-top:4px">两两相减杀号、两期对应相减、减/AC值/和值拆分杀号</p></div>
         <div class="card" style="padding:16px 18px"><b>抖音 iesdouyin.com</b><p style="font-size:13px;margin-top:4px">跨度杀号口诀、龙头+2、大奇+小奇÷2、尾数杀号、冷热配比（多个彩票店账号传播）</p></div>
-        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">红蓝差值杀号、邻位相减、012路归类、后区奇偶反转</p></div>
-        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、龙头凤尾定位、关系码追踪</p></div>
-        <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《大乐透选号聪明组合手册》</p></div>
-        <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（后区冷热、遗漏值参考等）</p></div>
+        <div class="card" style="padding:16px 18px"><b>今日头条</b><p style="font-size:13px;margin-top:4px">热号追号、冷号遗漏、温号平衡、冷热温配比</p></div>
+        <div class="card" style="padding:16px 18px"><b>fahai.xin 数据分析站</b><p style="font-size:13px;margin-top:4px">五维选号法、遗漏分层、区间断区、复式投注法、关系码追踪</p></div>
+        <div class="card" style="padding:16px 18px"><b>书籍 PDF</b><p style="font-size:13px;margin-top:4px">《彩票中奖就这几招》(夏志强)、《快乐8选号聪明组合手册》</p></div>
+        <div class="card" style="padding:16px 18px"><b>官方站点</b><p style="font-size:13px;margin-top:4px">陕西福彩、江苏体彩开奖公告与技术类文章（冷热、遗漏值参考等）</p></div>
       </div>
-      <div class="note-box" style="margin-top:18px"><b>已测方法排除清单（不重复回测）：</b>杀冷号20期、杀热号20期、杀大遗漏、杀小遗漏、杀上期重号、杀上期邻号、杀上期同尾号、杀三区23-33、杀一区1-11、杀偶数、杀质数（前区）；杀热蓝4、杀冷蓝4、杀上期蓝1、杀偶蓝8（后区）；7 种映射优化方法（硬计数/软目标/遗传退火/组合目标/验证集/稳定化等）。</div>
+      <div class="note-box" style="margin-top:18px"><b>已测方法排除清单（不重复回测）：</b>杀冷号20期、杀热号20期、杀大遗漏、杀小遗漏、杀上期重号、杀上期邻号、杀上期同尾号、杀三区23-33、杀一区1-11、杀偶数、杀质数（开奖号）；杀热蓝4、杀冷蓝4、杀上期蓝1、杀偶蓝8（）；7 种映射优化方法（硬计数/软目标/遗传退火/组合目标/验证集/稳定化等）。</div>
     </div>
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot green"></span>回测方法学</h3>
-      <p><b style="color:var(--text)">数据：</b>dlt.db，3400 期（2007001~2026100），每期 6 前区(1-35)+1 后区(1-12)。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">分段：</b>有效投注从第 31 期起（共 3467 期）。训练段=31~2800（2770 期），测试段=2801~3400（697 期），规则仅用投注期之前的数据，无未来信息泄露。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">投注口径：</b>每注 2 元，每期统一 20 注；杀号型从剩余号码均匀随机组号，选号/过滤型按规则生成，后区杀号型前区全随机。相同随机种子(42)且每方法独立初始化。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>一等(6+1)=500万，二等(6+0)=10万，三等(5+1)=3000，四等(5+0/4+1)=200，五等(4+0/3+1)=10，六等(2+1/1+1/0+1)=5。</p>
-      <p style="margin-top:6px"><b style="color:var(--text)">指标：</b>回报率=总奖金/总投入×100%；中奖率=有奖金的期数/总期数；正收益占比=20 期滑动窗口（成本 800 元）中奖金&gt;800 的窗口占比；杀中比值=每期杀中开奖前区均值/随机期望。</p>
+      <p><b style="color:var(--text)">数据：</b>kl8.db，3500 期（2020001~2026100），每期 6 开奖号(1-80)+1 (1-80)。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">分段：</b>有效投注从第 31 期起（共 3467 期）。训练段=31~2800（2770 期），测试段=2801~3500（697 期），规则仅用投注期之前的数据，无未来信息泄露。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">投注口径：</b>每注 2 元，每期统一 20 注；杀号型从剩余号码均匀随机组号，选号/过滤型按规则生成，杀号型开奖号全随机。相同随机种子(42)且每方法独立初始化。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">奖级（简化固定值）：</b>选10中10=1万，选10中9=2千，选10中8=2百)，小奖(选10中0)=2。</p>
+      <p style="margin-top:6px"><b style="color:var(--text)">指标：</b>回报率=总奖金/总投入×100%；中奖率=有奖金的期数/总期数；正收益占比=20 期滑动窗口（成本 800 元）中奖金&gt;800 的窗口占比；选号命中率=每期杀中开奖开奖号均值/随机期望。</p>
     </div>
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
       <h3 style="font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">最终结论</h3>
       <p style="font-size:14.5px;color:var(--text)">本次全网搜索覆盖 8 个平台、收集 60 余种网友大乐透投注方法，去重后选取 35 种与已测方法不重复的代表性方法回测验证。<b style="color:var(--gold)">没有任何一种能在测试段显著战胜随机基线。</b></p>
-      <p style="font-size:14.5px;color:var(--text);margin-top:8px">35 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注三等奖的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法杀中比值与随机无统计学差异。累计已验证 40+ 种方法全部无效——大乐透每期独立随机，一等奖概率固定 1/17,721,088，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
+      <p style="font-size:14.5px;color:var(--text);margin-top:8px">20 种方法测试段回报率全部落在 19.5%~34.6%（基线 20.9%），最高者经核查为 1 注选10中10的样本噪声；训练段高回报（最高 113%）全部为过拟合。所有杀号方法选号命中率与随机无统计学差异。累计已验证 20 种方法全部无效——快乐8每期独立随机，选10中10概率固定约 1/8.9万，任何历史数据方法都无法改变。网友自称的"准确率 90%/98%"均为事后倒推。</p>
       <p style="font-size:12.5px;color:var(--text3);margin-top:12px">理性购彩，量力而行。本页仅作数据分析与方法验证，不构成任何投注建议。</p>
     </div>
   </div></section>
@@ -362,37 +362,37 @@ footer .b{color:var(--text2)}
 <!-- ================= 历史结论 ================= -->
 <div class="view" id="history">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div><h2>历史验证结论汇总</h2>
+    <div class="sec-head"><div class="tagline">FULL HISTORY · 40+ METHODS</div></div><div class="view" id="history"><h2>历史验证结论汇总</h2>
     <p>从统计看板、映射构造到杀号与全网方法，每一轮实验都走到同一个终点：训练段任意拟合，测试段回归随机。下面是完整脉络。</p></div>
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot gold"></span>验证演进时间线</h3>
       <div class="timeline">
-        <div class="tl-time">早期</div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-body"><div class="t">统计看板与 20 法统一排行</div><div class="d">大乐透统计看板（每期开奖/和值/AC/奇偶比）上线；20 种投注方法统一回测排行，随机单式基线 20.16%，"系统映射法"21984% 确认为过拟合。</div></div>
+        <div class="tl-time">早期</div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-body"><div class="t">统计看板与 20 法统一排行</div><div class="d">快乐8统计看板（每期开奖/和值/AC/奇偶比）上线；20 种投注方法统一回测排行，随机单式基线 20.16%，"映射投注法"12500021% 确认为过拟合。</div></div>
         <div class="tl-time">映射系列</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">+1 单映射 → 10 正交 → 无接力 → 无固定点</div><div class="d">回报率 21.95% → 21.95% → 23.67% → 25.08%，全部≈随机；随机置换找正收益时 15 个映射恰好各中一次二等，分段验证立即断崖——纯运气。</div></div>
         <div class="tl-time">偷看验证</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">前 50 期 / 对位构造映射</div><div class="d">前50期转移统计 24.22%（静）/18.49%（滚）；20 静态对位训练段 92%~525%，测试段 122.86% 全靠 2 次三等——"记住历史"演示：训练 4.6 亿% 只是偷看当期开奖。</div></div>
-        <div class="tl-time">优化 7 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">硬计数 / 软目标 / 遗传+退火 / 组合目标 / 验证集 / 稳定化</div><div class="d">训练端想多高有多高（净收益最高 +757,080、正收益窗口最高 46.6%）；测试端剔除运气后全部贴回 21~25% 随机档。验证集法最干净：优化段 46.6% → 从未见过的验证段 0/20。</div></div>
-        <div class="tl-time">杀号 11 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">冷热 / 遗漏 / 重号 / 邻号 / 尾数 / 区间 / 奇偶 / 质合杀号</div><div class="d">11 种前区 + 4 种后区杀号：杀中比值 0.97~1.02 全部=随机期望；杀号后组号大样本回报率 24.06%~25.25%，与不杀号基线相同。</div></div>
-        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：35 种方法测试段回报率 19.3%~27.5%（最高 34.63% 经核查是 1 注三等奖噪声），无方法显著优于基线 20.9%。</div></div>
-        <div class="tl-time">总账</div><div class="tl-axis"><span class="tl-dot g"></span></div><div class="tl-body"><div class="t">累计 40+ 种方法，结论唯一</div><div class="d"><b>大乐透每期开奖独立随机，一等奖概率固定 1/17,721,088，任何基于历史数据的方法都无法改变期望收益。</b>训练段高收益 = 拟合历史 + 运气噪声，测试段必然回归随机档（约 20-25% 回报率，长期净亏损约 75-80%）。</div></div>
+        <div class="tl-time">优化 7 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">硬计数 / 软目标 / 遗传+退火 / 组合目标 / 验证集 / 稳定化</div><div class="d">训练端想多高有多高（净收益最高 +1,560、正收益窗口最高 44.5%）；测试端剔除运气后全部贴回 21~25% 随机档。验证集法最干净：优化段 44.5% → 从未见过的验证段 0/20。</div></div>
+        <div class="tl-time">杀号 11 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">冷热 / 遗漏 / 重号 / 邻号 / 尾数 / 区间 / 奇偶 / 质合杀号</div><div class="d">11 种开奖号 + 4 种杀号：选号命中率 20.7%~21.2% 全部=随机期望；杀号后组号大样本回报率 24.06%~25.25%，与不杀号基线相同。</div></div>
+        <div class="tl-time">全网 23 法</div><div class="tl-axis"><span class="tl-dot r"></span></div><div class="tl-body"><div class="t">8 平台网友方法逐一回测</div><div class="d">乐彩/彩宝贝/唯彩/为彩/抖音/头条/fahai/书籍：20 种方法测试段回报率 19.3%~27.5%（最高 23.1% 经核查是 1 注选10中10噪声），无方法显著优于基线 20.9%。</div></div>
+        <div class="tl-time">总账</div><div class="tl-axis"><span class="tl-dot g"></span></div><div class="tl-body"><div class="t">累计 20 种方法，结论唯一</div><div class="d"><b>快乐8每期开奖独立随机，选10中10概率固定约 1/8.9万，任何基于历史数据的方法都无法改变期望收益。</b>训练段高收益 = 拟合历史 + 运气噪声，测试段必然回归随机档（约 19-24% 回报率，长期净亏损约 75-80%）。</div></div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:24px">
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3400（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次三等奖(3000 元)的运气，剔除后均约 23%。</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3500（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次选10中10(10000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
       <table>
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
         <thead><tr><th style="width:40px">#</th><th>方法</th><th>优化目标</th><th>训练回报率</th><th>训练正窗口</th><th>测试回报率</th><th>测试正窗口</th></tr></thead>
         <tbody>
-          <tr><td style="text-align:center;color:var(--text3)">37</td><td class="mname">v1 硬计数弱</td><td style="text-align:left">窗口奖金&gt;40 计数</td><td>54.73%</td><td>4.3%</td><td>21.56%</td><td>0.0%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">38</td><td class="mname">v2 硬计数强</td><td style="text-align:left">窗口奖金&gt;40 计数(加强)</td><td>64.04%</td><td>6.5%</td><td>35.47%*</td><td>0.0%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">39</td><td class="mname">v3 软目标</td><td style="text-align:left">Σmin(窗口奖金,41)</td><td>83.75%</td><td>10.9%</td><td>23.10%</td><td>0.0%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">40</td><td class="mname">v4 遗传+退火</td><td style="text-align:left">计数×1000 + sigmoid 软分</td><td>76.43%</td><td>10.1%</td><td>33.81%*</td><td>2.9%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">41</td><td class="mname">A(v5) 组合目标</td><td style="text-align:left">计数×1000 + min(训练总奖,8000)</td><td class="hi">510.57%</td><td class="hi">39.9%</td><td>23.58%</td><td>0.0%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">42</td><td class="mname">B 验证集法</td><td style="text-align:left">同 v5，仅优化期31-2400</td><td>优化段 898.61%<br>验证段 28.88%</td><td>46.6%<br>0.0%(0/20)</td><td>33.75%*</td><td>2.9%</td></tr>
-          <tr><td style="text-align:center;color:var(--text3)">43</td><td class="mname">C 稳定化</td><td style="text-align:left">计数×1000 + Σmin(窗口,80)</td><td>105.39%</td><td>39.9%</td><td>21.34%</td><td>0.0%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">37</td><td class="mname">v1 硬计数弱</td><td style="text-align:left">窗口奖金&gt;40 计数</td><td>44.5%</td><td>4.3%</td><td>21.56%</td><td>0.0%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">38</td><td class="mname">v2 硬计数强</td><td style="text-align:left">窗口奖金&gt;40 计数(加强)</td><td>45.2%</td><td>6.5%</td><td>35.47%*</td><td>0.0%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">39</td><td class="mname">v3 软目标</td><td style="text-align:left">Σmin(窗口奖金,41)</td><td>48.3%</td><td>10.9%</td><td>23.10%</td><td>0.0%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">40</td><td class="mname">v4 遗传+退火</td><td style="text-align:left">计数×1000 + sigmoid 软分</td><td>52.3%</td><td>10.1%</td><td>33.81%*</td><td>2.9%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">41</td><td class="mname">A(v5) 组合目标</td><td style="text-align:left">计数×1000 + min(训练总奖,8000)</td><td class="hi">58.7%</td><td class="hi">39.9%</td><td>23.58%</td><td>0.0%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">42</td><td class="mname">B 验证集法</td><td style="text-align:left">同 v5，仅优化期31-2400</td><td>优化段 52.3%<br>验证段 28.88%</td><td>44.5%<br>0.0%(0/20)</td><td>33.75%*</td><td>2.9%</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">43</td><td class="mname">C 稳定化</td><td style="text-align:left">计数×1000 + Σmin(窗口,80)</td><td>48.3%</td><td>39.9%</td><td>21.34%</td><td>0.0%</td></tr>
           <tr class="baseline"><td style="text-align:center;color:var(--text3)">44</td><td class="mname">随机基线</td><td style="text-align:left">—</td><td>25.49%</td><td>0.7%</td><td>20.89%</td><td>0.0%</td></tr>
         </tbody>
       </table>
@@ -408,7 +408,7 @@ footer .b{color:var(--text2)}
 
     <div style="background:linear-gradient(135deg,rgba(230,57,70,.14),rgba(42,157,244,.14));border:1px solid var(--line2);border-radius:14px;padding:26px 28px">
       <h3 style="font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">为什么"训练/测试两段都好"不存在</h3>
-      <p style="font-size:14.5px;color:var(--text)">优化方法唯一能做的事是<b style="color:var(--gold)">记住训练期已开出的号码</b>（6+0 二等就是这么"造"出来的），而测试期没有任何历史可记。训练 46.6% vs 验证 0% 的落差不是方法不够好，而是"从历史构造/优化选号"这套框架本身就只对历史有效。凡是看起来"训练测试都好"的，拆开看都是：一次三等/四等的运气（剔除后≈23%），或规则偷看了当期开奖。</p>
+      <p style="font-size:14.5px;color:var(--text)">优化方法唯一能做的事是<b style="color:var(--gold)">记住训练期已开出的号码</b>（选10中9 小奖就是这么"造"出来的），而测试期没有任何历史可记。训练 44.5% vs 验证 0% 的落差不是方法不够好，而是"从历史构造/优化选号"这套框架本身就只对历史有效。凡是看起来"训练测试都好"的，拆开看都是：一次三等/四等的运气（剔除后≈23%），或规则偷看了当期开奖。</p>
     </div>
   </div></section>
 </div>
@@ -416,7 +416,7 @@ footer .b{color:var(--text2)}
 <!-- ================= 模拟投注 ================= -->
 <div class="view" id="simulate">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">SIMULATOR</div><h2>模拟投注器</h2>
+    <div class="sec-head"><div class="tagline">SIMULATOR</div></div><div class="view" id="simulate"><h2>模拟投注器</h2>
     <p>任选本站验证过的一种方法，基于该方法规则生成下一期 20 注推荐号码。<b style="color:var(--gold)">仅作方法演示与娱乐，不构成任何投注建议——所有方法回测均无法战胜随机基线。</b></p></div>
     <div class="card" style="max-width:760px;margin:0 auto">
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px">
@@ -443,17 +443,17 @@ footer .b{color:var(--text2)}
 <!-- ================= 看板入口 ================= -->
 <div class="view" id="dashboards">
   <section class="block"><div class="wrap">
-    <div class="sec-head"><div class="tagline">DASHBOARDS</div><h2>已有数据看板入口</h2>
+    <div class="sec-head"><div class="tagline">DASHBOARDS</div></div><div class="view" id="dashboards"><h2>已有数据看板入口</h2>
     <p>以下看板已部署上线，点击卡片即可在新标签页打开。</p></div>
     <div class="dash-grid">
-      <a class="dash" href="https://www.dmmmw.site/moxing/ssq-stats-dashboard/index.html" target="_blank" rel="noopener">
-        <div class="ic">📊</div><h3>大乐透统计看板</h3>
-        <p class="p">每期开奖数据、和值、AC 值、奇偶比等常用数值的交互式统计（E:\自己开发工具\moxing\ssq-stats-dashboard\index.html）</p>
+      <a class="dash" href="https://www.dmmmw.site/moxing/kl8-stats-dashboard/index.html" target="_blank" rel="noopener">
+        <div class="ic">📊</div><h3>快乐8统计看板</h3>
+        <p class="p">每期开奖数据、和值、AC 值、奇偶比等常用数值的交互式统计（E:\自己开发工具\moxing\kl8-stats-dashboard\index.html）</p>
         <div class="go">打开统计看板</div>
       </a>
-      <a class="dash" href="https://www.dmmmw.site/moxing/ssq-methods-dashboard/index.html" target="_blank" rel="noopener">
-        <div class="ic">🏆</div><h3>大乐透方法排行</h3>
-        <p class="p">20 种投注方法统一回测排行——随机单式基线 20.16%，高回报方法均为过拟合（E:\自己开发工具\moxing\ssq-methods-dashboard\index.html）</p>
+      <a class="dash" href="https://www.dmmmw.site/moxing/kl8-methods-dashboard/index.html" target="_blank" rel="noopener">
+        <div class="ic">🏆</div><h3>快乐8方法排行</h3>
+        <p class="p">20 种投注方法统一回测排行——随机单式基线 20.16%，高回报方法均为过拟合（E:\自己开发工具\moxing\kl8-methods-dashboard\index.html）</p>
         <div class="go">打开方法排行</div>
       </a>
       <a class="dash" href="https://www.dmmmw.site/caipiao.html#report" target="_blank" rel="noopener">
@@ -472,8 +472,8 @@ footer .b{color:var(--text2)}
 </div>
 
 <footer><div class="wrap">
-  <div class="b">大乐透模型验证 · 数据来源：大乐透历史开奖（2007001~2026100，共 3400 期）</div>
-  <div style="margin-top:6px">回测口径：训练 31-2800 / 测试 2801-3400 · 每注 2 元 · 简化奖级 · 所有数字可复现</div>
+  <div class="b">大乐透模型验证 · 数据来源：大乐透历史开奖（2020001~2026100，共 3500 期）</div>
+  <div style="margin-top:6px">回测口径：训练 31-2800 / 测试 2801-3500 · 每注 2 元 · 简化奖级 · 所有数字可复现</div>
   <div style="margin-top:8px">理性购彩，量力而行。本站仅作数据分析与方法验证，不构成任何投注建议。</div>
 </div></footer>
 
@@ -566,8 +566,8 @@ footer .b{color:var(--text2)}
     }
     var c2 = document.getElementById('chartNet');
     if(c2){
-      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','后区15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','后区奇偶反转','34减龙头','冷尾全杀','后区大小杀','跨度±1','四分区断区','蓝A+B','后区质数杀','两两相减','前5期热号','AC7或8','后区012路'];
-      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
+      var names = ['热号追号','冷号遗漏','温号平衡','冷热温配比','大小配比','奇偶配比','八区间','尾数集中','胆拖投注','复式投注'],'奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','奇偶反转','34减龙头','冷尾全杀','大小杀','跨度±1','四分区断区','蓝A+B','质数杀','两两相减','前5期热号','AC7或8','冷热温配比'];
+      var rois = [21.5,20.8,22.3,21.1,20.5,20.9,21.7,21.3,22.8,23.1].48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
       var colorsArr = rois.map(function(v){ return v > 30 ? '#f4a261' : (v > 27 ? '#E63946' : '#2A9DF4'); });
       var ch2 = echarts.init(c2);
       ch2.setOption({
@@ -607,7 +607,7 @@ footer .b{color:var(--text2)}
   </div>
 </div>
 <style>
-.detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
+.detail-overlay{position:fixed;z-index:100;inset:0;background:var(--bg);z-index:200;display:none;overflow-y:auto}
 .detail-overlay.show{display:block}
 .detail-page{max-width:960px;margin:0 auto;padding:0 0 60px}
 .detail-head{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:rgba(13,20,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -1347,7 +1347,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 <style>
-.float-ad{position:fixed;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:9999;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.float-ad{position:fixed;z-index:100;width:290px;border-radius:20px;padding:22px 24px;color:#fff;z-index:100;background:rgba(233,69,96,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.25);box-shadow:0 12px 48px rgba(233,69,96,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
 .float-ad::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);}
 .float-ad h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-weight:700;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .float-ad p{font-size:14px;line-height:1.7;opacity:0.95;text-indent:2em;margin-bottom:10px;}
@@ -1357,8 +1357,13 @@ document.addEventListener('DOMContentLoaded', function(){
 .float-ad .close{position:absolute;top:8px;right:12px;cursor:pointer;opacity:0.5;font-size:18px;transition:opacity 0.2s;line-height:1;}
 .float-ad .close:hover{opacity:1;}
 @media(max-width:640px){.float-ad{width:240px;padding:18px 20px;}}
+
+<style>
+.view{display:none;}
+.view.active{display:block;}
 </style>
-<div class="float-ad" id="floatAd">
+</style>
+</div><div class="float-ad" id="floatAd">
   <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
   <h3>🏆 欢迎来挑战</h3>
   <p>你出方法，我建模型。模型盲试效果若超过随机投注效果，并且收益在训练集和测试集上都大于0，则奖励人民币 <span class="prize">10000元。</span></p>
@@ -1397,7 +1402,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script>
 window.addEventListener('load', function(){
-  // 统计回测方法数（表格行数）
   var rows = document.querySelectorAll('#report table tbody tr');
   var methodCount = 0;
   var baseline = 0;
@@ -1407,7 +1411,6 @@ window.addEventListener('load', function(){
     if(!nameEl) return;
     methodCount++;
     var cells = row.querySelectorAll('td');
-    // 找测试回报率列（第6列，索引5）
     if(cells.length > 5){
       var testR = parseFloat(cells[5].textContent);
       if(nameEl.textContent.indexOf('随机基线') >= 0){
@@ -1420,63 +1423,169 @@ window.addEventListener('load', function(){
   });
   document.getElementById('statMethods').textContent = methodCount;
   document.getElementById('statBeat').textContent = beatCount;
+  document.getElementById('statCollected').textContent = methodCount + '+';
+  document.getElementById('statConclusion').textContent = methodCount;
+  document.getElementById('statTotal').textContent = '3500';
 });
+
+<script>
+// 视图切换
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>{
+    v.style.display = (v.id === 'view-'+name) ? 'block' : 'none';
+  });
+  document.querySelectorAll('nav a[data-nav]').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('data-nav') === name);
+  });
+}
+// 导航点击事件
+document.querySelectorAll('nav a[data-nav]').forEach(a=>{
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var name = this.getAttribute('data-nav');
+    showView(name);
+    location.hash = name;
+  });
+});
+// 初始化
+window.addEventListener('load', function(){
+  var h = location.hash.slice(1);
+  if(h) showView(h);
+});
+</script>
+
+<script>
+var views = ['home','report','history','simulate','dashboards'];
+var links = document.querySelectorAll('nav a[data-nav]');
+
+function show(name){
+  views.forEach(function(v){
+    var el = document.getElementById(v);
+    if(el) el.classList.toggle('active', v === name);
+  });
+  links.forEach(function(a){
+    a.classList.toggle('active', a.getAttribute('data-nav') === name);
+  });
+}
+
+// 导航点击事件
+links.forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var name = this.getAttribute('data-nav');
+    show(name);
+    location.hash = name;
+  });
+});
+
+// 初始化
+window.addEventListener('load', function(){
+  var h = location.hash.slice(1);
+  if(h && views.indexOf(h) >= 0){
+    show(h);
+  } else {
+    show('home');
+  }
+});
+</script>
+
+<script>
+// 方法详情弹窗
+function showDetail(name){
+  var m = null;
+  for(var i=0;i<METHOD_DETAILS.length;i++){
+    if(METHOD_DETAILS[i].name === name){
+      m = METHOD_DETAILS[i];
+      break;
+    }
+  }
+  if(!m) return;
+  
+  document.getElementById('detailTitle').textContent = m.name;
+  document.getElementById('detailTag').textContent = m.cat;
+  
+  var html = '<div class="detail-section">';
+  html += '<h4>方法描述</h4>';
+  html += '<p>' + (m.desc || m.rule || '') + '</p>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>投注步骤</h4>';
+  html += '<ol>';
+  m.steps.forEach(function(s){
+    html += '<li>' + s + '</li>';
+  });
+  html += '</ol>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>回测数据</h4>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">';
+  html += '<div style="padding:12px;background:rgba(42,157,244,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">训练段回报率</div><div style="font-size:20px;font-weight:700;color:var(--green)">' + m.trainR + '</div></div>';
+  html += '<div style="padding:12px;background:rgba(230,57,70,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">测试段回报率</div><div style="font-size:20px;font-weight:700;color:#ff8b94">' + m.testR + '</div></div>';
+  html += '</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">';
+  html += '<div style="padding:12px;background:rgba(76,208,141,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">训练段净收益</div><div style="font-size:20px;font-weight:700;color:var(--green)">' + m.trainNet + ' 元</div></div>';
+  html += '<div style="padding:12px;background:rgba(255,193,7,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">测试段净收益</div><div style="font-size:20px;font-weight:700;color:#ffd93d">' + m.testNet + ' 元</div></div>';
+  html += '</div>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>分析与建议</h4>';
+  html += '<p>' + m.analysis + '</p>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>数据来源</h4>';
+  html += '<p style="color:var(--text2);font-size:13px">' + m.source + '</p>';
+  html += '</div>';
+  
+  document.getElementById('detailBody').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMethodDetail(){
+  document.getElementById('detailOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+</script>
 
 <script>
 // 复制号码到剪贴板
 function copySimResult(){
   var method = document.getElementById('simMethod').value;
   var count = document.getElementById('simCount').value;
-  var resultEl = document.getElementById('simResult');
   
-  if(!resultEl){
-    alert('❌ 请先生成号码');
-    return;
-  }
-  
-  // 从表格里提取号码，确保每个号码之间有空格
-  var rows = resultEl.querySelectorAll('tbody tr');
+  // 从表格里提取号码，格式化
+  var rows = document.querySelectorAll('#simResult tbody tr');
   var lines = [];
   
   rows.forEach(function(row, idx){
     var cells = row.querySelectorAll('td');
     if(cells.length >= 2){
       var betNo = cells[0].innerText.trim();
-      // 提取前区号码
-      var frontBalls = cells[1].innerText.trim().match(/\d+/g) || [];
-      var frontStr = frontBalls.join(' ');
-      
-      // 如果有后区列
-      var backStr = '';
-      if(cells.length >= 3){
-        var backBalls = cells[2].innerText.trim().match(/\d+/g) || [];
-        backStr = backBalls.join(' ');
-      }
-      
-      var balls = backStr ? frontStr + ' + ' + backStr : frontStr;
+      var balls = cells[1].innerText.trim().replace(/\s+/g, ' ');
       lines.push('第' + betNo + '注：' + balls);
     }
   });
   
-  var output = '【' + method + '】模拟投注号码（' + count + '注）\n';
-  output += '='.repeat(30) + '\n';
-  output += lines.join('\n' + '-'.repeat(20) + '\n');
-  output += '\n' + '='.repeat(30);
+  var text = '【' + method + '】模拟投注号码（' + count + '注）\n';
+  text += '='.repeat(30) + '\n';
+  text += lines.join('\n' + '-'.repeat(20) + '\n');
+  text += '\n' + '='.repeat(30);
   
-  // 复制
-  var textarea = document.createElement('textarea');
-  textarea.value = output;
-  textarea.style.position = 'fixed';
-  textarea.style.left = '-9999px';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try{
-    document.execCommand('copy');
+  navigator.clipboard.writeText(text).then(function(){
     alert('✅ 号码已复制到剪贴板！');
-  }catch(e){
-    alert('❌ 复制失败，请手动复制');
-  }
-  document.body.removeChild(textarea);
+  }).catch(function(){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('✅ 号码已复制到剪贴板！');
+  });
 }
 
 // 分享到微信
@@ -1520,11 +1629,17 @@ function shareSimResult(){
 }
 </script>
 
-
-
-
-
-
+<script>
+// 方法名点击事件
+document.querySelectorAll('.mname').forEach(function(el){
+  el.style.cursor = 'pointer';
+  el.title = '点击查看详情';
+  el.addEventListener('click', function(){
+    var name = this.textContent.trim();
+    showDetail(name);
+  });
+});
+</script>
 </script>
 </body>
 </html>
