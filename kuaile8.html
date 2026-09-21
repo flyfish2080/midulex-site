@@ -1232,7 +1232,7 @@ function historyTableHtml(m, loaded){
   var total = rows.length;
   var isAll = loaded === 'all' || loaded >= total;
   var list = isAll ? rows : rows.slice(-loaded);
-  var html = '<div class="hist-scroll"><table class="dtable"><colgroup><col style="width:18%"><col style="width:auto"><col style="width:14%"><col style="width:12%"><col style="width:12%"><col style="width:14%"><col style="width:8%"></colgroup><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金</th><th>投入</th><th>净收益</th><th></th></tr></thead><tbody>';
+  var html = '<div class="hist-scroll"><table class="dtable resizable"><colgroup><col style="width:18%"><col style="width:auto"><col style="width:14%"><col style="width:12%"><col style="width:12%"><col style="width:14%"><col style="width:8%"></colgroup><thead><tr><th>期号</th><th>开奖号码</th><th>中奖</th><th>奖金</th><th>投入</th><th>净收益</th><th></th></tr></thead><tbody>';
   var tPrize = 0, tWin = 0, tNet = 0, tInv = 0, tBets = 0;
   for(var i=0;i<list.length;i++){
     var r = list[i];
@@ -1408,7 +1408,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   function simRender(m){
     var bets = simGenBets(m);
-    var html = '<table class="dtable" style="min-width:0"><thead><tr><th>注</th><th>红球</th><th>蓝球</th></tr></thead><tbody>';
+    var html = '<table class="dtable resizable" style="min-width:0"><thead><tr><th>注</th><th>红球</th><th>蓝球</th></tr></thead><tbody>';
     for(var i=0;i<bets.length;i++){
       html += '<tr><td>' + String(i+1).padStart(2,'0') + '</td>' +
         '<td class="balls">' + ballHtml(bets[i].reds,'red') + '</td>' +
@@ -1842,5 +1842,36 @@ function shareSimResult(){
       setInterval(initColumnResize, 2000);
     });
     </script>
-    </body>
+    <script>// 列宽拖拽功能
+function initColumnResize() {
+  var tables = document.querySelectorAll('table.resizable');
+  tables.forEach(function(table) {
+    var ths = table.querySelectorAll('th');
+    ths.forEach(function(th) {
+      var handle = document.createElement('div');
+      handle.className = 'resize-handle';
+      th.appendChild(handle);
+      var startX, startWidth;
+      handle.addEventListener('mousedown', function(e) {
+        startX = e.pageX;
+        startWidth = th.offsetWidth;
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        function onMouseMove(e) {
+          var diff = e.pageX - startX;
+          th.style.width = (startWidth + diff) + 'px';
+        }
+        function onMouseUp() {
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        }
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+    });
+  });
+}
+window.addEventListener('load', function() { setTimeout(initColumnResize, 500); });</script></body>
 </html>
