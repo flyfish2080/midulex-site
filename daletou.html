@@ -1205,13 +1205,15 @@ function genAllHistory(m){
       if(back.indexOf(n) < 0) back.push(n);
     }
     back.sort(function(a,b){return a-b;});
-    draws.push({ front: front, back: back }); 
+    draws.push({ reds: front, blue: back }); 
   }
   var rows = [], N = 3500;
   for(var d=1; d<=N; d++){
     var prev = d>=2 ? draws[d-2] : null;
     var bets = [];
+    var prize = 0, winCount = 0, invest = 0, net = 0;
     if(d >= 31){
+      invest = 40;
       var rnd2 = rngFor(m.name + '#bet' + d);
       for(var i=0;i<20;i++){
         var front = [];
@@ -1226,32 +1228,29 @@ function genAllHistory(m){
           if(back.indexOf(n) < 0) back.push(n);
         }
         back.sort(function(a,b){return a-b;});
-        bets.push({ front: front, back: back });
+        var frontHit = front.filter(function(n){ return draws[d-1].reds.indexOf(n) >= 0; }).length;
+        var backHit = back.filter(function(n){ return draws[d-1].blue.indexOf(n) >= 0; }).length;
+        var amount = 0;
+        if(frontHit === 5 && backHit === 2) amount = 5000000;
+        else if(frontHit === 5 && backHit === 1) amount = 10000;
+        else if(frontHit === 5 && backHit === 0) amount = 3000;
+        else if(frontHit === 4 && backHit === 2) amount = 200;
+        else if(frontHit === 4 && backHit === 1) amount = 100;
+        else if(frontHit === 3 && backHit === 2) amount = 200;
+        else if(frontHit === 4 && backHit === 0) amount = 100;
+        else if(frontHit === 3 && backHit === 1) amount = 15;
+        else if(frontHit === 2 && backHit === 2) amount = 15;
+        else if(frontHit === 3 && backHit === 0) amount = 5;
+        else if(frontHit === 1 && backHit === 2) amount = 5;
+        else if(frontHit === 2 && backHit === 1) amount = 5;
+        else if(frontHit === 0 && backHit === 2) amount = 5;
+        if(amount > 0) winCount++;
+        prize += amount;
+        bets.push({ reds: front, blue: back, mr: frontHit, mb: backHit, amount: amount });
       }
+      net = prize - invest;
     }
-    var prize = 0;
-    if(d >= 31){
-      var drawFront = draws[d-1].front;
-      var drawBack = draws[d-1].back;
-      bets.forEach(function(bet){
-        var frontHit = bet.front.filter(function(n){ return drawFront.indexOf(n) >= 0; }).length;
-        var backHit = bet.back.filter(function(n){ return drawBack.indexOf(n) >= 0; }).length;
-        if(frontHit === 5 && backHit === 2) prize += 5000000;
-        else if(frontHit === 5 && backHit === 1) prize += 10000;
-        else if(frontHit === 5 && backHit === 0) prize += 3000;
-        else if(frontHit === 4 && backHit === 2) prize += 200;
-        else if(frontHit === 4 && backHit === 1) prize += 100;
-        else if(frontHit === 3 && backHit === 2) prize += 200;
-        else if(frontHit === 4 && backHit === 0) prize += 100;
-        else if(frontHit === 3 && backHit === 1) prize += 15;
-        else if(frontHit === 2 && backHit === 2) prize += 15;
-        else if(frontHit === 3 && backHit === 0) prize += 5;
-        else if(frontHit === 1 && backHit === 2) prize += 5;
-        else if(frontHit === 2 && backHit === 1) prize += 5;
-        else if(frontHit === 0 && backHit === 2) prize += 5;
-      });
-    }
-    rows.push({ period: '26' + String(d).padStart(3,'0'), date: '2026-01-01', draw: draws[d-1], bets: bets, prize: prize, cost: d>=31 ? 40 : 0 });
+    rows.push({ idx: d, draw: draws[d-1], bets: bets, prize: prize, winCount: winCount, invest: invest, net: net });
   }
   HISTORY_CACHE[m.name] = rows;
   return rows;
