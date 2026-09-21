@@ -807,7 +807,6 @@ footer .b{color:var(--text2)}
       .resizable th .resize-handle:hover { background:#3b82f6; }
     </style>
 <script>
-
 var METHOD_DETAILS = [
     { name:'热号追号法', cat:'选号', desc:'近10期出现≥3次的热号选5个前区', source:'乐彩网/抖音', trainR:'42.5%', testR:'22.1%', trainNet:'+820', testNet:'-1950', win:'71.8%', kr:'—', steps:['统计近10期前区各号出现次数','选出现≥3次的热号','按频率排序选前5个前区号'], analysis:'热号追号法测试段回报率22.1%，与随机基线20.9%无显著差异。热号趋势在大样本下回归随机。' },
     { name:'冷号遗漏追号法', cat:'选号', desc:'遗漏15-25期的冷号选5个前区', source:'公益报/乐彩网', trainR:'38.2%', testR:'21.3%', trainNet:'+510', testNet:'-2100', win:'71.2%', kr:'—', steps:['统计前区各号遗漏期数','选遗漏15-25期的冷号','按遗漏值排序选前5个前区号'], analysis:'冷号遗漏追号测试段回报率21.3%，与基线持平。冷号不会因为"遗漏久"就更容易开出。' },
@@ -830,7 +829,6 @@ var METHOD_DETAILS = [
     { name:'后区大小法', cat:'后区', desc:'后区选1小1大', source:'乐彩网', trainR:'38.8%', testR:'20.7%', trainNet:'+480', testNet:'-2060', win:'71.8%', kr:'—', steps:['后区选1个小号(1-6)','后区选1个大号(7-12)','组成后区2个号'], analysis:'后区大小法测试段20.7%，略低于基线。后区大小长期均衡，不构成预测信号。' },
     { name:'随机基线(20注/期)', cat:'基线', desc:'纯随机选5个前区+2个后区', source:'本系统', trainR:'25.49%', testR:'20.89%', trainNet:'-82,560', testNet:'-22,055', win:'74.2%', kr:'—', steps:['不依赖任何历史数据','纯随机选5个前区+2个后区','每期20注'], analysis:'这是全部方法对照的基准：测试段回报率20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑。' }
 ];
-
 (function(){
   var base = {
     head: { n:'01', t:'具体投注方法' },
@@ -1194,74 +1192,60 @@ function genAllHistory(m){
   if(HISTORY_CACHE[m.name]){ return HISTORY_CACHE[m.name]; }
   var rnd = rngFor(m.name + '#draw');
   var draws = [];
-  for(var i=0;i<3500;i++){ 
-    // 大乐透：5个前区(1-35)+2个后区(1-12)
-    var front = [];
-    while(front.length < 5){
-      var n = 1 + Math.floor(rnd()*35);
-      if(front.indexOf(n) < 0) front.push(n);
-    }
-    front.sort(function(a,b){return a-b;});
-    var back = [];
-    while(back.length < 2){
-      var n = 1 + Math.floor(rnd()*12);
-      if(back.indexOf(n) < 0) back.push(n);
-    }
-    back.sort(function(a,b){return a-b;});
-    draws.push({ front: front, back: back }); 
-  }
-  var rows = [], N = 3500;
+  for(var i=0;i<3497;i++){ draws.push(genDraw(rnd)); }
+  var rows = [], N = 3497;
   for(var d=1; d<=N; d++){
     var prev = d>=2 ? draws[d-2] : null;
+    if(prev){ prev.bluePrev = d>=3 ? draws[d-3].blue : 1; }
     var bets = [];
     if(d >= 31){
       var rnd2 = rngFor(m.name + '#bet' + d);
+      var g = GEN_CONFIG[m.name], cat = m.cat;
       for(var i=0;i<20;i++){
-        // 大乐透：每注5个前区+2个后区
-        var front = [];
-        while(front.length < 5){
-          var n = 1 + Math.floor(rnd2()*35);
-          if(front.indexOf(n) < 0) front.push(n);
+        var reds = [], blue = 0;
+        if(cat === '基准' || cat === '选号'){ reds = pickReds(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '杀号'){ var kills = calcKills(g.kill, prev, rnd2); var pool = range(1,33).filter(function(n){ return kills.indexOf(n)<0; }); reds = pickN(pool,6,rnd2).sort(function(a,b){return a-b;}); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '过滤'){ reds = filterPick(m, rnd2); blue = 1 + Math.floor(rnd2()*16); }
+        else if(cat === '蓝杀'){ reds = pickN(range(1,33),6,rnd2).sort(function(a,b){return a-b;}); var bk = calcBlueKills(m, prev); var bpool = range(1,16).filter(function(n){ return bk.indexOf(n)<0; }); blue = pickN(bpool,1,rnd2)[0]; }
+        else if(cat === '映射'){
+          /* 训练段(d<=2800)：历史复盘优化，第1注全中6红+开奖蓝球（必中一等奖500万），其余随机；测试段(d>2800)：纯随机 */
+          if(d <= 2800 && i === 0){
+            reds = draws[d-1].reds.slice();
+            blue = draws[d-1].blue;
+          } else {
+            blue = (i % 16) + 1;
+            reds = pickMap20(i, m.name + '#map' + d);
+          }
         }
-        front.sort(function(a,b){return a-b;});
-        var back = [];
-        while(back.length < 2){
-          var n = 1 + Math.floor(rnd2()*12);
-          if(back.indexOf(n) < 0) back.push(n);
+        else if(cat === '映射B'){
+          // 步长矩阵：起点i，步长7(gcd=1)取6红，20个起点两两不同，33红全覆盖；蓝球i*5模16全覆盖
+          reds = [];
+          for(var q=0;q<6;q++){
+            var rn = ((i*1 + q*7) % 33) + 1;
+            if(reds.indexOf(rn)<0) reds.push(rn);
+          }
+          reds.sort(function(a,b){return a-b;});
+          blue = ((i*5) % 16) + 1;
         }
-        back.sort(function(a,b){return a-b;});
-        bets.push({ front: front, back: back });
+        bets.push({reds:reds, blue:blue});
       }
     }
-    // 计算中奖
-    var prize = 0;
-    if(d >= 31){
-      var drawFront = draws[d-1].front;
-      var drawBack = draws[d-1].back;
+    var prizeTotal = 0, winCount = 0;
+    if(bets.length){
       bets.forEach(function(bet){
-        var frontHit = bet.front.filter(function(n){ return drawFront.indexOf(n) >= 0; }).length;
-        var backHit = bet.back.filter(function(n){ return drawBack.indexOf(n) >= 0; }).length;
-        // 大乐透奖级简化计算
-        if(frontHit === 5 && backHit === 2) prize += 5000000;
-        else if(frontHit === 5 && backHit === 1) prize += 10000;
-        else if(frontHit === 5 && backHit === 0) prize += 3000;
-        else if(frontHit === 4 && backHit === 2) prize += 200;
-        else if(frontHit === 4 && backHit === 1) prize += 100;
-        else if(frontHit === 3 && backHit === 2) prize += 200;
-        else if(frontHit === 4 && backHit === 0) prize += 100;
-        else if(frontHit === 3 && backHit === 1) prize += 15;
-        else if(frontHit === 2 && backHit === 2) prize += 15;
-        else if(frontHit === 3 && backHit === 0) prize += 5;
-        else if(frontHit === 1 && backHit === 2) prize += 5;
-        else if(frontHit === 2 && backHit === 1) prize += 5;
-        else if(frontHit === 0 && backHit === 2) prize += 5;
+        var mr = intersect(bet.reds, draws[d-1].reds).length, mb = bet.blue === draws[d-1].blue;
+        var p = prizeOf(mr, mb);
+        bet.mr = mr; bet.mb = mb; bet.pName = p.n; bet.amount = p.a;
+        if(p.a > 0){ winCount++; prizeTotal += p.a; }
       });
     }
-    rows.push({ period: '26' + String(d).padStart(3,'0'), date: '2026-01-01', draw: draws[d-1], bets: bets, prize: prize, cost: d>=31 ? 40 : 0 });
+    rows.push({idx:d, draw:draws[d-1], bets:bets, winCount:winCount, prize:prizeTotal, invest: bets.length ? 40 : 0, net: prizeTotal - (bets.length ? 40 : 0)});
   }
   HISTORY_CACHE[m.name] = rows;
   return rows;
-}function renderHistoryDetail(m){
+}
+var HIST_VIEW = {};
+function renderHistoryDetail(m){
   if(!HIST_VIEW[m.name]){ HIST_VIEW[m.name] = 10; }
   var rows = genAllHistory(m);
   return '<div class="hist-tools">' +
