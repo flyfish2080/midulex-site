@@ -865,21 +865,5 @@ th { position: relative; }
 
 
     
-    <script><script>
-var METHOD_DETAILS = [
-    { name:'随机基线(20注/期)', cat:'基线', desc:'纯随机选5个前区+2个后区', source:'本系统', trainR:'25.49%', testR:'20.89%', trainNet:'-82,560', testNet:'-22,055', win:'74.2%', kr:'—', steps:['不依赖任何历史数据','纯随机选5个前区+2个后区','每期20注'], analysis:'这是全部方法对照的基准：测试段回报率20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑。' }
-];
-window.addEventListener('load', function() {
-  var sel = document.getElementById('simMethod');
-  if (!sel) return;
-  if (typeof METHOD_DETAILS !== 'undefined') {
-    METHOD_DETAILS.forEach(function(m) {
-      var opt = document.createElement('option');
-      opt.value = m.name;
-      opt.textContent = m.name;
-      sel.appendChild(opt);
-    });
-  }
-});
-</script></body>
+    <script></body>
 </html>
