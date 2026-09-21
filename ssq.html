@@ -538,6 +538,62 @@ footer .b{color:var(--text2)}
 
 
 <script>
+
+
+
+
+<script>
+// Tab切换功能
+function switchTab(tabId) {
+  // 隐藏所有view
+  document.querySelectorAll('.view').forEach(function(el) {
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  // 显示当前view
+  var target = document.getElementById(tabId);
+  if (target) {
+    target.classList.add('active');
+    target.style.display = 'block';
+  }
+  // 更新导航样式
+  document.querySelectorAll('.nav-item, .tab-nav a').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  var activeLink = document.querySelector('a[href="#' + tabId + '"]');
+  if (activeLink) {
+    activeLink.classList.add('active');
+  }
+  // 更新hash
+  if (window.location.hash !== '#' + tabId) {
+    window.history.replaceState(null, '', '#' + tabId);
+  }
+  window.scrollTo(0, 0);
+}
+
+// 初始化：根据hash显示对应tab
+function initTab() {
+  var hash = window.location.hash.substring(1) || 'home';
+  switchTab(hash);
+}
+
+// 页面加载后初始化
+window.addEventListener('load', function() {
+  setTimeout(initTab, 100);
+});
+
+// 点击导航链接时切换tab
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  var href = link.getAttribute('href');
+  if (href.length > 1) {
+    e.preventDefault();
+    var tabId = href.substring(1);
+    switchTab(tabId);
+  }
+});
+</script>
 <div class="detail-overlay" id="detailOverlay">
   <div class="detail-page">
     <div class="detail-head">
@@ -1140,61 +1196,5 @@ function loadMore(name){
   var tw = document.getElementById('historyTableWrap');
   if(tw){ document.getElementById('detailOverlay').scrollTop = tw.offsetTop - 40; }
 }
-</script>
-
-
-
-<script>
-// Tab切换功能
-function switchTab(tabId) {
-  // 隐藏所有view
-  document.querySelectorAll('.view').forEach(function(el) {
-    el.classList.remove('active');
-    el.style.display = 'none';
-  });
-  // 显示当前view
-  var target = document.getElementById(tabId);
-  if (target) {
-    target.classList.add('active');
-    target.style.display = 'block';
-  }
-  // 更新导航样式
-  document.querySelectorAll('.nav-item, .tab-nav a').forEach(function(el) {
-    el.classList.remove('active');
-  });
-  var activeLink = document.querySelector('a[href="#' + tabId + '"]');
-  if (activeLink) {
-    activeLink.classList.add('active');
-  }
-  // 更新hash
-  if (window.location.hash !== '#' + tabId) {
-    window.history.replaceState(null, '', '#' + tabId);
-  }
-  window.scrollTo(0, 0);
-}
-
-// 初始化：根据hash显示对应tab
-function initTab() {
-  var hash = window.location.hash.substring(1) || 'home';
-  switchTab(hash);
-}
-
-// 页面加载后初始化
-window.addEventListener('load', function() {
-  setTimeout(initTab, 100);
-});
-
-// 点击导航链接时切换tab
-document.addEventListener('click', function(e) {
-  var link = e.target.closest('a[href^="#"]');
-  if (!link) return;
-  var href = link.getAttribute('href');
-  if (href.length > 1) {
-    e.preventDefault();
-    var tabId = href.substring(1);
-    switchTab(tabId);
-  }
-});
-</script>
 </body>
 </html>
