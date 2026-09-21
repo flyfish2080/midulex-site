@@ -168,7 +168,19 @@ footer .b{color:var(--text2)}
   .timeline{grid-template-columns:72px 16px 1fr}
   .hero h1{font-size:34px}
 }
-</style>
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 
 <style>
 @media (min-width: 1024px) {
@@ -181,7 +193,19 @@ footer .b{color:var(--text2)}
   .dash { padding: 24px !important; }
   .dash h3 { font-size: 18px !important; }
 }
-</style>
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 
 <style>
 @media (min-width: 1024px) {
@@ -207,7 +231,19 @@ footer .b{color:var(--text2)}
   .stat .num { font-size: 28px !important; }
   .balls span { width: 36px !important; height: 36px !important; line-height: 36px !important; font-size: 16px !important; margin: 3px !important; }
 }
-</style>
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 
 
 </head>
@@ -289,7 +325,7 @@ footer .b{color:var(--text2)}
       <h3><span class="dot blue"></span>完整回测对比表</h3>
       <p style="font-size:13px;color:var(--text2);margin-bottom:12px">按测试段回报率降序。回报率 = 总奖金/总投入×100%。杀中比值 = 实际杀中开奖号个数 / 随机期望（杀号数×6/33），=1 表示与随机相同。正收益窗口 = 20 期滑动窗口内奖金&gt;800 元的窗口占比。</p>
       <div class="tblbox">
-      <table>
+      <table class="resizable">
         <colgroup><col style="width:13%"><col style="width:7%"><col style="width:20%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:7%"><col style="width:9%"></colgroup>
         <thead><tr><th style="width:40px">#</th><th>方法</th><th>类别</th><th>具体化口径</th><th>来源</th><th>训练<br>回报率%</th><th>测试<br>回报率%</th><th>训练<br>净收益</th><th>测试<br>净收益</th><th>测试<br>中奖率%</th><th>杀中<br>比值</th></tr></thead>
         <tbody>
@@ -398,7 +434,7 @@ footer .b{color:var(--text2)}
       <h3><span class="dot red"></span>7 种映射优化方法 · 训练 vs 测试</h3>
       <p style="font-size:13px;color:var(--text2);margin-bottom:6px">合并 20 个正交映射；训练=期31-2800（2770 期），测试=期2801-3497（697 期）；每期 20 注、2 元/注。回报率=总奖金/投入×100。* 为测试段命中一次三等奖(3000 元)的运气，剔除后均约 23%。</p>
       <div class="tblbox" style="margin-top:12px">
-      <table>
+      <table class="resizable">
         <colgroup><col style="width:16%"><col style="width:24%"><col style="width:15%"><col style="width:12%"><col style="width:15%"><col style="width:12%"></colgroup>
         <thead><tr><th style="width:40px">#</th><th>方法</th><th>优化目标</th><th>训练回报率</th><th>训练正窗口</th><th>测试回报率</th><th>测试正窗口</th></tr></thead>
         <tbody>
@@ -609,7 +645,49 @@ footer .b{color:var(--text2)}
     window.addEventListener('resize', function(){ if(ch){ch.resize();} if(ch2){ch2.resize();} });
   }
 })();
-</script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
 
 <!-- ================= 方法详情（新页） ================= -->
 <div class="detail-overlay" id="detailOverlay">
@@ -694,7 +772,19 @@ footer .b{color:var(--text2)}
   .dsec{padding:16px}
   .metric{font-size:12px}
 }
-</style>
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 <script>
 
 var METHOD_DETAILS = [
@@ -1364,7 +1454,49 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
-</script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
 
 
 <style>
@@ -1378,7 +1510,19 @@ document.addEventListener('DOMContentLoaded', function(){
 .float-ad .close{position:absolute;top:8px;right:12px;cursor:pointer;opacity:0.5;font-size:18px;transition:opacity 0.2s;line-height:1;}
 .float-ad .close:hover{opacity:1;}
 @media(max-width:640px){.float-ad{width:240px;padding:18px 20px;}}
-</style>
+
+      .resizable th { position:relative; }
+      .resizable th .resize-handle {
+        position:absolute;
+        right:0;
+        top:0;
+        width:5px;
+        height:100%;
+        cursor:col-resize;
+        user-select:none;
+      }
+      .resizable th .resize-handle:hover { background:#3b82f6; }
+    </style>
 <div class="float-ad" id="floatAd">
   <span class="close" onclick="document.getElementById('floatAd').style.display='none'">×</span>
   <h3>🏆 欢迎来挑战</h3>
@@ -1414,7 +1558,49 @@ document.addEventListener('DOMContentLoaded', function(){
   ad.style.top = y + 'px';
   start();
 })();
-</script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
 
 <script>
 window.addEventListener('load', function(){
@@ -1539,7 +1725,91 @@ function shareSimResult(){
     alert('💡 号码已复制到剪贴板\n\n请手动打开微信，粘贴分享给好友或群聊');
   }
 }
-</script>
-</script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
+
+    // 列宽拖拽功能
+    function initColumnResize() {
+      var tables = document.querySelectorAll('table.resizable');
+      tables.forEach(function(table) {
+        var ths = table.querySelectorAll('th');
+        ths.forEach(function(th) {
+          var handle = document.createElement('div');
+          handle.className = 'resize-handle';
+          th.appendChild(handle);
+          
+          var startX, startWidth;
+          
+          handle.addEventListener('mousedown', function(e) {
+            startX = e.pageX;
+            startWidth = th.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            
+            function onMouseMove(e) {
+              var diff = e.pageX - startX;
+              th.style.width = (startWidth + diff) + 'px';
+            }
+            
+            function onMouseUp() {
+              document.removeEventListener('mousemove', onMouseMove);
+              document.removeEventListener('mouseup', onMouseUp);
+              document.body.style.cursor = '';
+              document.body.style.userSelect = '';
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      });
+    }
+    
+    // 页面加载后初始化
+    window.addEventListener('load', function() {
+      setTimeout(initColumnResize, 500);
+    });
+    </script>
 </body>
 </html>
