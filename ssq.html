@@ -896,5 +896,71 @@ function addPointerStyle() {
 addPointerStyle();
 setInterval(addPointerStyle, 1000);
 </script>
+<script>
+// 关闭详情弹窗
+function closeMethodDetail() {
+  var overlay = document.getElementById('detailOverlay');
+  if (overlay) overlay.classList.remove('show');
+  window.scrollTo(0, 0);
+}
+
+// 事件委托绑定点击事件
+document.addEventListener('click', function(e) {
+  var row = e.target.closest('tr');
+  if (!row) return;
+  var mname = row.querySelector('.mname');
+  if (!mname) return;
+  
+  var cells = row.querySelectorAll('td');
+  if (cells.length < 3) return;
+  
+  var methodName = mname.textContent.trim();
+  var category = cells[2] ? cells[2].textContent.trim() : '';
+  var desc = cells[3] ? cells[3].textContent.trim() : '';
+  var source = cells[4] ? cells[4].textContent.trim() : '';
+  var trainR = cells[5] ? cells[5].textContent.trim() : '';
+  var testR = cells[6] ? cells[6].textContent.trim() : '';
+  var trainNet = cells[7] ? cells[7].textContent.trim() : '';
+  var testNet = cells[8] ? cells[8].textContent.trim() : '';
+  var winRate = cells[9] ? cells[9].textContent.trim() : '';
+  
+  var overlay = document.getElementById('detailOverlay');
+  var title = document.getElementById('detailTitle');
+  var tag = document.getElementById('detailTag');
+  var body = document.getElementById('detailBody');
+  
+  if (!overlay || !title || !tag || !body) return;
+  
+  title.textContent = methodName;
+  tag.textContent = category;
+  
+  var html = '<div class="dsec"><h3><span class="n">1</span>方法描述</h3><div class="analysis-box">' + desc + '</div></div>';
+  html += '<div class="dsec"><h3><span class="n">2</span>回测数据</h3><div class="metrics">';
+  if (trainR) html += '<div class="metric"><div class="lbl">训练回报率</div><div class="val">' + trainR + '</div></div>';
+  if (testR) html += '<div class="metric"><div class="lbl">测试回报率</div><div class="val">' + testR + '</div></div>';
+  if (trainNet) html += '<div class="metric"><div class="lbl">训练净收益</div><div class="val">' + trainNet + '</div></div>';
+  if (testNet) html += '<div class="metric"><div class="lbl">测试净收益</div><div class="val">' + testNet + '</div></div>';
+  if (winRate) html += '<div class="metric"><div class="lbl">测试中奖率</div><div class="val">' + winRate + '</div></div>';
+  if (source) html += '<div class="metric"><div class="lbl">数据来源</div><div class="val">' + source + '</div></div>';
+  html += '</div></div>';
+  html += '<div class="dsec"><h3><span class="n">3</span>分析与建议</h3><div class="analysis-box">';
+  html += '本方法为' + category + '类方法，基于历史开奖数据统计规律设计。<br><br>理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。';
+  html += '</div></div>';
+  
+  body.innerHTML = html;
+  overlay.classList.add('show');
+  window.scrollTo(0, 0);
+});
+
+// 给所有方法行添加鼠标手型
+function addPointerStyle() {
+  document.querySelectorAll('table.resizable tr .mname').forEach(function(mname) {
+    var row = mname.closest('tr');
+    if (row) row.style.cursor = 'pointer';
+  });
+}
+addPointerStyle();
+setInterval(addPointerStyle, 1000);
+</script>
 </body>
 </html>
