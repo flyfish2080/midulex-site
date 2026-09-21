@@ -1154,5 +1154,41 @@ function loadMore(name){
   var tw = document.getElementById('historyTableWrap');
   if(tw){ document.getElementById('detailOverlay').scrollTop = tw.offsetTop - 40; }
 }
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.view').forEach(function(el) {
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  var target = document.getElementById(tabId);
+  if (target) {
+    target.classList.add('active');
+    target.style.display = 'block';
+  }
+  document.querySelectorAll('.nav-item, .tab-nav a').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  var activeLink = document.querySelector('a[href="#' + tabId + '"]');
+  if (activeLink) activeLink.classList.add('active');
+  window.history.replaceState(null, '', '#' + tabId);
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('load', function() {
+  var hash = window.location.hash.substring(1) || 'home';
+  switchTab(hash);
+});
+
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  var href = link.getAttribute('href');
+  if (href.length > 1 && href !== '#') {
+    e.preventDefault();
+    switchTab(href.substring(1));
+  }
+});
+</script>
 </body>
 </html>
