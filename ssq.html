@@ -829,25 +829,5 @@ footer .b{color:var(--text2)}
 
     
     <script>
-<script>var METHOD_DETAILS = [
-    { name:'龙头凤尾定位', cat:'选号', desc:'龙头(最小号)01-09，凤尾(最大号)25-33', source:'乐彩网', trainR:'25.47%', testR:'34.63%', trainNet:'-82,575', testNet:'-18,225', win:'73.7%', kr:'—', steps:['选龙头01-09','选凤尾25-33','中间选4个号'], analysis:'龙头凤尾法测试段回报率34.63%，但仍在随机波动范围内。' },
-    { name:'012路冷路杀号', cat:'杀号', desc:'近10期出号最少的012路中，杀该路最冷的5个号', source:'乐彩网', trainR:'24.78%', testR:'27.51%', trainNet:'-83,340', testNet:'-20,210', win:'75.6%', kr:'0.942', steps:['统计近10期012路出号','找出最冷的路','杀该路最冷的5个号'], analysis:'012路冷路杀号测试段回报率27.51%，与随机基线20.89%无显著差异。' },
-    { name:'质数杀号', cat:'杀号', desc:'上期6红中的质数全部杀掉', source:'乐彩网', trainR:'25.10%', testR:'26.35%', trainNet:'-82,330', testNet:'-20,105', win:'75.4%', kr:'0.985', steps:['取上期6个红球','找出其中的质数','全部杀掉'], analysis:'质数杀号测试段回报率26.35%，与基线持平。' },
-    { name:'随机基线(20注/期)', cat:'基线', desc:'纯随机选6红+1蓝', source:'本系统', trainR:'25.49%', testR:'20.89%', trainNet:'-82,560', testNet:'-22,055', win:'74.2%', kr:'—', steps:['不依赖任何历史数据','纯随机选6红+1蓝','每期20注'], analysis:'这是全部方法对照的基准：测试段回报率20.89%。任何"方法"只有在稳定显著高于此值时才值得考虑。' }
-];</script>
-// 填充模拟投注器方法列表
-window.addEventListener('load', function() {
-  var sel = document.getElementById('simMethod');
-  if (!sel) return;
-  // 从METHOD_DETAILS填充
-  if (typeof METHOD_DETAILS !== 'undefined') {
-    METHOD_DETAILS.forEach(function(m) {
-      var opt = document.createElement('option');
-      opt.value = m.name;
-      opt.textContent = m.name;
-      sel.appendChild(opt);
-    });
-  }
-});
-</script></body>
+</body>
 </html>
