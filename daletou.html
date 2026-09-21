@@ -865,5 +865,55 @@ th { position: relative; }
 
 
     
-    <script></body>
+    <script>
+<script>
+// 完整回测表格点击行显示详情
+document.addEventListener('click', function(e) {
+  var row = e.target.closest('tr');
+  if (!row) return;
+  var mname = row.querySelector('.mname');
+  if (!mname) return;
+  
+  var methodName = mname.textContent.trim();
+  var cells = row.querySelectorAll('td');
+  if (cells.length < 7) return;
+  
+  var category = cells[2] ? cells[2].textContent.trim() : '';
+  var desc = cells[3] ? cells[3].textContent.trim() : '';
+  var source = cells[4] ? cells[4].textContent.trim() : '';
+  var trainR = cells[5] ? cells[5].textContent.trim() : '';
+  var testR = cells[6] ? cells[6].textContent.trim() : '';
+  var trainNet = cells[7] ? cells[7].textContent.trim() : '';
+  var testNet = cells[8] ? cells[8].textContent.trim() : '';
+  var winRate = cells[9] ? cells[9].textContent.trim() : '';
+  
+  var overlay = document.getElementById('detailOverlay');
+  var title = document.getElementById('detailTitle');
+  var tag = document.getElementById('detailTag');
+  var body = document.getElementById('detailBody');
+  
+  if (!overlay || !title || !tag || !body) return;
+  
+  title.textContent = methodName;
+  tag.textContent = category;
+  
+  var html = '<div class="dsec"><h3><span class="n">1</span>方法描述</h3><div class="analysis-box">' + desc + '</div></div>';
+  html += '<div class="dsec"><h3><span class="n">2</span>回测数据</h3><div class="metrics">';
+  html += '<div class="metric"><div class="lbl">训练回报率</div><div class="val">' + trainR + '</div></div>';
+  html += '<div class="metric"><div class="lbl">测试回报率</div><div class="val">' + testR + '</div></div>';
+  html += '<div class="metric"><div class="lbl">训练净收益</div><div class="val">' + trainNet + '</div></div>';
+  html += '<div class="metric"><div class="lbl">测试净收益</div><div class="val">' + testNet + '</div></div>';
+  html += '<div class="metric"><div class="lbl">测试中奖率</div><div class="val">' + winRate + '</div></div>';
+  html += '<div class="metric"><div class="lbl">数据来源</div><div class="val">' + source + '</div></div>';
+  html += '</div></div>';
+  html += '<div class="dsec"><h3><span class="n">3</span>分析与建议</h3><div class="analysis-box">';
+  html += '本方法为' + category + '类方法，基于历史开奖数据统计规律设计。测试段回报率为' + testR + '，与随机基线20.89%相比，说明该方法在历史数据上无明显预测效果。<br><br>理性购彩，量力而行。本详情页仅作数据分析与方法验证，不构成任何投注建议。';
+  html += '</div></div>';
+  
+  body.innerHTML = html;
+  overlay.classList.add('show');
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
 </html>
