@@ -1524,13 +1524,15 @@ function shareSimResult(){
 </script>
 
 <script>
-// 方法名点击事件
-document.querySelectorAll('.mname').forEach(function(el){
-  el.style.cursor = 'pointer';
-  el.title = '点击查看详情';
-  el.addEventListener('click', function(){
-    var name = this.textContent.trim();
-    showDetail(name);
+// 方法名点击事件（DOM加载完成后执行）
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.mname').forEach(function(el){
+    el.style.cursor = 'pointer';
+    el.title = '点击查看详情';
+    el.addEventListener('click', function(){
+      var name = this.textContent.trim();
+      showDetail(name);
+    });
   });
 });
 </script>
