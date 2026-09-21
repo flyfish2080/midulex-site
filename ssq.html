@@ -691,8 +691,9 @@ document.addEventListener('click', function(e) {
       .resizable th .resize-handle:hover { background:#3b82f6; }
     </style>
 <script>
+
 var METHOD_DETAILS = [];
-(function(){
+// 暴露到全局
   var base = {
     head: { n:'01', t:'具体投注方法' },
     steps: [],
@@ -847,6 +848,17 @@ var METHOD_DETAILS = [];
       steps:['把 01-33 共 33 个红球按顺序排成一行','设计 20 个模型，模型 k 起点为 k（0-19）','每个模型从起点开始按步长 7 取 6 个号（7 与 33 互质，遍历不重复）','20 个起点两两不同，20 注红球集合互不相同，33 个红球全部被覆盖','蓝球按 (k×5) mod 16 分配，前 16 注覆盖 16 个蓝球；每注 2 元，单期 40 元'],
       analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' }
   ];
+
+// 暴露所有函数到全局
+window.openMethodDetail = openMethodDetail;
+window.closeMethodDetail = closeMethodDetail;
+window.renderHistoryDetail = renderHistoryDetail;
+window.historyTableHtml = historyTableHtml;
+window.renderHistoryRange = renderHistoryRange;
+window.loadMore = loadMore;
+window.toggleDraw = toggleDraw;
+window.genAllHistory = genAllHistory;
+window.METHOD_DETAILS = METHOD_DETAILS;
 })();
 
 function openMethodDetail(name){
@@ -1236,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   /* 真实最新开奖：从同域 latest.json 拉取（GitHub Action 定时更新） */
   var LATEST = null;
-  (function(){
+  // 暴露到全局
     fetch('ssq.json?_t=' + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(j){
@@ -1252,8 +1264,19 @@ document.addEventListener('DOMContentLoaded', function(){
           if(el){ el.textContent = '上一期（' + LATEST.code + ' ' + LATEST.date + '）：红球 ' + LATEST.red.join(' ') + ' 蓝球 ' + (LATEST.blue<10?'0'+LATEST.blue:LATEST.blue); el.style.display='block'; }
         }
       })
-      .catch(function(){});
-  })();
+      .catch// 暴露到全局});
+  
+// 暴露所有函数到全局
+window.openMethodDetail = openMethodDetail;
+window.closeMethodDetail = closeMethodDetail;
+window.renderHistoryDetail = renderHistoryDetail;
+window.historyTableHtml = historyTableHtml;
+window.renderHistoryRange = renderHistoryRange;
+window.loadMore = loadMore;
+window.toggleDraw = toggleDraw;
+window.genAllHistory = genAllHistory;
+window.METHOD_DETAILS = METHOD_DETAILS;
+})();
 
   /* 映射投注法：20 注任意两注重叠红球 ≤ 2，蓝球 1-16 全覆盖 */
   function pickMap20(idx, salt){
@@ -1378,5 +1401,6 @@ document.addEventListener('DOMContentLoaded', function(){
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 500);
     });
-    </script></body>
+    
+</script></body>
 </html>
