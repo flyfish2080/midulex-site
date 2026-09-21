@@ -862,7 +862,21 @@ var METHOD_DETAILS = [
 function openMethodDetail(name){
   var m = null;
   for(var i=0;i<METHOD_DETAILS.length;i++){ if(METHOD_DETAILS[i].name === name){ m = METHOD_DETAILS[i]; break; } }
-  if(!m){ return; }
+  if(!m){
+    document.getElementById('detailTitle').textContent = name;
+    document.getElementById('detailTag').textContent = '优化类';
+    document.getElementById('detailTag').style.background = 'rgba(139,124,246,.14)';
+    document.getElementById('detailTag').style.borderColor = '#8b7cf6';
+    document.getElementById('detailTag').style.color = '#8b7cf6';
+    document.getElementById('detailBody').innerHTML = 
+      '<div class="dsec"><h3><span class="n">1</span>说明</h3>' +
+      '<div class="rule">该方法属于优化类方法，是在基础方法上进行算法优化得到的，暂无单独详情页。</div></div>' +
+      '<div class="dsec"><h3><span class="n">2</span>提示</h3>' +
+      '<p style="color:var(--text3)">点击其他基础方法（如热号追号法、胆拖投注法等）可以查看完整详情。</p></div>';
+    document.getElementById('detailOverlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
   document.getElementById('detailTitle').textContent = m.name;
   document.getElementById('detailTag').textContent = m.cat;
   var catColor = m.cat==='杀号' ? '#E63946' : (m.cat==='选号' ? '#2A9DF4' : (m.cat==='过滤' ? '#f4a261' : (m.cat==='蓝杀' ? '#8b7cf6' : '#6b7ea3')));
@@ -1216,7 +1230,7 @@ function toggleDraw(tr,idx){
   if(t) t.textContent=show?'▴':'▾';
 }
 // 绑定 report 表格中所有方法名
-document.addEventListener('DOMContentLoaded', function(){
+function bindMethodDetail(){
   var names = document.querySelectorAll('#report .mname');
   for(var i=0;i<names.length;i++){
     (function(el){
@@ -1225,6 +1239,10 @@ document.addEventListener('DOMContentLoaded', function(){
       el.addEventListener('click', function(){ openMethodDetail(el.textContent.trim()); });
     })(names[i]);
   }
+}
+document.addEventListener('DOMContentLoaded', bindMethodDetail);
+// 兜底：延迟再绑定一次
+setTimeout(bindMethodDetail, 500);
   // 键盘 Esc 关闭
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
 
