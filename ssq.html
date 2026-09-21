@@ -844,5 +844,20 @@ footer .b{color:var(--text2)}
 
 
     
-    </body>
+    <script>
+// 填充模拟投注器方法列表
+window.addEventListener('load', function() {
+  var sel = document.getElementById('simMethod');
+  if (!sel) return;
+  // 从METHOD_DETAILS填充
+  if (typeof METHOD_DETAILS !== 'undefined') {
+    METHOD_DETAILS.forEach(function(m) {
+      var opt = document.createElement('option');
+      opt.value = m.name;
+      opt.textContent = m.name;
+      sel.appendChild(opt);
+    });
+  }
+});
+</script></body>
 </html>
