@@ -1538,6 +1538,83 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 
+
+<script>
+// 方法详情弹窗
+function showDetail(name){
+  var m = null;
+  for(var i=0;i<METHOD_DETAILS.length;i++){
+    if(METHOD_DETAILS[i].name === name){
+      m = METHOD_DETAILS[i];
+      break;
+    }
+  }
+  if(!m){
+    alert('暂无该方法的详细信息');
+    return;
+  }
+  
+  document.getElementById('detailTitle').textContent = m.name;
+  document.getElementById('detailTag').textContent = m.cat;
+  
+  var html = '<div class="detail-section">';
+  html += '<h4>方法描述</h4>';
+  html += '<p>' + (m.desc || m.rule || '') + '</p>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>投注步骤</h4>';
+  html += '<ol>';
+  m.steps.forEach(function(s){
+    html += '<li>' + s + '</li>';
+  });
+  html += '</ol>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>回测数据</h4>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">';
+  html += '<div style="padding:12px;background:rgba(42,157,244,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">训练段回报率</div><div style="font-size:20px;font-weight:700;color:var(--green)">' + m.trainR + '</div></div>';
+  html += '<div style="padding:12px;background:rgba(230,57,70,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">测试段回报率</div><div style="font-size:20px;font-weight:700;color:#ff8b94">' + m.testR + '</div></div>';
+  html += '</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">';
+  html += '<div style="padding:12px;background:rgba(76,208,141,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">训练段净收益</div><div style="font-size:20px;font-weight:700;color:var(--green)">' + m.trainNet + ' 元</div></div>';
+  html += '<div style="padding:12px;background:rgba(255,193,7,.1);border-radius:8px"><div style="font-size:12px;color:var(--text2)">测试段净收益</div><div style="font-size:20px;font-weight:700;color:#ffd93d">' + m.testNet + ' 元</div></div>';
+  html += '</div>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>分析与建议</h4>';
+  html += '<p>' + m.analysis + '</p>';
+  html += '</div>';
+  
+  html += '<div class="detail-section">';
+  html += '<h4>数据来源</h4>';
+  html += '<p style="color:var(--text2);font-size:13px">' + m.source + '</p>';
+  html += '</div>';
+  
+  document.getElementById('detailBody').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMethodDetail(){
+  document.getElementById('detailOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// 方法名点击事件
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.mname').forEach(function(el){
+    el.style.cursor = 'pointer';
+    el.title = '点击查看详情';
+    el.addEventListener('click', function(){
+      var name = this.textContent.trim();
+      showDetail(name);
+    });
+  });
+});
+</script>
 </script>
 </body>
 </html>
