@@ -630,47 +630,53 @@ footer .b{color:var(--text2)}
   }
 })();
 
-    // 列宽拖拽功能
-    function initColumnResize() {
-      var tables = document.querySelectorAll('table.resizable');
-      tables.forEach(function(table) {
-        var ths = table.querySelectorAll('th');
-        ths.forEach(function(th) {
-          var handle = document.createElement('div');
-          handle.className = 'resize-handle';
-          th.appendChild(handle);
-          
-          var startX, startWidth;
-          
-          handle.addEventListener('mousedown', function(e) {
-            startX = e.pageX;
-            startWidth = th.offsetWidth;
-            document.body.style.cursor = 'col-resize';
-            document.body.style.userSelect = 'none';
-            
-            function onMouseMove(e) {
-              var diff = e.pageX - startX;
-              th.style.width = (startWidth + diff) + 'px';
-            }
-            
-            function onMouseUp() {
-              document.removeEventListener('mousemove', onMouseMove);
-              document.removeEventListener('mouseup', onMouseUp);
-              document.body.style.cursor = '';
-              document.body.style.userSelect = '';
-            }
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-          });
-        });
+    
+    // 列宽拖拽功能（事件委托）
+    document.addEventListener('mousedown', function(e) {
+      if (!e.target.classList.contains('resize-handle')) return;
+      
+      var th = e.target.parentElement;
+      var startX = e.pageX;
+      var startWidth = th.offsetWidth;
+      
+      e.preventDefault();
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      
+      function onMouseMove(ev) {
+        var diff = ev.pageX - startX;
+        th.style.width = (startWidth + diff) + 'px';
+      }
+      
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      }
+      
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+    
+    // 动态为所有th添加resize-handle
+    function addResizeHandles() {
+      var ths = document.querySelectorAll('table.resizable th:not(.has-resize)');
+      ths.forEach(function(th) {
+        th.classList.add('has-resize');
+        var handle = document.createElement('div');
+        handle.className = 'resize-handle';
+        th.appendChild(handle);
       });
     }
     
     // 页面加载后初始化
     window.addEventListener('load', function() {
-      setTimeout(initColumnResize, 500);
+      addResizeHandles();
+      // 定时检查新表格
+      setInterval(addResizeHandles, 1000);
     });
+    
     </script>
 
 <!-- ================= 方法详情（新页） ================= -->
