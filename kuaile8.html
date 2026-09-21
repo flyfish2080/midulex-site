@@ -1426,21 +1426,7 @@ function genAllHistory(m){
   return rows;
 }
 var HIST_VIEW = {};
-function renderHistoryDetail(m){
-  if(!HIST_VIEW[m.name]){ HIST_VIEW[m.name] = 10; }
-  var rows = genAllHistory(m);
-  return '<div class="hist-tools">' +
-    '<span class="hist-info">共 ' + rows.length + ' 期开奖（2003001~2026100）· 前 30 期规则预热 · 第 31 期起每期投注 20 注 × 2 元（开奖/投注由固定种子确定性生成）</span>' +
-    '<span class="hist-filters" id="histFilters">' +
-      '<button class="hf-btn" data-v="10" onclick="renderHistoryRange(\'' + m.name + '\',10)">最近 10</button>' +
-      '<button class="hf-btn" data-v="20" onclick="renderHistoryRange(\'' + m.name + '\',20)">最近 20</button>' +
-      '<button class="hf-btn" data-v="50" onclick="renderHistoryRange(\'' + m.name + '\',50)">最近 50</button>' +
-      '<button class="hf-btn" data-v="100" onclick="renderHistoryRange(\'' + m.name + '\',100)">最近 100</button>' +
-      '<button class="hf-btn" data-v="697" onclick="renderHistoryRange(\'' + m.name + '\',697)">最近 697</button>' +
-      '<button class="hf-btn" data-v="all" onclick="renderHistoryRange(\'' + m.name + '\',\'all\')">全部 3497</button>' +
-    '</span></div>' +
-    '<div id="historyTableWrap">' + historyTableHtml(m, 10) + '</div>';
-}
+
 
 // 点击行打开详情
 document.addEventListener('click', function(e) {
