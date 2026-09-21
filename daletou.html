@@ -180,27 +180,7 @@ footer .b{color:var(--text2)}
         user-select:none;
       }
       .resizable th .resize-handle:hover { background:#3b82f6; }
-    .resize-handle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 5px;
-  height: 100%;
-  cursor: col-resize;
-  background: transparent;
-}
-.resize-handle:hover {
-  background: var(--accent);
-}
-th { position: relative; }
-</style>
-
-<style>
-@media (min-width: 1024px) {
-  .wrap { max-width: 1200px !important; }
-  body { font-size: 16px !important; }
-  h1 { font-size: 32px !important; }
-  h2 { font-size: 26px !important; }
+    size: 26px !important; }
   .card { padding: 24px !important; }
   table { font-size: 15px !important; }
   .dash { padding: 24px !important; }
@@ -1908,36 +1888,5 @@ function shareSimResult(){
       setInterval(initColumnResize, 2000);
     });
     </script>
-    <script>// 列宽拖拽功能
-function initColumnResize() {
-  var tables = document.querySelectorAll('table.resizable');
-  tables.forEach(function(table) {
-    var ths = table.querySelectorAll('th');
-    ths.forEach(function(th) {
-      var handle = document.createElement('div');
-      handle.className = 'resize-handle';
-      th.appendChild(handle);
-      var startX, startWidth;
-      handle.addEventListener('mousedown', function(e) {
-        startX = e.pageX;
-        startWidth = th.offsetWidth;
-        document.body.style.cursor = 'col-resize';
-        document.body.style.userSelect = 'none';
-        function onMouseMove(e) {
-          var diff = e.pageX - startX;
-          th.style.width = (startWidth + diff) + 'px';
-        }
-        function onMouseUp() {
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-          document.body.style.cursor = '';
-          document.body.style.userSelect = '';
-        }
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-      });
-    });
-  });
-}
-window.addEventListener('load', function() { setTimeout(initColumnResize, 500); });</script></body>
+    <script></body>
 </html>
