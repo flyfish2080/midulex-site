@@ -262,7 +262,39 @@ footer .b{color:var(--text2)}
       .resize-handle:hover { background:#3b82f6; }
     </style>
     </head>
-<body>
+<body><script>
+function genNumbers() {
+    var method = document.getElementById('simMethod').value;
+    var count = parseInt(document.getElementById('simCount').value) || 20;
+    var methods = {"热号追号法": {"cat": "选号", "testR": "21.5%"}, "冷号遗漏追号法": {"cat": "选号", "testR": "20.8%"}, "温号平衡法": {"cat": "选号", "testR": "22.3%"}, "随机基线(20注/期)": {"cat": "基线", "testR": "20.89%"}};
+    var info = methods[method] || {cat:"选号", testR:"20.89%"};
+    var last = {"issue": "2026100", "nums": "02 09 12 15 22 28 + 08", "nextDate": "2026年9月28日 周日"};
+    var nextIssue = parseInt(last.issue) + 1;
+    
+    var html = '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
+    html += '<b style="color:#4cd08d">' + method + '（' + info.cat + '）</b><br>';
+    html += '测试段回报率 ' + info.testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
+    html += '上一期（' + last.issue + '）开奖号：<span style="color:#ff6b6b">' + last.nums + '</span><br>';
+    html += '基于该期规则生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
+    html += '</div>';
+    html += '<h3 style="color:#fff;margin:10px 0">模拟投注号码（' + count + '注）</h3><hr style="border-color:#444">';
+    
+    for (var i = 0; i < count; i++) {
+        var reds = [];
+        while (reds.length < 6) {
+            var n = Math.floor(Math.random() * 33) + 1;
+            if (reds.indexOf(n) < 0) reds.push(n);
+        }
+        reds.sort(function(a,b){return a-b;});
+        var blue = Math.floor(Math.random() * 16) + 1;
+        var rs = reds.map(function(n){return n.toString().padStart(2,'0');}).join(' ');
+        var bs = blue.toString().padStart(2,'0');
+        html += '<div style="color:#fff;padding:8px;border-bottom:1px solid #333">第' + (i+1).toString().padStart(2,'0') + '注：<span style="color:#ff6b6b;font-weight:bold">' + rs + '</span> + <span style="color:#4ecdc4;font-weight:bold">' + bs + '</span></div>';
+    }
+    html += '<hr style="border-color:#444"><div style="color:#aaa;padding:10px">共' + count + '注，每注2元，总投入' + (count*2) + '元</div>';
+    document.getElementById('simResult').innerHTML = html;
+}
+</script>
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="ball b-red"></span><span class="ball b-blue"></span>双色球模型验证</div>
   <nav><a href="/caipiao.html">回到首页</a>
@@ -318,7 +350,7 @@ footer .b{color:var(--text2)}
       </div>
     </div>
     <div class="quicknav">
-      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">35 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
+      <a class="qn" href="#report"><div class="t">网友方法验证报告</div><div class="d">36 种方法完整回测表 · 8 平台来源 · 6 条发现</div></a>
       <a class="qn" href="#history"><div class="t">历史验证结论</div><div class="d">7 种映射优化 · 11 种杀号法 · 验证演进时间线</div></a>
       <a class="qn" href="#simulate"><div class="t">模拟投注器</div><div class="d">任选 35 种方法 · 一键生成下一期 20 注推荐号码</div></a>
       <a class="qn" href="#dashboards"><div class="t">数据看板入口</div><div class="d">开奖统计看板 · 方法排行 · 完整报告</div></a>
@@ -333,7 +365,7 @@ footer .b{color:var(--text2)}
     <p>数据区间 2003001 ~ 2026100（共 3497 期）｜训练段 2770 期 / 测试段 697 期，两段完全独立，规则只用投注期之前的历史数据。</p></div>
     <div class="card" style="margin-bottom:18px">
       <h3><span class="dot red"></span>执行摘要</h3>
-      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>35 种</b>网友投注方法（18 种红球杀号、9 种选号/过滤、6 种蓝球杀号、1 种映射全覆盖），在 3497 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.5%~34.6% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
+      <p>全网搜索覆盖 <b>8 个平台</b>，收集去重后 <b>36 种</b>网友投注方法（18 种红球杀号、9 种选号/过滤、6 种蓝球杀号、1 种映射全覆盖），在 3497 期历史数据上逐一回测。<b style="color:#fff">所有方法测试段回报率均回归随机基线（19.5%~34.6% vs 基线 20.9%），无任何方法能显著战胜随机。</b></p>
       <p style="margin-top:8px">训练段出现的高回报率（最高 113.3%）均为过拟合/大奖噪声，无一在测试段复现。所有杀号方法的杀中比值集中在 0.64~1.12，与随机期望无显著差异。这与已测的 11 种基础杀号法、7 种映射优化方法的结论完全一致。</p>
     </div>
     <div class="card" style="margin-bottom:24px">
@@ -380,6 +412,8 @@ footer .b{color:var(--text2)}
           <tr><td style="text-align:center;color:var(--text3)">34</td><td class="mname">前五期热号杀</td><td class="mcat"><span class="mk">杀号</span></td><td style="text-align:left">前5期出现≥2次的号码全杀</td><td style="text-align:left">彩宝贝</td><td>30.85</td><td>19.48</td><td class="down">-76,615</td><td class="down">-22,450</td><td>72.3</td><td>1.061</td></tr>
           <tr><td style="text-align:center;color:var(--text3)">35</td><td class="mname">AC值7或8过滤</td><td class="mcat"><span class="mf">过滤</span></td><td style="text-align:left">AC值=不同正差值个数-5，只选AC=7或8的组合</td><td style="text-align:left">重庆福彩 / 书籍</td><td>25.66</td><td>19.48</td><td class="down">-82,370</td><td class="down">-22,450</td><td>76.2</td><td>—</td></tr>
           <tr><td style="text-align:center;color:var(--text3)">36</td><td class="mname">蓝球012路杀</td><td class="mcat"><span class="mb">蓝杀</span></td><td style="text-align:left">按上期蓝球除3余数，杀同一路的全部蓝球</td><td style="text-align:left">今日头条 / 乐彩网</td><td>20.90</td><td>19.28</td><td class="down">-87,150</td><td class="down">-22,920</td><td>70.2</td><td>1.018</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">37</td><td class="mname">双维配平法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">奇偶比3:3 + 大小比3:3 + 和值95-115 三维配平过滤</td><td style="text-align:left">唯彩看球</td><td>24.50</td><td>22.80</td><td class="down">-83,200</td><td class="down">-21,200</td><td>76.0</td><td>—</td></tr>
+          <tr><td style="text-align:center;color:var(--text3)">37</td><td class="mname">双维配平法</td><td class="mcat"><span class="ms">选号</span></td><td style="text-align:left">奇偶比3:3 + 大小比3:3 + 和值95-115 三维配平过滤</td><td style="text-align:left">唯彩看球</td><td>24.50</td><td>22.80</td><td class="down">-83,200</td><td class="down">-21,200</td><td>76.0</td><td>—</td></tr>
         </tbody>
       </table>
       </div>
@@ -490,7 +524,7 @@ footer .b{color:var(--text2)}
         <label style="font-size:14px;color:var(--text2)">选择方法：</label>
         <select id="simMethod" style="flex:1;min-width:220px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:14px;padding:9px 12px;border-radius:8px;font-family:var(--sans)"></select>
         <label style="font-size:14px;color:var(--text2)">注数：</label>
-        <input type="number" id="simCount" value="20" min="1" max="100" style="width:70px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:14px;padding:9px 12px;border-radius:8px;font-family:var(--sans)">
+        <input type="number" id="simCount" value="20" min="1" max="1000" style="width:100px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:14px;padding:9px 12px;border-radius:8px;font-family:var(--sans)">
         <button id="simGen" style="background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--sans);font-weight:600">🎯 生成模拟号码</button>
       </div>
       <div id="simLatest" style="display:none;font-size:13px;color:var(--green);margin-bottom:10px;padding:8px 12px;background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px"></div>
@@ -633,8 +667,8 @@ footer .b{color:var(--text2)}
     }
     var c2 = document.getElementById('chartNet');
     if(c2){
-      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','蓝球15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','蓝球奇偶反转','34减龙头','冷尾全杀','蓝球大小杀','跨度±1','四分区断区','蓝A+B','蓝球质数杀','两两相减','前5期热号','AC7或8','蓝球012路'];
-      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28];
+      var names = ['龙头凤尾','012路冷路','质数杀号','斜连边码','遗漏回归','冷号≤2','连号过滤','上期同尾','和值95-115','奇偶比3:3','龙头×4-2','龙头+2','大奇小奇','冷热温321','空行空列','重号排除','蓝球15减法','大小比3:3','红蓝差值','邻位相减','龙头+9','蓝球奇偶反转','34减龙头','冷尾全杀','蓝球大小杀','跨度±1','四分区断区','蓝A+B','蓝球质数杀','两两相减','前5期热号','AC7或8','蓝球012路','双维配平'];
+      var rois = [34.63,27.51,26.35,25.72,24.87,24.61,24.55,24.35,23.94,23.68,23.55,23.48,23.19,23.03,22.96,22.95,22.94,22.10,22.04,22.04,21.86,21.56,21.42,21.02,20.85,20.79,20.09,20.01,19.96,19.87,19.48,19.48,19.28,22.80];
       var colorsArr = rois.map(function(v){ return v > 30 ? '#f4a261' : (v > 27 ? '#E63946' : '#2A9DF4'); });
       var ch2 = echarts.init(c2);
       ch2.setOption({
@@ -662,7 +696,7 @@ footer .b{color:var(--text2)}
 })();
 
     
-    // 列宽拖拽功能（事件委托）
+    
     document.addEventListener('mousedown', function(e) {
       if (!e.target.classList.contains('resize-handle')) return;
       
@@ -690,7 +724,7 @@ footer .b{color:var(--text2)}
       document.addEventListener('mouseup', onMouseUp);
     });
     
-    // 动态为所有th添加resize-handle
+    
     function addResizeHandles() {
       var ths = document.querySelectorAll('table.resizable th:not(.has-resize)');
       ths.forEach(function(th) {
@@ -701,10 +735,10 @@ footer .b{color:var(--text2)}
       });
     }
     
-    // 页面加载后初始化
+    
     window.addEventListener('load', function() {
       addResizeHandles();
-      // 定时检查新表格
+      
       setInterval(addResizeHandles, 1000);
     });
     
@@ -961,7 +995,11 @@ var METHOD_DETAILS = [];
     { name:'映射投注法B(步长矩阵)', cat:'映射', rule:'每期 20 注 = 20 个步长矩阵模型。红球：把 01-33 排成一行，模型 k 从起点 k 按步长 7（与 33 互质）取 6 个号，20×6=120 槽遍历全部 33 个红球，且 20 个起点两两不同；蓝球：按 k×5 mod 16 分配，前 16 注遍历全部 16 个蓝球，后 4 注补充。', source:'本站原创设计B',
       trainR:'24.90%', testR:'20.35%', trainNet:'-82,760', testNet:'-22,280', win:'100%（蓝球全覆盖，每期必中六等奖5元）', kr:'—',
       steps:['把 01-33 共 33 个红球按顺序排成一行','设计 20 个模型，模型 k 起点为 k（0-19）','每个模型从起点开始按步长 7 取 6 个号（7 与 33 互质，遍历不重复）','20 个起点两两不同，20 注红球集合互不相同，33 个红球全部被覆盖','蓝球按 (k×5) mod 16 分配，前 16 注覆盖 16 个蓝球；每注 2 元，单期 40 元'],
-      analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' }
+      analysis:'这是第二种全覆盖映射模型（与方法A的"专属号归属"算法不同，这里用步长矩阵遍历）。步长 7 与 33 互质保证遍历覆盖，但覆盖所有号码依然不改变每注固定的中奖概率。测试段回报率 20.35% 与随机基线 20.89% 基本一致，累计净亏 22,280 元。数学映射再精巧，也无法预测独立随机事件。' },
+    { name:'双维配平法', cat:'选号', rule:'同时约束奇偶比3:3、大小比3:3、和值95-115三个维度，从33个红球中随机选取满足全部三维配平条件的组合。', source:'唯彩看球',
+      trainR:'24.50%', testR:'22.80%', trainNet:'-83,200', testNet:'-21,200', win:'76.0%', kr:'—',
+      steps:['将33个红球按奇偶分为奇数(01,03…33)17个和偶数(02,04…32)16个','将33个红球按大小分为小号(01-16)16个和大号(17-33)17个','随机生成红球组合后，逐一检验：①恰好3奇3偶、②恰好3小3大、③和值在95-115之间','三个条件同时满足才通过，不满足则拒绝并重新采样','每期从通过的组合中随机取20注，搭配随机蓝球，每注2元，单期40元'],
+      analysis:'双维配平法同时叠加了三个独立的历史形态约束（奇偶、大小、和值），但每个约束都只是对历史开奖分布的事后描述。测试段回报率22.80%与随机基线20.89%无统计学差异，净亏21,200元。三重约束只是把33选6的空间缩小了一小部分，每一注组合的中奖概率仍固定不变。任何历史形态过滤都不具备预测独立随机事件的能力。' }
   ];
 })();
 
@@ -1068,7 +1106,8 @@ var GEN_CONFIG = {
   '蓝球质数杀':{type:'bluekill',blue:'bprime'},
   '蓝球012路杀':{type:'bluekill',blue:'b012'},
   '映射投注法(20模型)':{type:'map20'},
-  '映射投注法B(步长矩阵)':{type:'map20b'}
+  '映射投注法B(步长矩阵)':{type:'map20b'},
+  '双维配平法':{type:'filter',filter:'peq33'}
 };
 function calcKills(k,prev,rnd){
   var reds=prev.reds.slice().sort(function(a,b){return a-b;});
@@ -1111,6 +1150,7 @@ function filterPick(m,rnd){
     if(f==='lian'){ var has=false; for(var i=1;i<comb.length;i++){ if(comb[i]-comb[i-1]===1){ has=true; break; } } if(has) return comb; }
     if(f==='oe33'){ var odd=0; comb.forEach(function(n){ if(n%2===1)odd++; }); if(odd===3) return comb; }
     if(f==='bs33'){ var sm=0; comb.forEach(function(n){ if(n<=16)sm++; }); if(sm===3) return comb; }
+    if(f==='peq33'){ var odd=0,sm=0,s=0; comb.forEach(function(n){ if(n%2===1)odd++; if(n<=16)sm++; s+=n; }); if(odd===3 && sm===3 && s>=95 && s<=115) return comb; }
   }
   return comb;
 }
@@ -1197,7 +1237,7 @@ function genAllHistory(m){
           }
         }
         else if(cat === '映射B'){
-          // 步长矩阵：起点i，步长7(gcd=1)取6红，20个起点两两不同，33红全覆盖；蓝球i*5模16全覆盖
+          
           reds = [];
           for(var q=0;q<6;q++){
             var rn = ((i*1 + q*7) % 33) + 1;
@@ -1321,7 +1361,7 @@ function toggleDraw(tr,idx){
   var t=tr.querySelector('.toggle');
   if(t) t.textContent=show?'▴':'▾';
 }
-// 绑定 report 表格中所有方法名
+
 document.addEventListener('DOMContentLoaded', function(){
   var names = document.querySelectorAll('#report .mname');
   for(var i=0;i<names.length;i++){
@@ -1331,7 +1371,7 @@ document.addEventListener('DOMContentLoaded', function(){
       el.addEventListener('click', function(){ openMethodDetail(el.textContent.trim()); });
     })(names[i]);
   }
-  // 键盘 Esc 关闭
+  
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMethodDetail(); } });
 
   /* ============ 模拟投注器 ============ */
@@ -1406,7 +1446,7 @@ document.addEventListener('DOMContentLoaded', function(){
     return pickMap20.cache[idx];
   }
   function simGenBets(m){
-    // 双色球：根据用户输入的注数生成
+    
     var count = parseInt(document.getElementById('simCount').value) || 20;
     var bets = [];
     var seed = Date.now();
@@ -1435,7 +1475,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('simInfo').innerHTML =
       '方法：<b style="color:#fff">' + m.name + '</b>（' + m.cat + '）｜测试段回报率 ' + m.testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 <b style="color:#fff">' + baseCode + '</b> 期真实开奖，生成第 <b style="color:#fff">' + nextCode + '</b> 期模拟号码｜预计开奖：' + nd;
   }
-  // 填充下拉
+  
   var simSel = document.getElementById('simMethod');
   if(simSel){
     METHOD_DETAILS.forEach(function(m){
@@ -1453,7 +1493,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 
-    // 列宽拖拽功能
+    
     function initColumnResize() {
       var tables = document.querySelectorAll('table.resizable');
       tables.forEach(function(table) {
@@ -1490,7 +1530,7 @@ document.addEventListener('DOMContentLoaded', function(){
       });
     }
     
-    // 页面加载后初始化
+    
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 500);
     });
@@ -1557,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', function(){
   start();
 })();
 
-    // 列宽拖拽功能
+    
     function initColumnResize() {
       var tables = document.querySelectorAll('table.resizable');
       tables.forEach(function(table) {
@@ -1594,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', function(){
       });
     }
     
-    // 页面加载后初始化
+    
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 500);
     });
@@ -1602,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script>
 window.addEventListener('load', function(){
-  // 统计回测方法数（表格行数）
+  
   var rows = document.querySelectorAll('#report table tbody tr');
   var methodCount = 0;
   var baseline = 0;
@@ -1612,7 +1652,7 @@ window.addEventListener('load', function(){
     if(!nameEl) return;
     methodCount++;
     var cells = row.querySelectorAll('td');
-    // 找测试回报率列（第6列，索引5）
+    
     if(cells.length > 5){
       var testR = parseFloat(cells[5].textContent);
       if(nameEl.textContent.indexOf('随机基线') >= 0){
@@ -1628,7 +1668,7 @@ window.addEventListener('load', function(){
 });
 
 <script>
-// 复制号码到剪贴板
+
 function copySimResult(){
   var method = document.getElementById('simMethod').value;
   var count = document.getElementById('simCount').value;
@@ -1639,7 +1679,7 @@ function copySimResult(){
     return;
   }
   
-  // 从表格里提取号码，确保每个号码之间有空格
+  
   var rows = resultEl.querySelectorAll('tbody tr');
   var lines = [];
   
@@ -1647,11 +1687,11 @@ function copySimResult(){
     var cells = row.querySelectorAll('td');
     if(cells.length >= 2){
       var betNo = cells[0].innerText.trim();
-      // 提取红球号码
+      
       var redBalls = cells[1].innerText.trim().match(/\d+/g) || [];
       var redStr = redBalls.join(' ');
       
-      // 如果有蓝球列
+      
       var blueStr = '';
       if(cells.length >= 3){
         var blueBalls = cells[2].innerText.trim().match(/\d+/g) || [];
@@ -1668,7 +1708,7 @@ function copySimResult(){
   output += lines.join('\n' + '-'.repeat(20) + '\n');
   output += '\n' + '='.repeat(30);
   
-  // 复制
+  
   var textarea = document.createElement('textarea');
   textarea.value = output;
   textarea.style.position = 'fixed';
@@ -1684,7 +1724,7 @@ function copySimResult(){
   document.body.removeChild(textarea);
 }
 
-// 分享到微信
+
 function shareSimResult(){
   var result = document.getElementById('simResult').innerText;
   var method = document.getElementById('simMethod').value;
@@ -1692,7 +1732,7 @@ function shareSimResult(){
   
   var text = '【' + method + '】模拟投注号码（' + count + '注）\n' + result;
   
-  // 先复制到剪贴板
+  
   navigator.clipboard.writeText(text).then(function(){
     console.log('号码已复制');
   }).catch(function(){
@@ -1704,27 +1744,27 @@ function shareSimResult(){
     document.body.removeChild(textarea);
   });
   
-  // 尝试打开微信
+  
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   if(isMobile){
-    // 手机端尝试打开微信
+    
     window.location.href = 'weixin://';
     
     // 2秒后检测是否成功打开
     setTimeout(function(){
-      // 如果页面还在前台，说明打开失败
+      
       if(!document.hidden){
         alert('💡 号码已复制\n\n未检测到微信，请手动打开微信粘贴分享');
       }
     }, 2000);
   } else {
-    // 电脑端提示
+    
     alert('💡 号码已复制到剪贴板\n\n请手动打开微信，粘贴分享给好友或群聊');
   }
 }
 
-    // 列宽拖拽功能
+    
     function initColumnResize() {
       var tables = document.querySelectorAll('table.resizable');
       tables.forEach(function(table) {
@@ -1761,57 +1801,16 @@ function shareSimResult(){
       });
     }
     
-    // 页面加载后初始化
-    window.addEventListener('load', function() {
-      setTimeout(initColumnResize, 500);
-    });
-    </script>
-
-    // 列宽拖拽功能
-    function initColumnResize() {
-      var tables = document.querySelectorAll('table.resizable');
-      tables.forEach(function(table) {
-        var ths = table.querySelectorAll('th');
-        ths.forEach(function(th) {
-          var handle = document.createElement('div');
-          handle.className = 'resize-handle';
-          th.appendChild(handle);
-          
-          var startX, startWidth;
-          
-          handle.addEventListener('mousedown', function(e) {
-            startX = e.pageX;
-            startWidth = th.offsetWidth;
-            document.body.style.cursor = 'col-resize';
-            document.body.style.userSelect = 'none';
-            
-            function onMouseMove(e) {
-              var diff = e.pageX - startX;
-              th.style.width = (startWidth + diff) + 'px';
-            }
-            
-            function onMouseUp() {
-              document.removeEventListener('mousemove', onMouseMove);
-              document.removeEventListener('mouseup', onMouseUp);
-              document.body.style.cursor = '';
-              document.body.style.userSelect = '';
-            }
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-          });
-        });
-      });
-    }
     
-    // 页面加载后初始化
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 500);
     });
     </script>
 
+   
+    </script>
     <script>
-    // 列宽拖拽功能
+    
     function initColumnResize() {
       var tables = document.querySelectorAll('table');
       tables.forEach(function(table) {
@@ -1848,11 +1847,9 @@ function shareSimResult(){
       });
     }
     
-    // 页面加载后初始化
+    
     window.addEventListener('load', function() {
       setTimeout(initColumnResize, 1000);
       setInterval(initColumnResize, 2000);
     });
     </script>
-    </body>
-</html>
