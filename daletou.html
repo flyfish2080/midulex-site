@@ -268,21 +268,26 @@ footer .b{color:var(--text2)}
 function genNumbers() {
     var method = document.getElementById('simMethod').value;
     var count = parseInt(document.getElementById('simCount').value) || 20;
-    var last = {issue:"2026100", nums:"04 11 19 27 33 + 05 10", nextDate:"2026年9月27日 周六"};
+    var last = {issue:"2026100", date:"2026-09-17(四)", front:"04 11 19 27 33", back:"05 10", nextDate:"2026年9月27日 周六"};
     var testR = "21.5%";
     var nextIssue = parseInt(last.issue) + 1;
     
     var html = '';
+    // 顶部绿色条，和ssq完全一样的格式
     html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:10px 16px;margin-bottom:12px;color:#4cd08d;font-size:14px">';
-    html += '上一期（' + last.issue + '）：前区 ' + last.nums.split('+')[0].trim() + ' 后区 ' + last.nums.split('+')[1].trim();
+    html += '上一期（' + last.issue + ' ' + last.date + '）：前区 ' + last.front + ' 后区 ' + last.back;
     html += '</div>';
+    // 方法说明，和ssq格式完全一样
     html += '<div style="color:#93a5c8;font-size:14px;margin-bottom:15px;line-height:1.8">';
-    html += '方法：<b style="color:#e63946">' + method + '</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
-    html += '基于第 ' + last.issue + ' 期真实开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
+    html += '方法：<b style="color:#e63946">' + method + '（选号）</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 ' + last.issue + ' 期真实<br>开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    html += '<div style="overflow-x:auto">';
-    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;min-width:600px">';
-    html += '<thead><tr style="border-bottom:2px solid var(--line)"><th style="padding:12px 20px;color:var(--text2);font-weight:500;width:80px">注</th><th style="padding:12px;color:var(--text2);font-weight:500">前区（5个）</th><th style="padding:12px;color:var(--text2);font-weight:500;width:200px">后区（2个）</th></tr></thead><tbody>';
+    // 表格，和ssq的列样式完全一致
+    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px">';
+    html += '<thead><tr style="border-bottom:1px solid #26355c">';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">注</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">前区</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">后区</th>';
+    html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
         var front = [];
@@ -298,20 +303,20 @@ function genNumbers() {
         }
         back.sort(function(a,b){return a-b;});
         
-        html += '<tr style="border-bottom:1px solid var(--line)">';
-        html += '<td style="padding:16px;text-align:center;color:var(--text2)">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:16px;text-align:center">';
+        html += '<tr style="border-bottom:1px solid #1b2745">';
+        html += '<td style="padding:18px;text-align:center;color:#93a5c8;font-size:15px">' + (i+1).toString().padStart(2,'0') + '</td>';
+        html += '<td style="padding:18px;text-align:center">';
         front.forEach(function(n){
-            html += '<span style="display:inline-block;width:36px;height:36px;line-height:36px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px;box-shadow:0 2px 4px rgba(230,57,70,.3)">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td>';
-        html += '<td style="padding:16px;text-align:center">';
+        html += '<td style="padding:18px;text-align:center">';
         back.forEach(function(n){
-            html += '<span style="display:inline-block;width:36px;height:36px;line-height:36px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px;box-shadow:0 2px 4px rgba(42,157,244,.3)">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
-    html += '</tbody></table></div>';
+    html += '</tbody></table>';
     
     document.getElementById('simResult').innerHTML = html;
 }
