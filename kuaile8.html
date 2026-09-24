@@ -268,21 +268,22 @@ footer .b{color:var(--text2)}
 function genNumbers() {
     var method = document.getElementById('simMethod').value;
     var count = parseInt(document.getElementById('simCount').value) || 20;
-    var last = {issue:"2026108", nums:"03 07 12 15 18 22 25 29 33 38 42 45 49 53 57 61 65 69 73 78", nextDate:"2026年9月24日 周四"};
+    var last = {issue:"2026108", date:"2026-09-17(四)", nums:"03 07 12 15 18 22 25 29 33 38 42 45 49 53 57 61 65 69 73 78", nextDate:"2026年9月24日 周四"};
     var testR = "21.5%";
     var nextIssue = parseInt(last.issue) + 1;
     
     var html = '';
     html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:10px 16px;margin-bottom:12px;color:#4cd08d;font-size:14px">';
-    html += '上一期（' + last.issue + '）：开奖号 ' + last.nums;
+    html += '上一期（' + last.issue + ' ' + last.date + '）：开奖号 ' + last.nums;
     html += '</div>';
     html += '<div style="color:#93a5c8;font-size:14px;margin-bottom:15px;line-height:1.8">';
-    html += '方法：<b style="color:#e63946">' + method + '</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
-    html += '基于第 ' + last.issue + ' 期真实开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
+    html += '方法：<b style="color:#e63946">' + method + '（选号）</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 ' + last.issue + ' 期真实<br>开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    html += '<div style="overflow-x:auto">';
-    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;min-width:700px">';
-    html += '<thead><tr style="border-bottom:2px solid var(--line)"><th style="padding:12px 20px;color:var(--text2);font-weight:500;width:80px">注</th><th style="padding:12px;color:var(--text2);font-weight:500">投注号码（10个）</th></tr></thead><tbody>';
+    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px">';
+    html += '<thead><tr style="border-bottom:1px solid #26355c">';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">注</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">投注号码</th>';
+    html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
         var nums = [];
@@ -292,15 +293,15 @@ function genNumbers() {
         }
         nums.sort(function(a,b){return a-b;});
         
-        html += '<tr style="border-bottom:1px solid var(--line)">';
-        html += '<td style="padding:16px;text-align:center;color:var(--text2)">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:16px;text-align:center">';
+        html += '<tr style="border-bottom:1px solid #1b2745">';
+        html += '<td style="padding:18px;text-align:center;color:#93a5c8;font-size:15px">' + (i+1).toString().padStart(2,'0') + '</td>';
+        html += '<td style="padding:18px;text-align:center">';
         nums.forEach(function(n){
-            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 3px;font-weight:600;font-size:13px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 3px;font-weight:600;font-size:13px;box-shadow:0 2px 4px rgba(230,57,70,.3)">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
-    html += '</tbody></table></div>';
+    html += '</tbody></table>';
     
     document.getElementById('simResult').innerHTML = html;
 }
