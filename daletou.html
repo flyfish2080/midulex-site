@@ -273,20 +273,17 @@ function genNumbers() {
     var nextIssue = parseInt(last.issue) + 1;
     
     var html = '';
-    // 顶部绿色条，和ssq完全一样的格式
-    html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:10px 16px;margin-bottom:12px;color:#4cd08d;font-size:14px">';
-    html += '上一期（' + last.issue + ' ' + last.date + '）：前区 ' + last.front + ' 后区 ' + last.back;
+    html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
+    html += '<b style="color:#4cd08d">' + method + '（选号）</b><br>';
+    html += '测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
+    html += '上一期（' + last.issue + ' ' + last.date + '）：前区 ' + last.front + ' 后区 ' + last.back + '<br>';
+    html += '基于该期规则生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    // 方法说明，和ssq格式完全一样
-    html += '<div style="color:#93a5c8;font-size:14px;margin-bottom:15px;line-height:1.8">';
-    html += '方法：<b style="color:#e63946">' + method + '（选号）</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 20 注 × 2 元 = 40 元｜基于第 ' + last.issue + ' 期真实<br>开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
-    html += '</div>';
-    // 表格，和ssq的列样式完全一致
-    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px">';
+    html += '<table style="width:100%;border-collapse:collapse;margin:0 -20px">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">注</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">前区</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px">后区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:80px">注</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px">前区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:180px">后区</th>';
     html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
