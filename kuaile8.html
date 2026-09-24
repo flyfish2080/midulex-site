@@ -280,8 +280,9 @@ function genNumbers() {
     html += '方法：<b style="color:#e63946">' + method + '</b>｜测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
     html += '基于第 ' + last.issue + ' 期真实开奖，生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px">';
-    html += '<thead><tr style="border-bottom:2px solid var(--line)"><th style="padding:12px;color:var(--text2);font-weight:500">注</th><th style="padding:12px;color:var(--text2);font-weight:500">投注号码（10个）</th></tr></thead><tbody>';
+    html += '<div style="overflow-x:auto">';
+    html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;min-width:700px">';
+    html += '<thead><tr style="border-bottom:2px solid var(--line)"><th style="padding:12px 20px;color:var(--text2);font-weight:500;width:80px">注</th><th style="padding:12px;color:var(--text2);font-weight:500">投注号码（10个）</th></tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
         var nums = [];
@@ -292,14 +293,14 @@ function genNumbers() {
         nums.sort(function(a,b){return a-b;});
         
         html += '<tr style="border-bottom:1px solid var(--line)">';
-        html += '<td style="padding:14px;text-align:center;color:var(--text2)">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:14px;text-align:center">';
+        html += '<td style="padding:16px;text-align:center;color:var(--text2)">' + (i+1).toString().padStart(2,'0') + '</td>';
+        html += '<td style="padding:16px;text-align:center">';
         nums.forEach(function(n){
-            html += '<span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 2px;font-weight:600;font-size:12px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 3px;font-weight:600;font-size:13px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
     
     document.getElementById('simResult').innerHTML = html;
 }
