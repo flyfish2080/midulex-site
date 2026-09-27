@@ -282,9 +282,9 @@ function genNumbers() {
     html += '</div>';
     html += '<table style="width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
-    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:50px;text-align:left">注</th>';
-    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:300px;text-align:left">前区</th>';
-    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:100px;text-align:center">后区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:60px;text-align:left">注</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;text-align:left">前区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:150px;text-align:center">后区</th>';
     html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
@@ -303,12 +303,12 @@ function genNumbers() {
         
         html += '<tr style="border-bottom:1px solid #1b2745">';
         html += '<td style="padding:18px;text-align:left;color:#93a5c8;font-size:15px;padding-left:15px">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:18px;text-align:left;padding-left:15px;width:300px">';
+        html += '<td style="padding:18px;text-align:left;padding-left:15px">';
         front.forEach(function(n){
             html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td>';
-        html += '<td style="padding:18px;text-align:center;width:100px">';
+        html += '<td style="padding:18px;text-align:center;width:150px">';
         back.forEach(function(n){
             html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px">' + n.toString().padStart(2,'0') + '</span>';
         });
@@ -334,6 +334,8 @@ function shareNums() {
     alert('请复制号码后，打开微信粘贴分享');
 }
 </script>
+
+
 
 
 
