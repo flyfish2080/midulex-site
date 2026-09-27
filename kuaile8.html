@@ -264,7 +264,8 @@ footer .b{color:var(--text2)}
     
 
 </head>
-<body><script>
+<body>
+<script>
 function genNumbers() {
     var method = document.getElementById('simMethod').value;
     var count = parseInt(document.getElementById('simCount').value) || 20;
@@ -297,18 +298,31 @@ function genNumbers() {
         html += '<td style="padding:18px;text-align:center;color:#93a5c8;font-size:15px">' + (i+1).toString().padStart(2,'0') + '</td>';
         html += '<td style="padding:18px;text-align:center">';
         nums.forEach(function(n){
-            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 3px;font-weight:600;font-size:13px;box-shadow:0 2px 4px rgba(230,57,70,.3)">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 3px;font-weight:600;font-size:13px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
     html += '</tbody></table>';
-    // 生成后才显示按钮
     html += '<div style="margin-top:20px;text-align:center">';
+    html += '<button onclick="copyNums()" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
+    html += '<button onclick="shareNums()" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
     html += '</div>';
     
     document.getElementById('simResult').innerHTML = html;
 }
+
+function copyNums() {
+    var text = document.getElementById('simResult').innerText;
+    navigator.clipboard.writeText(text).then(function(){
+        alert('号码已复制到剪贴板！');
+    });
+}
+
+function shareNums() {
+    alert('请复制号码后，打开微信粘贴分享');
+}
 </script>
+
 
 
 <div class="topbar"><div class="wrap">
