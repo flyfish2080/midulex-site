@@ -282,8 +282,8 @@ function genNumbers() {
     html += '<table style="width:100%;border-collapse:collapse">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
     html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:50px">注</th>';
-    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px">前区</th>';
-    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:80px">后区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:300px">前区</th>';
+    html += '<th style="padding:15px;color:#93a5c8;font-weight:500;font-size:14px;width:100px">后区</th>';
     html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
@@ -302,12 +302,12 @@ function genNumbers() {
         
         html += '<tr style="border-bottom:1px solid #1b2745">';
         html += '<td style="padding:18px;text-align:center;color:#93a5c8;font-size:15px">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:18px;text-align:center">';
+        html += '<td style="padding:18px;text-align:center;width:300px">';
         front.forEach(function(n){
             html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px;box-shadow:0 2px 4px rgba(230,57,70,.3)">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td>';
-        html += '<td style="padding:18px;text-align:center">';
+        html += '<td style="padding:18px;text-align:center;width:100px">';
         back.forEach(function(n){
             html += '<span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:15px;box-shadow:0 2px 4px rgba(42,157,244,.3)">' + n.toString().padStart(2,'0') + '</span>';
         });
