@@ -282,11 +282,13 @@ function genNumbers() {
     html += '上一期（' + last.issue + ' ' + last.date + '）：前区 ' + last.front + ' 后区 ' + last.back + '<br>';
     html += '基于该期规则生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    html += '<table style="width:720px;border-collapse:collapse;table-layout:fixed">';
+    // 表格宽度90%居中，自动适配卡片大小
+    html += '<div style="width:90%;margin:0 auto">';
+    html += '<table style="width:100%;border-collapse:collapse;table-layout:fixed">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:80px">注</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:460px">前区</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:180px">后区</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:15%">注</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:60%">前区</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:25%">后区</th>';
     html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
@@ -308,21 +310,22 @@ function genNumbers() {
         copyLines.push((i+1).toString().padStart(2,'0') + '	' + frontStr + '	' + backStr);
         
         html += '<tr style="border-bottom:1px solid #1b2745">';
-        html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px;width:80px">' + (i+1).toString().padStart(2,'0') + '</td>';
-        html += '<td style="padding:12px;text-align:center;width:460px">';
+        html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px">' + (i+1).toString().padStart(2,'0') + '</td>';
+        html += '<td style="padding:12px;text-align:center">';
         front.forEach(function(n){
-            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:13px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 2px;font-weight:600;font-size:12px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td>';
-        html += '<td style="padding:12px;text-align:center;width:180px">';
+        html += '<td style="padding:12px;text-align:center">';
         back.forEach(function(n){
-            html += '<span style="display:inline-block;width:30px;height:30px;line-height:30px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 4px;font-weight:600;font-size:13px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 2px;font-weight:600;font-size:12px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
     lastCopyText = copyLines.join('
 ');
     html += '</tbody></table>';
+    html += '</div>';
     html += '<div style="margin-top:20px;text-align:center">';
     html += '<button onclick="copyNums()" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
     html += '<button onclick="shareNums()" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
@@ -341,6 +344,8 @@ function shareNums() {
     alert('请复制号码后，打开微信粘贴分享');
 }
 </script>
+
+
 
 
 
