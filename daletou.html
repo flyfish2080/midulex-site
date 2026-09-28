@@ -276,19 +276,18 @@ function genNumbers() {
     
     var copyLines = ["=== 【大乐透】模拟投注号码（" + count + "注） ==="];
     var html = '';
-    html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
+    html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin:0 0 15px 0;color:#dce6f5;font-size:14px;line-height:1.8">';
     html += '<b style="color:#4cd08d">' + method + '（选号）</b><br>';
     html += '测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
     html += '上一期（' + last.issue + ' ' + last.date + '）：前区 ' + last.front + ' 后区 ' + last.back + '<br>';
     html += '基于该期规则生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
     html += '</div>';
-    // 表格外层容器，宽度90%居中，左右留边距，绝对不会超出卡片
-    html += '<div style="width:90%;margin:0 auto">';
-    html += '<table style="width:100%;border-collapse:collapse;table-layout:fixed">';
+    // 表格宽度100%，和提示条同宽，在卡片padding内
+    html += '<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin:0 -20px;padding:0 20px">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:15%">注</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:55%">前区</th>';
-    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:30%">后区</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:10%">注</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:65%">前区</th>';
+    html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:25%">后区</th>';
     html += '</tr></thead><tbody>';
     
     for (var i = 0; i < count; i++) {
@@ -314,19 +313,18 @@ function genNumbers() {
         html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px">' + (i+1).toString().padStart(2,'0') + '</td>';
         html += '<td style="padding:12px;text-align:center">';
         front.forEach(function(n){
-            html += '<span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 2px;font-weight:600;font-size:11px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td>';
         html += '<td style="padding:12px;text-align:center">';
         back.forEach(function(n){
-            html += '<span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 2px;font-weight:600;font-size:11px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + n.toString().padStart(2,'0') + '</span>';
         });
         html += '</td></tr>';
     }
     lastCopyText = copyLines.join('\n');
     html += '</tbody></table>';
-    html += '</div>';
-    html += '<div style="margin-top:20px;text-align:center">';
+    html += '<div style="margin-top:20px;text-align:center;padding:0 20px">';
     html += '<button onclick="copyNums()" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
     html += '<button onclick="shareNums()" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
     html += '</div>';
@@ -344,6 +342,8 @@ function shareNums() {
     alert('请复制号码后，打开微信粘贴分享');
 }
 </script>
+
+
 
 
 
