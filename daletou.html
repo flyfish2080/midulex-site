@@ -265,16 +265,7 @@ footer .b{color:var(--text2)}
 
 </head>
 <body>
-<script>
-// 立刻执行，不加延迟
-var rows = document.querySelectorAll('tbody tr');
-for(var i=0; i<rows.length; i++){
-    rows[i].style.cursor = 'pointer';
-    rows[i].onclick = function(){
-        alert('点击成功！方法：'+this.cells[0].innerText);
-    }
-}
-</script>
+
 
 <script>
 var lastCopyText = '';
