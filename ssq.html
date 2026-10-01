@@ -315,27 +315,28 @@ function genNumbers() {
     html += '</tbody></table>';
     html += '</div>';
     html += '<div style="margin-top:20px;text-align:center">';
-    html += '<button onclick="alert(1);copyNums()" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
-    html += '<button onclick="shareNums()" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
+    html += '<button id="copyBtn" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
+    html += '<button id="shareBtn" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
     html += '</div>';
     
     document.getElementById('simResult').innerHTML = html;
-}
-
-function copyNums() {
-    var tempTextarea = document.createElement('textarea');
-    tempTextarea.value = lastCopyText;
-    document.body.appendChild(tempTextarea);
-    tempTextarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempTextarea);
-    alert('号码已复制！');
-}
-
-function shareNums() {
-    alert('请复制号码后，打开微信粘贴分享');
+    // 用addEventListener绑定事件，不用onclick属性
+    document.getElementById('copyBtn').onclick = function() {
+        var tempTextarea = document.createElement('textarea');
+        tempTextarea.value = lastCopyText;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        alert('号码已复制！');
+    };
+    document.getElementById('shareBtn').onclick = function() {
+        alert('请复制号码后，打开微信粘贴分享');
+    };
 }
 </script>
+
+
 
 
 
