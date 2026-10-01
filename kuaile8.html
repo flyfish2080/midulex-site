@@ -266,15 +266,15 @@ footer .b{color:var(--text2)}
 </head>
 <body>
 <script>
-var lastCopyText = "";
+var lastCopyText = '';
 function genNumbers() {
     var method = document.getElementById('simMethod').value;
     var count = parseInt(document.getElementById('simCount').value) || 20;
-    var last = {issue:"2026108", date:"2026-09-17(四)", nums:"03 07 12 15 18 22 25 29 33 38 42 45 49 53 57 61 65 69 73 78", nextDate:"2026年9月24日 周四"};
-    var testR = "21.5%";
+    var last = {issue:'2026108', date:'2026-09-17(四)', nums:'03 07 12 15 18 22 25 29 33 38 42 45 49 53 57 61 65 69 73 78', nextDate:'2026年9月24日 周四'};
+    var testR = '21.5%';
     var nextIssue = parseInt(last.issue) + 1;
     
-    var copyLines = ["注\t投注号码（10个）"];
+    var copyLines = ['注	投注号码（10个）'];
     var html = '';
     html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
     html += '<b style="color:#4cd08d">' + method + '（选号）</b><br>';
@@ -297,7 +297,7 @@ function genNumbers() {
         nums.sort(function(a,b){return a-b;});
         
         var numsStr = nums.map(function(n){return n.toString().padStart(2,'0');}).join('+');
-        copyLines.push((i+1).toString().padStart(2,'0') + '\t' + numsStr);
+        copyLines.push((i+1).toString().padStart(2,'0') + '	' + numsStr);
         
         html += '<tr style="border-bottom:1px solid #1b2745">';
         html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px">' + (i+1).toString().padStart(2,'0') + '</td>';
@@ -307,7 +307,8 @@ function genNumbers() {
         });
         html += '</td></tr>';
     }
-    lastCopyText = copyLines.join('\n');
+    lastCopyText = copyLines.join('
+');
     html += '</tbody></table>';
     html += '<div style="margin-top:20px;text-align:center">';
     html += '<button onclick="copyNums()" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
@@ -319,7 +320,7 @@ function genNumbers() {
 
 function copyNums() {
     navigator.clipboard.writeText(lastCopyText).then(function(){
-        alert('号码已复制！号码用+连接');
+        alert('号码已复制！');
     });
 }
 
@@ -327,6 +328,8 @@ function shareNums() {
     alert('请复制号码后，打开微信粘贴分享');
 }
 </script>
+
+
 
 
 
