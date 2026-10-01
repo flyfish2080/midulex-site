@@ -272,8 +272,7 @@ function genNumbers() {
     var testR = '34.63%';
     var nextIssue = parseInt(last.issue) + 1;
     
-    var copyLines = [];
-    copyLines.push('注\t投注号码（红球+蓝球）');
+    var copyLines = ['注\t投注号码（红球+蓝球）'];
     var html = '';
     html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
     html += '<b style="color:#4cd08d">' + method + '（选号）</b><br>';
@@ -320,7 +319,6 @@ function genNumbers() {
     html += '</div>';
     
     document.getElementById('simResult').innerHTML = html;
-    // 用addEventListener绑定事件，不用onclick属性
     document.getElementById('copyBtn').onclick = function() {
         var tempTextarea = document.createElement('textarea');
         tempTextarea.value = lastCopyText;
@@ -335,6 +333,8 @@ function genNumbers() {
     };
 }
 </script>
+
+
 
 
 
