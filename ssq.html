@@ -264,29 +264,27 @@ footer .b{color:var(--text2)}
     </head>
 <body>
 <script>
-var lastCopyText = '';
+var lastCopyText = "";
 function genNumbers() {
-    var method = document.getElementById('simMethod').value;
-    var count = parseInt(document.getElementById('simCount').value) || 20;
-    var last = {issue:'2026108', date:'2026-09-17(四)', front:'06 10 16 20 30 33', back:'05', nextDate:'2026年10月4日 周日'};
-    var testR = '34.63%';
+    var method = document.getElementById("simMethod").value;
+    var count = parseInt(document.getElementById("simCount").value) || 20;
+    var last = {issue:"2026108", date:"2026-09-17(四)", front:"06 10 16 20 30 33", back:"05", nextDate:"2026年10月4日 周日"};
+    var testR = "34.63%";
     var nextIssue = parseInt(last.issue) + 1;
-    
-    var copyLines = ['注\t投注号码（红球+蓝球）'];
-    var html = '';
+    var copyLines = ["注\t投注号码（红球+蓝球）"];
+    var html = "";
     html += '<div style="background:rgba(76,208,141,.08);border:1px solid rgba(76,208,141,.25);border-radius:8px;padding:12px;margin-bottom:15px;color:#dce6f5;font-size:14px;line-height:1.8">';
-    html += '<b style="color:#4cd08d">' + method + '（选号）</b><br>';
-    html += '测试段回报率 ' + testR + '（基线 20.89%）｜单期 ' + count + ' 注 × 2 元 = ' + (count*2) + ' 元<br>';
-    html += '上一期（' + last.issue + ' ' + last.date + '）：红球 ' + last.front + ' 蓝球 ' + last.back + '<br>';
-    html += '基于该期规则生成第 ' + nextIssue + ' 期模拟号码｜预计开奖：' + last.nextDate;
-    html += '</div>';
+    html += '<b style="color:#4cd08d">' + method + "（选号）</b><br>";
+    html += "测试段回报率 " + testR + "（基线 20.89%）｜单期 " + count + " 注 × 2 元 = " + (count*2) + " 元<br>";
+    html += "上一期（" + last.issue + " " + last.date + "）：红球 " + last.front + " 蓝球 " + last.back + "<br>";
+    html += "基于该期规则生成第 " + nextIssue + " 期模拟号码｜预计开奖：" + last.nextDate;
+    html += "</div>";
     html += '<div style="overflow:hidden">';
     html += '<table style="width:100%;border-collapse:collapse;table-layout:fixed">';
     html += '<thead><tr style="border-bottom:1px solid #26355c">';
     html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;width:12%;text-align:center">注</th>';
     html += '<th style="padding:12px;color:#93a5c8;font-weight:500;font-size:14px;text-align:left">投注号码（红球红 + 蓝球蓝）</th>';
-    html += '</tr></thead><tbody>';
-    
+    html += "</tr></thead><tbody>";
     for (var i = 0; i < count; i++) {
         var front = [];
         while (front.length < 6) {
@@ -295,44 +293,43 @@ function genNumbers() {
         }
         front.sort(function(a,b){return a-b;});
         var back = Math.floor(Math.random() * 16) + 1;
-        
-        var frontStr = front.map(function(n){return n.toString().padStart(2,'0');}).join('+');
-        var backStr = back.toString().padStart(2,'0');
-        copyLines.push((i+1).toString().padStart(2,'0') + '\t' + frontStr + ' | ' + backStr);
-        
+        var frontStr = front.map(function(n){return n.toString().padStart(2,"0");}).join("+");
+        var backStr = back.toString().padStart(2,"0");
+        copyLines.push((i+1).toString().padStart(2,"0") + "\t" + frontStr + " | " + backStr);
         html += '<tr style="border-bottom:1px solid #1b2745">';
-        html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px">' + (i+1).toString().padStart(2,'0') + '</td>';
+        html += '<td style="padding:12px;text-align:center;color:#93a5c8;font-size:14px">' + (i+1).toString().padStart(2,"0") + "</td>";
         html += '<td style="padding:12px 12px 12px 30px;text-align:left;overflow:hidden">';
         front.forEach(function(n){
-            html += '<span style="display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + n.toString().padStart(2,'0') + '</span>';
+            html += '<span style="display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background:#e63946;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + n.toString().padStart(2,"0") + "</span>";
         });
         html += '<span style="display:inline-block;width:8px"></span>';
-        html += '<span style="display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + backStr + '</span>';
-        html += '</td></tr>';
+        html += '<span style="display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background:#2a9df4;color:#fff;text-align:center;margin:0 1px;font-weight:600;font-size:10px">' + backStr + "</span>";
+        html += "</td></tr>";
     }
-    lastCopyText = copyLines.join('\n');
-    html += '</tbody></table>';
-    html += '</div>';
+    lastCopyText = copyLines.join("\n");
+    html += "</tbody></table>";
+    html += "</div>";
     html += '<div style="margin-top:20px;text-align:center">';
     html += '<button id="copyBtn" style="background:#4ecdc4;color:#fff;border:none;padding:10px 20px;border-radius:6px;margin-right:15px;cursor:pointer;font-size:14px">📋 复制号码</button>';
     html += '<button id="shareBtn" style="background:#07c160;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">💬 分享到微信</button>';
-    html += '</div>';
-    
-    document.getElementById('simResult').innerHTML = html;
-    document.getElementById('copyBtn').onclick = function() {
-        var tempTextarea = document.createElement('textarea');
+    html += "</div>";
+    document.getElementById("simResult").innerHTML = html;
+    document.getElementById("copyBtn").onclick = function() {
+        var tempTextarea = document.createElement("textarea");
         tempTextarea.value = lastCopyText;
         document.body.appendChild(tempTextarea);
         tempTextarea.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(tempTextarea);
-        alert('号码已复制！');
+        alert("号码已复制！");
     };
-    document.getElementById('shareBtn').onclick = function() {
-        alert('请复制号码后，打开微信粘贴分享');
+    document.getElementById("shareBtn").onclick = function() {
+        alert("请复制号码后，打开微信粘贴分享");
     };
 }
 </script>
+
+
 
 
 
