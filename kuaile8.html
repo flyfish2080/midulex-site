@@ -266,6 +266,17 @@ footer .b{color:var(--text2)}
 </head>
 <body>
 <script>
+// 立刻执行，不加延迟
+var rows = document.querySelectorAll('tbody tr');
+for(var i=0; i<rows.length; i++){
+    rows[i].style.cursor = 'pointer';
+    rows[i].onclick = function(){
+        alert('点击成功！方法：'+this.cells[0].innerText);
+    }
+}
+</script>
+
+<script>
 var lastCopyText = '';
 function genNumbers() {
     var method = document.getElementById('simMethod').value;
@@ -2397,79 +2408,8 @@ function shareSimResult(){
       setTimeout(initColumnResize, 1000);
       setInterval(initColumnResize, 2000);
     });
-    </script<script>
-
-
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        document.querySelectorAll('table tbody tr').forEach(function(row) {
-            row.style.cursor = 'pointer';
-            row.onclick = function() {
-                var mname = row.querySelector('.mname');
-                if (mname) openMethodDetail(mname.textContent.trim());
-            };
-        });
-    }, 500);
-});
-</script>
+    </script
 <script>
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        var year = new Date().getFullYear();
-        var totalPeriods = 3497;
-        document.querySelectorAll('.total-periods').forEach(function(el) {
-            el.textContent = totalPeriods;
-        });
-        var methodCount = document.querySelectorAll('table tbody tr').length;
-        document.querySelectorAll('.method-count').forEach(function(el) {
-            el.textContent = methodCount;
-        });
-        var today = new Date();
-        var dateStr = today.getFullYear() + '-' + (today.getMonth()+1).toString().padStart(2,'0') + '-' + today.getDate().toString().padStart(2,'0');
-        document.querySelectorAll('.latest-date').forEach(function(el) {
-            el.textContent = dateStr;
-        });
-        var latestIssue = year + '100';
-        document.querySelectorAll('.latest-issue').forEach(function(el) {
-            el.textContent = latestIssue;
-        });
-    }, 500);
-});
-</script><script>
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        
-        var methodCount = document.querySelectorAll('table tbody tr').length;
-        var beatBaseline = 0;
-        
-        document.querySelectorAll('table tbody tr').forEach(function(row) {
-            var cells = row.querySelectorAll('td');
-            if (cells.length >= 6) {
-                var testR = cells[5].textContent.replace('%','');
-                if (parseFloat(testR) > 20.89) beatBaseline++;
-            }
-        });
-        
-        
-        var map = {
-            '.stat-platform': '8',
-            '.stat-collected': '60',
-            '.stat-method-count': methodCount,
-            '.stat-total-periods': '3497',
-            '.stat-baseline': '20.89%',
-            '.stat-beat-baseline': beatBaseline,
-            '.method-count': methodCount,
-            '.total-periods': '3497'
-        };
-        
-        Object.keys(map).forEach(function(selector) {
-            document.querySelectorAll(selector).forEach(function(el) {
-                el.textContent = map[selector];
-            });
-        }));
-    }, 500);
-});
-</script><script>
 window.addEventListener('load', function() {
     setTimeout(function() {
         var now = new Date();
