@@ -331,9 +331,13 @@ function genNumbers() {
 }
 
 function copyNums() {
-    navigator.clipboard.writeText(lastCopyText).then(function(){
-        alert('号码已复制！');
-    });
+    var tempTextarea = document.createElement('textarea');
+    tempTextarea.value = lastCopyText;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextarea);
+    alert('号码已复制！');
 }
 
 function shareNums() {
